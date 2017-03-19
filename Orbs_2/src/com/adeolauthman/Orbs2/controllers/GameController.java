@@ -1,5 +1,6 @@
 package com.adeolauthman.Orbs2.controllers;
 
+import com.adeolauthman.Orbs2.main.Assets;
 import com.adeolauthman.Orbs2.sceneControllers.GameSceneController;
 import com.adeolauthman.Orbs2.sceneControllers.MainMenuSceneController;
 import com.adeolauthman.Orbs2.sceneControllers.WorldSceneController;
@@ -19,7 +20,6 @@ public class GameController {
 	Stage appWindow;
 	int width, height;
 	
-	
 	GameSceneController[] controllers;
 	GameSceneController mainMenuController, worldSceneController;
 	GameSceneController currentController;
@@ -38,6 +38,10 @@ public class GameController {
 		this.appWindow = window;
 		this.width = w;
 		this.height = h;
+		
+		// Start assets.
+		Assets assets = new Assets();
+		assets.initialize();
 		
 		// Initialize the scene controllers.
 		mainMenuController = new MainMenuSceneController(this);

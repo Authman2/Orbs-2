@@ -19,20 +19,20 @@ public abstract class Entity {
 	 * 						*
 	 ************************/
 	
-	WorldSceneController ws;
+	protected WorldSceneController ws;
 	
-	GraphicsContext graphics;
+	protected GraphicsContext graphics;
 	
-	Vector2D position, targetPosition;
+	protected Vector2D position, targetPosition;
 	
-	Image sprite;
+	protected Image sprite;
 
-	Direction direction = Direction.Down;
+	protected Direction direction = Direction.Down;
 	
-	int width = 32, height = 32;
+	protected int width = 32, height = 32;
 	
 	boolean moving, startedMoving;
-	float moveSpeed = 0.2f;
+	protected float moveSpeed = 0.2f;
 	
 	
 	
@@ -114,6 +114,7 @@ public abstract class Entity {
 	 * 						*
 	 ************************/
 	
+	public Vector2D getPosition() { return position; }
 	
 	
 	

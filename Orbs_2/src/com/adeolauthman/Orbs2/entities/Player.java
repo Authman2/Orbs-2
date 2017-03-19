@@ -33,10 +33,10 @@ public class Player extends Entity {
 	/** Sets the player's direction and new target position based on the key that was just clicked. */
 	public void setKeyActions(KeyCode key) {
 		
-		if(key == KeyCode.UP) { direction = Direction.Up; targetPosition.add(new Vector2D(0,-1)); startedMoving = true; }
-		else if(key == KeyCode.DOWN) { direction = Direction.Down; targetPosition.add(new Vector2D(0,1)); startedMoving = true;}
-		else if(key == KeyCode.LEFT) { direction = Direction.Left; targetPosition.add(new Vector2D(-1,0)); startedMoving = true; }
-		else if(key == KeyCode.RIGHT) { direction = Direction.Right; targetPosition.add(new Vector2D(1,0)); startedMoving = true; }
+		if(key == KeyCode.UP) { direction = Direction.Up; targetPosition = new Vector2D(position.X, position.Y-1); startedMoving = true; }
+		else if(key == KeyCode.DOWN) { direction = Direction.Down; targetPosition = new Vector2D(position.X, position.Y+1); startedMoving = true;}
+		else if(key == KeyCode.LEFT) { direction = Direction.Left; targetPosition = new Vector2D(position.X-1, position.Y); startedMoving = true; }
+		else if(key == KeyCode.RIGHT) { direction = Direction.Right; targetPosition = new Vector2D(position.X+1, position.Y); startedMoving = true; }
 		
 	}
 	

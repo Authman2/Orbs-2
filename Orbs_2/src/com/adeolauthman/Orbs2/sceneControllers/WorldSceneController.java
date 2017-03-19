@@ -2,6 +2,7 @@ package com.adeolauthman.Orbs2.sceneControllers;
 
 import com.adeolauthman.Orbs2.controllers.GameController;
 import com.adeolauthman.Orbs2.entities.Player;
+import com.adeolauthman.Orbs2.world.World;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,6 +22,8 @@ public class WorldSceneController extends GameSceneController {
 	
 	Player player;
 	
+	World world;
+	
 	
 	
 	/************************
@@ -33,6 +36,8 @@ public class WorldSceneController extends GameSceneController {
 		super(gc);
 		canvas = new Canvas(scene.getWidth(), scene.getHeight());
 		graphics = canvas.getGraphicsContext2D();
+		
+		world = new World("World",this);
 		
 		player = new Player(null, this);
 		player.setPosition(10, 8);
@@ -71,9 +76,13 @@ public class WorldSceneController extends GameSceneController {
 	 ************************/
 	
 	public void initialize() {
+		// Standard canvas.
 		StackPane p = new StackPane();
 		p.getChildren().add(canvas);
 		holder.setCenter(p);
+		
+		// World initialization.
+		world.initialize();
 		
 		// Add all key events.
 		scene.setOnKeyPressed(e -> {
@@ -84,12 +93,14 @@ public class WorldSceneController extends GameSceneController {
 	}
 
 	public void update() { 
+		world.update();
 		player.update();
 	}
 
 	public void draw() {
 		clearFrame();
 		
+		world.draw();
 		player.draw();
 	}
 
