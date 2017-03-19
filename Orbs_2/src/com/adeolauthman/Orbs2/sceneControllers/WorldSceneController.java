@@ -41,6 +41,8 @@ public class WorldSceneController extends GameSceneController {
 		
 		player = new Player(null, this);
 		player.setPosition(10, 8);
+		
+		world.getMainCamera().setCenterEntity(player);
 	}
 
 	
@@ -66,6 +68,9 @@ public class WorldSceneController extends GameSceneController {
 	
 	public GraphicsContext getGraphicsContext() { return graphics; }
 	
+	public World getWorld() { return world; }
+	
+	public Player getPlayer() { return player; }
 	
 	
 	
@@ -89,6 +94,10 @@ public class WorldSceneController extends GameSceneController {
 			KeyCode w = e.getCode();
 			
 			player.setKeyActions(w);
+		});
+		
+		scene.setOnKeyReleased(e -> {
+			world.moveSpeed = 0;
 		});
 	}
 

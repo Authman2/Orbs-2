@@ -4,7 +4,6 @@ import com.adeolauthman.Orbs2.sceneControllers.WorldSceneController;
 
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import je.visual.Vector2D;
 
 public class Player extends Entity {
 
@@ -33,11 +32,12 @@ public class Player extends Entity {
 	/** Sets the player's direction and new target position based on the key that was just clicked. */
 	public void setKeyActions(KeyCode key) {
 		
-		if(key == KeyCode.UP) { direction = Direction.Up; targetPosition = new Vector2D(position.X, position.Y-1); startedMoving = true; }
-		else if(key == KeyCode.DOWN) { direction = Direction.Down; targetPosition = new Vector2D(position.X, position.Y+1); startedMoving = true;}
-		else if(key == KeyCode.LEFT) { direction = Direction.Left; targetPosition = new Vector2D(position.X-1, position.Y); startedMoving = true; }
-		else if(key == KeyCode.RIGHT) { direction = Direction.Right; targetPosition = new Vector2D(position.X+1, position.Y); startedMoving = true; }
+		if(key == KeyCode.UP) { direction = Direction.Up; ws.getWorld().getMainCamera().moveCamera(direction); startedMoving = true; }
+		else if(key == KeyCode.DOWN) { direction = Direction.Down; ws.getWorld().getMainCamera().moveCamera(direction); startedMoving = true;}
+		else if(key == KeyCode.LEFT) { direction = Direction.Left; ws.getWorld().getMainCamera().moveCamera(direction); startedMoving = true; }
+		else if(key == KeyCode.RIGHT) { direction = Direction.Right; ws.getWorld().getMainCamera().moveCamera(direction); startedMoving = true; }
 		
+		System.out.println(ws.getWorld().getMainCamera().getPosition());
 	}
 	
 
@@ -54,10 +54,7 @@ public class Player extends Entity {
 	}
 	
 	public void update() {
-		move(moveSpeed, e -> { 
-			System.out.println("Finished walking");
-			return null;
-		});
+		
 	}
 	
 	public void draw() {
