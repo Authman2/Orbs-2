@@ -21,7 +21,7 @@ public class Tile extends Entity {
 
 	public Tile(Vector2D pos, Image img, WorldState ws) {
 		super(pos, ws);
-		this.setSprite(img);
+		this.setSprites(new Image[] {img, img, img, img} );
 		this.worldState = ws;
 	}
 

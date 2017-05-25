@@ -77,7 +77,6 @@ public class World extends Entity {
 			
 			String[][] map2D = (String[][])ArrayConversion.OneToTwo(arr, this.mapSize);
 
-
 			// Start making the tiles and the map.
 			this.tiles = new ArrayList<Tile>();
 			this.makeMap(map2D);
@@ -113,15 +112,19 @@ public class World extends Entity {
 	// Handles the key actions
 	public void keyActions(KeyCode code) {
 		if(code == KeyCode.UP) {
+			player.changeDirection(Direction.UP);
 			this.tiles.forEach(e -> { e.yVel = this.speed; });
 		}
 		if(code == KeyCode.DOWN) {
+			player.changeDirection(Direction.DOWN);
 			this.tiles.forEach(e -> { e.yVel = -this.speed; });
 		}
 		if(code == KeyCode.LEFT) {
+			player.changeDirection(Direction.LEFT);
 			this.tiles.forEach(e -> { e.xVel = this.speed; });
 		}
 		if(code == KeyCode.RIGHT) {
+			player.changeDirection(Direction.RIGHT);
 			this.tiles.forEach(e -> { e.xVel = -this.speed; });
 		}
 	}

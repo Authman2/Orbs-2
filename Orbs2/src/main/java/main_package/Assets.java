@@ -12,10 +12,11 @@ import je.visual.JEImage;
 public class Assets {
 
 	// Spritesheets
-	BufferedImage spritesheet;
+	BufferedImage spritesheet, playerSpritesheet;
 	
 	
 	// Sprites
+	public static Image PLAYER_UP, PLAYER_DOWN, PLAYER_LEFT, PLAYER_RIGHT;
 	public static Image GRASS_1, TREE_TOP, TREE_BOTTOM;
 	
 	
@@ -24,7 +25,8 @@ public class Assets {
 	
 	public Assets() {
 		try {
-			spritesheet = ImageIO.read(new File("/Users/adeolauthman/Documents/AdeolasCodingStuff/JavaPrograms/Orbs2/resources/spritesheet.png")); // eventually C:\\ImageTest\\pic2.jpg
+			spritesheet = ImageIO.read(new File("/Users/adeolauthman/Documents/AdeolasCodingStuff/JavaPrograms/Orbs2/resources/spritesheet.png")); 
+			playerSpritesheet = ImageIO.read(new File("/Users/adeolauthman/Documents/AdeolasCodingStuff/JavaPrograms/Orbs2/resources/people.png"));
 		} 
 		catch (Exception e) {
 		    e.printStackTrace();
@@ -34,11 +36,23 @@ public class Assets {
 	
 	
 	public void initialize() {
-		GRASS_1 = SwingFXUtils.toFXImage(spritesheet.getSubimage(0, 0, 32, 32), null);
-		TREE_TOP = SwingFXUtils.toFXImage(spritesheet.getSubimage(0, 32, 32, 32), null);
-		TREE_BOTTOM = SwingFXUtils.toFXImage(spritesheet.getSubimage(0, 64, 32, 32), null);
+		/* People */
+		PLAYER_UP = getSprite(playerSpritesheet, 32, 0, 32, 32);
+		PLAYER_DOWN = getSprite(playerSpritesheet, 0, 0, 32, 32);
+		PLAYER_LEFT = getSprite(playerSpritesheet, 96, 0, 32, 32);
+		PLAYER_RIGHT = getSprite(playerSpritesheet, 64, 0, 32, 32);
+
+
+		/* Environment */
+		GRASS_1 = getSprite(spritesheet, 0, 0, 32, 32);
+		TREE_TOP = getSprite(spritesheet, 0, 32, 32, 32);
+		TREE_BOTTOM = getSprite(spritesheet, 0, 64, 32, 32);
 	}
 	
 	
+
+	public Image getSprite(BufferedImage ss, int x, int y, int width, int height) {
+		return SwingFXUtils.toFXImage(ss.getSubimage(x, y, width, height), null);
+	}
 	
 }
