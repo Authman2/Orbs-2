@@ -22,6 +22,7 @@ public abstract class Entity {
 	protected Vector2D position;
 
 	protected Image[] sprites;
+
 	protected Image currentSprite;
 
 	protected Direction direction;

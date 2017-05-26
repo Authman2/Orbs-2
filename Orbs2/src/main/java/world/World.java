@@ -34,6 +34,9 @@ public class World extends Entity {
    	// The matrix of tiles.
    	ArrayList<Tile> tiles;
 
+   	// Whether or not the tiles are moving.
+   	boolean moving;
+
 
    	// A reference to the player that is currently in this world.
    	Player player;
@@ -55,6 +58,7 @@ public class World extends Entity {
 		this.worldState = ws;
 		this.mapName = mapName;
 		this.mapSize = size;
+		this.moving = false;
 		this.player = player;
 		this.entities = new ArrayList<Entity>();
 
@@ -161,6 +165,10 @@ public class World extends Entity {
 		return entities;
 	}
 
+	public boolean isMoving() {
+		return moving;
+	}
+
 
 	/********************
 	*					*
@@ -179,6 +187,12 @@ public class World extends Entity {
 		if(player != null) { player.update(); }
 		if(tiles != null) {
 			this.tiles.forEach(e -> { e.update(); });
+
+			if(this.tiles.get(0).xVel == 0 && this.tiles.get(0).yVel == 0) {
+				this.moving = false;
+			} else {
+				this.moving = true;
+			}
 		}
 	}
 
