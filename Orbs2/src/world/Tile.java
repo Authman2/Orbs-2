@@ -52,7 +52,7 @@ public class Tile extends Entity {
 
 	/********************
 	 *					*
-	 *     VARIABLES	*
+	 *     SETTERS		*
 	 *					*
 	 *********************/
 
@@ -66,7 +66,17 @@ public class Tile extends Entity {
     public void setType(int t) {
 	    this.type = t;
     }
+    
+    
+    /********************
+	 *					*
+	 *     GETTERS		*
+	 *					*
+	 *********************/
 
+    public boolean isSolid() {
+    	return solid;
+    }
 
 
 

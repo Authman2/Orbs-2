@@ -1,5 +1,6 @@
 package world
 
+import controllers.GameController
 import entities.Entity
 import entities.Player
 import javafx.scene.image.Image
@@ -8,12 +9,12 @@ import je.collections.ArrayConversion
 import je.files.ReadFile
 import je.visual.Vector2D
 import main_package.Assets
+import main_package.printTilesRendered
 import states.WorldState
 import java.util.ArrayList
-import main_package.printTilesRendered
 
 
-open class World(player: Player?, ws: WorldState?, mapName: String?, size: Int) {
+public open class World(player: Player?, ws: WorldState?, mapName: String?, size: Int) {
 	
 	/********************
 	 *					*
@@ -107,7 +108,7 @@ open class World(player: Player?, ws: WorldState?, mapName: String?, size: Int) 
 	 *					*
 	 ********************/
 
-
+	
 	
 	
 	/********************

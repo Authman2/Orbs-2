@@ -1,6 +1,6 @@
 package main_package
 
-import javafx.scene.input.KeyCode
+import controllers.GameController
 import world.World
 
 /* Extensions for debugging. */

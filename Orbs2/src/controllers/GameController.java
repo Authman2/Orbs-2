@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import main_package.Assets;
 import states.ControlsState;
@@ -33,6 +34,12 @@ public class GameController {
 	// The stage for the application.
 	Stage stage;
 
+	
+	// Used for calculating the framerate.
+	final long[] frameTimes = new long[100];
+    int frameTimeIndex = 0 ;
+    boolean arrayFilled = false ;
+    double fps = 0;
 
 
 	/********************
@@ -61,6 +68,19 @@ public class GameController {
 			public void handle(long now) {
 				update();
 	            draw();
+	            
+				long oldFrameTime = frameTimes[frameTimeIndex] ;
+                frameTimes[frameTimeIndex] = now ;
+                frameTimeIndex = (frameTimeIndex + 1) % frameTimes.length ;
+                if (frameTimeIndex == 0) {
+                    arrayFilled = true ;
+                }
+                if (arrayFilled) {
+                    long elapsedNanos = now - oldFrameTime ;
+                    long elapsedNanosPerFrame = elapsedNanos / frameTimes.length ;
+                    double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame ;
+                    fps = frameRate;
+                }
 			}
 		}.start();
 	}
@@ -118,6 +138,19 @@ public class GameController {
 	public void draw() {
 		currentState.draw();
 	}
+	
+	
+	/********************
+	*					*
+	*	    DEBUG		*
+	*					*
+	*********************/
 
+	public void debug(KeyCode w) {
+		if(w == KeyCode.F) {
+			System.out.println("FPS: " + fps);
+		}
+	}
+	
 
 } // End of class.

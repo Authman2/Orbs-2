@@ -18,6 +18,9 @@ public class Player extends Entity {
 	// The animators.
 	Animator walkUp, walkDown, walkLeft, walkRight;
 
+	// booleans for movement (only for moving in the opposite direction)
+	boolean up, down, left, right;
+	
 
 
 	/********************
@@ -42,6 +45,7 @@ public class Player extends Entity {
 	*					*
 	*********************/
 
+	/** Sets the walking animations. */
 	private void setWalkingSprites() {
 		// The walking animation.
 		Image[] up, down, left, right;
@@ -68,48 +72,78 @@ public class Player extends Entity {
 	}
 
 
-	// Handles the key actions
+	/** Handles the key actions */
 	public void keyActions(KeyCode code) {
 		switch(code) {
 		case UP:
 			changeDirection(Direction.UP);
+			up = true;
 			yVel = -speed;
 			break;
 		case DOWN:
 			changeDirection(Direction.DOWN);
+			down = true;
 			yVel = speed;
 			break;
 		case LEFT:
 			changeDirection(Direction.LEFT);
+			left = true;
 			xVel = -speed;
 			break;
 		case RIGHT:
 			changeDirection(Direction.RIGHT);
+			right = true;
 			xVel = speed;
 			break;	
 		default: break;
 		}
 	}
 
-	// Handles key releases
+	
+	/** Handles key releases */
 	public void releaseKeyActions(KeyCode code) {
 		switch(code) {
 		case UP:
 			yVel = 0;
+			up = false;
 			break;
 		case DOWN:
 			yVel = 0;
+			down = false;
 			break;
 		case LEFT:
 			xVel = 0;
+			left = false;
 			break;
 		case RIGHT:
 			xVel = 0;
+			right = false;
 			break;	
 		default: break;
 		}
 	}
 	
+	
+	/** Checks for collisions with solid objects */
+	private void checkCollision() {
+		if(worldState.getCurrentWorld().getTiles()
+			.stream()
+			.anyMatch( tile -> tile.isSolid() && tile.collidingWith(this)))
+		{
+			xVel = 0;
+			yVel = 0;
+			moveOpposite();
+		}
+	}
+	
+	
+	/** Moves the player in the opposite of its current direction. */
+	private void moveOpposite() {
+		if(up) { position.Y = position.Y + speed; }
+		if(down) { position.Y = position.Y - speed; }
+		if(left) { position.X = position.X + speed; }
+		if(right) { position.X = position.X - speed; }
+	}
 	
 	
 
@@ -128,12 +162,12 @@ public class Player extends Entity {
 
 	public void initialize() {
 		super.initialize();
-		
-		this.setSpeed(0.08f);
+		this.setSpeed(0.09f);
 	}
 
 	public void update() {
 		super.update();
+		this.checkCollision();
 	}
 
 	public void draw() {
@@ -172,6 +206,15 @@ public class Player extends Entity {
 		this.worldState.getGraphics().strokeRect(collisionBox.getMinX(), collisionBox.getMinY(), size, size);
 	}
 
+	
+	
+	
+	/********************
+	*					*
+	*	   HELPER		*
+	*					*
+	*********************/
+	
 	// Quick helper function for drawing a sprite.
 	public void drawSprite(Image img) {
 		this.worldState.getGraphics().drawImage(img, position.X*size, position.Y*size);

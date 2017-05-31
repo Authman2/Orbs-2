@@ -117,11 +117,14 @@ public class WorldState extends GameState {
 		// Key Input
 		scene.setOnKeyPressed(e -> {
 			KeyCode w = e.getCode();
+				
+			player.keyActions(w);
 			
 			// Debugging
-			if(e.isShiftDown()) { currentWorld.debug(w); }
-			
-			player.keyActions(w);
+			if(e.isShiftDown()) { 
+				currentWorld.debug(w);
+				gc.debug(w);
+			}
 		});
 		scene.setOnKeyReleased(e -> {
 			KeyCode w = e.getCode();
