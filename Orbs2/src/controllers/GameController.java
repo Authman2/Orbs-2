@@ -1,5 +1,11 @@
 package controllers;
 
+import org.bson.Document;
+
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -30,9 +36,16 @@ public class GameController {
 	// The current scene controller to use.
 	GameState currentState;
 
-
 	// The stage for the application.
 	Stage stage;
+	
+	
+	// Game save stuff.
+	public static MongoClient mongoClient = new MongoClient();
+	public static MongoDatabase database = mongoClient.getDatabase("Orbs2");
+	public static MongoCollection<Document> collection = database.getCollection("GameSaves");
+	public static String saveID = "";
+	
 
 	
 	// Used for calculating the framerate.
@@ -119,6 +132,9 @@ public class GameController {
 		return currentState;
 	}
 
+	public Stage getStage() {
+		return stage;
+	}
 
 
 	/********************

@@ -1,12 +1,25 @@
 package states;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+
 import controllers.GameController;
 import entities.Player;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import je.visual.Vector2D;
 import main_package.Orbs2;
 import world.World;
@@ -31,6 +44,7 @@ public class WorldState extends GameState {
 
     // The player.
     Player player;
+    
 
 
 	/********************
@@ -76,7 +90,92 @@ public class WorldState extends GameState {
 		graphics.clearRect(0,0,Orbs2.WIDTH,Orbs2.HEIGHT);
 	}
 
-
+	
+	/** Handles saving the player data from the game. */
+	public void saveGame() {
+		// Check if the global variable for id is empty. If so, save a new file, otherise update.
+		// If there is already a save loaded, then just update.
+		if(GameController.saveID != "") {
+			
+			// Get the document that needs to be updated.
+			Document updating = GameController.collection.find(Filters.eq("_id",new ObjectId(GameController.saveID))).first();
+			
+			// Update the document.
+			GameController.collection.updateOne(
+					updating, 
+					Updates.combine( Updates.set("positionX", player.getPosition().X),
+									 Updates.set("positionY", player.getPosition().Y) )
+					);
+			
+			// Tell the user that the game was saved.
+			this.showIDDialog("Saved the game! Here is your save ID", 
+							  GameController.saveID);
+		} else {
+			
+			// Otherwise, save a new file.
+			Document data = new Document("positionX",player.getPosition().X)
+								 .append("positionY",player.getPosition().Y);
+			GameController.collection.insertOne(data);
+			
+			// Set the id for the entire game.
+			ObjectId o = data.getObjectId("_id");
+			GameController.saveID = o.toString();
+			
+			
+			// Tell the user their save id.
+			this.showIDDialog("Saved the game! Here is your save ID", 
+							o.toString());
+		}
+	}
+	
+	
+	/** Handles loading the game data from a string id. Takes all the data from the save document
+	 * and puts it into the game. */
+	public void loadGame(Document data) {
+		Object savedPosX = data.get("positionX");
+		Object savedPosY = data.get("positionY");
+		
+		Double posX = Double.parseDouble(savedPosX.toString());
+		Double posY = Double.parseDouble(savedPosY.toString());
+		
+		
+		
+		// Set player/world values based on save data.
+		player.getPosition().X = posX.floatValue();
+		player.getPosition().Y = posY.floatValue();
+	}
+	
+	
+	
+	/** Just a dialog box for showing the user their save id. */
+	private void showIDDialog(String t, String message) {
+		Stage dialog = new Stage();
+		dialog.setTitle("Save ID");
+		dialog.initOwner(gc.getStage());
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.initModality(Modality.WINDOW_MODAL);
+		
+		BorderPane dialogPane = new BorderPane();
+		
+		
+		Label title = new Label(t);
+		title.setTextAlignment(TextAlignment.CENTER);
+		
+		TextField idShower = new TextField(message);
+		idShower.setEditable(false);
+		idShower.setAlignment(Pos.CENTER);
+		
+		dialogPane.setTop(title);
+		dialogPane.setCenter(idShower);
+		Scene s = new Scene(dialogPane, 400, 100);
+		dialog.setScene(s);
+		dialog.show();
+	}
+	
+	
+	
+	
+	
 
 	/********************
 	*					*

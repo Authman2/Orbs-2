@@ -201,9 +201,6 @@ public class Player extends Entity {
 			}
 		}
 
-
-        /* DRAW COLLISION BOX */
-		this.worldState.getGraphics().strokeRect(collisionBox.getMinX(), collisionBox.getMinY(), size, size);
 	}
 
 	

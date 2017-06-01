@@ -1,20 +1,30 @@
 package states;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import com.mongodb.client.model.Filters;
+
 import controllers.GameController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import main_package.Orbs2;
 import views.PillButton;
 
@@ -29,7 +39,7 @@ public class MainMenuState extends GameState {
 	HBox titleArea;
 	VBox menuButtonsArea;
 	Label titleLabel;
-	PillButton startGameBtn, controlsBtn, exitBtn;
+	PillButton newGameBtn, loadGameBtn, controlsBtn, exitBtn;
 
 
 
@@ -46,7 +56,8 @@ public class MainMenuState extends GameState {
 		titleArea = new HBox();
 		menuButtonsArea = new VBox();
 		titleLabel = new Label("  Orbs \n 2");
-		startGameBtn = new PillButton("Start Game");
+		newGameBtn = new PillButton("New Game");
+		loadGameBtn = new PillButton("Load Game");
 		controlsBtn = new PillButton("Controls");
 		exitBtn = new PillButton("Exit");
 
@@ -64,13 +75,9 @@ public class MainMenuState extends GameState {
 
         // Menu Items
         MenuItem saveGame = new MenuItem("Save Game"),
-        		 loadGame = new MenuItem("Load Game"), 
         		 exitGame = new MenuItem("Quit Game");
 		saveGame.setOnAction(e -> {
-			System.out.println("Saved the game!");
-		});
-		loadGame.setOnAction(e -> {
-			System.out.println("Loading a game.");
+			( (WorldState) this.gc.getStates()[1] ).saveGame();
 		});
 		exitGame.setOnAction(e -> { System.exit(0); });
 
@@ -89,9 +96,82 @@ public class MainMenuState extends GameState {
 	*					*
 	*********************/
 
-	private void goToGame() {
+	private void newGame() {
 		gc.goTo(1);
  	}
+	
+	
+	/** Sets up a dialog box for entering the save id. */
+	private void loadGame() {
+		Stage dialog = new Stage();
+		dialog.setTitle("Load Game");
+		dialog.initOwner(gc.getStage());
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.initModality(Modality.WINDOW_MODAL);
+		
+		BorderPane dialogPane = new BorderPane();
+		
+		
+		Label title = new Label("Enter your save ID:");
+		title.setTextAlignment(TextAlignment.CENTER);
+		
+		TextField idField = new TextField();
+		idField.setMinWidth(400);
+		idField.setPromptText("Enter your save ID");
+		
+		
+		HBox hbox = new HBox();
+		Button closeBtn = new Button("Close");
+		closeBtn.setOnAction( e -> {
+			dialog.close();
+		});
+		
+		Button loadBtn = new Button("Load");
+		loadBtn.setOnAction(e -> {
+			this.loadGameFromID(idField.getText());
+			dialog.close();
+		});
+		hbox.setAlignment(Pos.CENTER);
+		hbox.getChildren().addAll(loadBtn, closeBtn);
+		
+		dialogPane.setTop(title);
+		dialogPane.setCenter(idField);
+		dialogPane.setBottom(hbox);
+		Scene s = new Scene(dialogPane, 400, 100);
+		dialog.setScene(s);
+		dialog.show();
+	}
+	
+	
+	/** Goes into the database looking for the game save data. */
+	private void loadGameFromID(String id) {
+		// Try loading the game save.
+		try {
+			
+			// Get the game save.
+			Document gameSave = GameController.collection.find(Filters.eq("_id",new ObjectId(id))).first();
+			GameController.saveID = id;
+			
+			// Load the game, then go to the world state.
+			( (WorldState) this.gc.getStates()[1] ).loadGame(gameSave);
+			gc.goTo(1);
+			
+		} catch(Exception err) {
+			Stage dialog = new Stage();
+			dialog.setTitle("Load Game");
+			dialog.initOwner(gc.getStage());
+	        dialog.initStyle(StageStyle.UTILITY);
+	        dialog.initModality(Modality.WINDOW_MODAL);
+	        
+	        Label label = new Label("Couldn't find a game save with that ID.");
+	        
+	        StackPane pane = new StackPane(label);
+	        Scene s = new Scene(pane, 400, 100);
+			dialog.setScene(s);
+			dialog.show();
+		}
+	}
+	
 	
 	private void goToControls() {
 		gc.goTo(2);
@@ -100,6 +180,8 @@ public class MainMenuState extends GameState {
 	private void exitApp() {
 		System.exit(0);
 	}
+	
+	
 
 
 
@@ -123,14 +205,17 @@ public class MainMenuState extends GameState {
 		titleLabel.setTextAlignment(TextAlignment.CENTER);
 		titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 40));
 		
-		startGameBtn.setMinSize(100, 40);
+		newGameBtn.setMinSize(100, 40);
+		loadGameBtn.setMinSize(100, 40);
 		controlsBtn.setMinSize(85, 40);
 		exitBtn.setMinSize(70, 40);
-		startGameBtn.getStyleClass().add("MainMenuButton");
+		newGameBtn.getStyleClass().add("MainMenuButton");
+		loadGameBtn.getStyleClass().add("MainMenuButton");
 		controlsBtn.getStyleClass().add("MainMenuButton");
 		exitBtn.getStyleClass().add("MainMenuButton");
 		
-		startGameBtn.setOnAction(e -> { goToGame(); });
+		newGameBtn.setOnAction(e -> { newGame(); });
+		loadGameBtn.setOnAction(e -> { loadGame(); });
 		controlsBtn.setOnAction(e -> { goToControls(); });
 		exitBtn.setOnAction(e-> { exitApp(); });
 		
@@ -140,10 +225,11 @@ public class MainMenuState extends GameState {
 		titleArea.getChildren().add(titleLabel);
 		
 		menuButtonsArea.setAlignment(Pos.CENTER);
-		VBox.setMargin(startGameBtn, new Insets(0,0,15,0));
+		VBox.setMargin(newGameBtn, new Insets(0,0,15,0));
+		VBox.setMargin(loadGameBtn, new Insets(0,0,15,0));
 		VBox.setMargin(controlsBtn, new Insets(0,0,15,0));
 		VBox.setMargin(exitBtn, new Insets(0,0,15,0));
-		menuButtonsArea.getChildren().addAll(startGameBtn, controlsBtn, exitBtn);
+		menuButtonsArea.getChildren().addAll(newGameBtn, loadGameBtn, controlsBtn, exitBtn);
 		
 		
 		// Set the holder properties.
