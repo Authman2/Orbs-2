@@ -28,6 +28,8 @@ public abstract class Entity {
 	public Direction direction;
 
 	protected Rectangle2D collisionBox;
+	
+	protected float definedX, definedY, definedWidth, definedHeight;
 
 	public static boolean drawCollisionBox = false;
 	
@@ -49,7 +51,11 @@ public abstract class Entity {
 		this.position = pos;
 		this.sprites = new Image[4];
 		this.direction = Direction.random();
-		this.collisionBox = new Rectangle2D(position.X*size, position.Y*size, size, size);
+		this.definedX = position.X*size;
+		this.definedY = position.Y*size;
+		this.definedWidth = size;
+		this.definedHeight = size;
+		this.collisionBox = new Rectangle2D(definedX, definedY, definedWidth, definedHeight);
 	}
 
 
@@ -84,15 +90,28 @@ public abstract class Entity {
 	}
 
 
+	/** Sets the sprites used for each direction. */
 	public void setSprites(Image[] sprites) {
 		this.sprites = sprites;
 		this.currentSprite = this.sprites[1];
 	}
 
 
+	/** Sets the move speed of the entity. */
 	public void setSpeed(float speed) {
 		this.speed = speed;
 	}
+	
+	
+	/** Defines the area that should be used for collision detection. */
+	public void defineCollisionArea(float x, float y, float w, float h) {
+		definedX = x;
+		definedY = y;
+		definedWidth = w;
+		definedHeight = h;
+		this.collisionBox = new Rectangle2D(definedX, definedY, definedWidth, definedHeight);
+	}
+	
 
 
 
@@ -142,8 +161,8 @@ public abstract class Entity {
 	public void update() {
 		move();
 		updateDirection();
-
-		this.collisionBox = new Rectangle2D(position.X*size, position.Y*size, size, size);
+		
+		this.collisionBox = new Rectangle2D(definedX, definedY, definedWidth, definedHeight);
 		
 		if(xVel == 0 && yVel == 0) { moving = false; } else { moving = true; }
 	}

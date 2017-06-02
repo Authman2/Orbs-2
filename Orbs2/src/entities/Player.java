@@ -166,7 +166,10 @@ public class Player extends Entity {
 	}
 
 	public void update() {
-		super.update();
+		super.update();		
+		
+		this.defineCollisionArea(position.X*size + 5, position.Y*size + 15, size - 10, size - 15);
+		
 		this.checkCollision();
 	}
 
@@ -203,7 +206,10 @@ public class Player extends Entity {
 
 		// DRAWING COLLISION BOX
 		if(drawCollisionBox) {
-			this.worldState.getGraphics().strokeRect(position.X*size, position.Y*size, size, size);
+			this.worldState.getGraphics().strokeRect(collisionBox.getMinX(), 
+													collisionBox.getMinY(), 
+													collisionBox.getWidth(), 
+													collisionBox.getHeight());
 		}
 	}
 

@@ -81,6 +81,7 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 		}
 	}
 
+	
 	// Handles actually making the tile map.
 	private fun makeMap(map: Array<Array<String>>?) {
 		for (i in map!!.indices) {
