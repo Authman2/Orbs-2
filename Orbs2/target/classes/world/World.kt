@@ -1,6 +1,5 @@
 package world
 
-import controllers.GameController
 import entities.Entity
 import entities.Player
 import javafx.scene.image.Image
@@ -9,6 +8,8 @@ import je.collections.ArrayConversion
 import je.files.ReadFile
 import je.visual.Vector2D
 import main_package.Assets
+import tiles.*
+import main_package.drawCollisionBoxes
 import main_package.printTilesRendered
 import states.WorldState
 import java.util.ArrayList
@@ -69,7 +70,7 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 		val reader = ReadFile(World::class.java.getResource("../resources/maps/${mapName}.txt").getFile())
 		try {
 			val s = reader.read().toString()
-			val arr = s.split("-").toTypedArray()
+			val arr = s.split(",").toTypedArray()
 			val map2D = ArrayConversion.OneToTwo(arr, this.mapSize)
 			
 			// Start making the tiles and the map.
@@ -85,21 +86,37 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 		for (i in map!!.indices) {
 			for (j in 0..map[0].size - 1) {
 				when (map[i][j]) {
-					"0" -> this.createTile(0, j.toFloat(), i.toFloat(), Assets.GRASS_1)
-					"20" -> this.createTile(20, j.toFloat(), i.toFloat(), Assets.TREE_TOP)
-					"40" -> this.createTile(40, j.toFloat(), i.toFloat(), Assets.TREE_BOTTOM)
-					else -> this.createTile(0, j.toFloat(), i.toFloat(), Assets.GRASS_1)
+					"1" -> tiles!!.add( GrassTile(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"22","68","108" -> tiles!!.add( WoodTile(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"3" -> tiles!!.add( Well(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"21" -> tiles!!.add( TreeTop(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"41" -> tiles!!.add( TreeBottom(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"47" -> tiles!!.add( HouseOne_TL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"67" -> tiles!!.add( HouseOne_L(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"87" -> tiles!!.add( HouseOne_BL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"107" -> tiles!!.add( HouseOne_BaseL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"110" -> tiles!!.add( HouseOne_Wall(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"112" -> tiles!!.add( HouseOne_DoorL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"113" -> tiles!!.add( HouseOne_DoorR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"49" -> tiles!!.add( HouseOne_TR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"69" -> tiles!!.add( HouseOne_R(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"89" -> tiles!!.add( HouseOne_BR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"90" -> tiles!!.add( HouseOne_Inner(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"92" -> tiles!!.add( HouseOne_DoorTL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"93" -> tiles!!.add( HouseOne_DoorTR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"109" -> tiles!!.add( HouseOne_BaseR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"23" -> tiles!!.add( BlueRug_TL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"24" -> tiles!!.add( BlueRug_TR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"43" -> tiles!!.add( BlueRug_BL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"44" -> tiles!!.add( BlueRug_BR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"48" -> tiles!!.add( HouseOne_Top(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					
+					else -> tiles!!.add( GrassTile(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 				}
 			}
 		}
 	}
 
-	// Creates a tile.
-	private fun createTile(type: Int, i: Float, j: Float, image: Image?) {
-		val tile = Tile(Vector2D(i, j), image, this.worldState)
-		tile.setType(type)
-		tiles!!.add(tile)
-	}
 
 	
 	/********************
@@ -164,6 +181,9 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 	fun debug(code: KeyCode) {
 		if(code == KeyCode.R) {
 			printTilesRendered()
+		}
+		if(code == KeyCode.D) {
+			drawCollisionBoxes()
 		}
 	}
 

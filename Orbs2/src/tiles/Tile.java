@@ -1,11 +1,9 @@
-package world;
+package tiles;
 
+import entities.Entity;
 import javafx.scene.image.Image;
-
 import je.visual.Vector2D;
-
 import states.WorldState;
-import entities.*;
 
 public class Tile extends Entity {
 
@@ -18,8 +16,6 @@ public class Tile extends Entity {
 	WorldState worldState;
 
 	boolean solid;
-
-	int type;
 
 
 
@@ -37,19 +33,6 @@ public class Tile extends Entity {
 	}
 
 
-	/** Determines whether or not this tile should be solid based on its type. */
-	private void determineSolidity() {
-        switch (type) {
-            case 0: solid = false; break;
-            case 20: solid = true; break;
-            case 40: solid = true; break;
-
-            default: solid = false; break;
-        }
-    }
-
-
-
 	/********************
 	 *					*
 	 *     SETTERS		*
@@ -61,11 +44,6 @@ public class Tile extends Entity {
 	    this.solid = b;
     }
 
-
-    /** Sets the type of this tile. */
-    public void setType(int t) {
-	    this.type = t;
-    }
     
     
     /********************
@@ -88,8 +66,6 @@ public class Tile extends Entity {
 
     public void initialize() {
         super.initialize();
-
-        this.determineSolidity();
     }
 
     public void update() {

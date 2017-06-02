@@ -108,7 +108,8 @@ public class WorldState extends GameState {
 					);
 			
 			// Tell the user that the game was saved.
-			this.showIDDialog("Saved the game! Here is your save ID", 
+			this.showIDDialog("Saved the game! Here is your save ID, keep it somewhere safe so you "
+							+ "can return to the same place next time you play.", 
 							  GameController.saveID);
 		} else {
 			
@@ -123,7 +124,8 @@ public class WorldState extends GameState {
 			
 			
 			// Tell the user their save id.
-			this.showIDDialog("Saved the game! Here is your save ID", 
+			this.showIDDialog("Saved the game! Here is your save ID, keep it somewhere safe so you "
+							+ "can return to the same place next time you play.", 
 							o.toString());
 		}
 	}
@@ -132,19 +134,14 @@ public class WorldState extends GameState {
 	/** Handles loading the game data from a string id. Takes all the data from the save document
 	 * and puts it into the game. */
 	public void loadGame(Document data) {
-		Object savedPosX = data.get("positionX");
-		Object savedPosY = data.get("positionY");
-		
-		Double posX = Double.parseDouble(savedPosX.toString());
-		Double posY = Double.parseDouble(savedPosY.toString());
-		
+		Double savedPosX = Double.parseDouble(data.get("positionX").toString());
+		Double savedPosY = Double.parseDouble(data.get("positionY").toString());
 		
 		
 		// Set player/world values based on save data.
-		player.getPosition().X = posX.floatValue();
-		player.getPosition().Y = posY.floatValue();
+		player.getPosition().X = savedPosX.floatValue();
+		player.getPosition().Y = savedPosY.floatValue();
 	}
-	
 	
 	
 	/** Just a dialog box for showing the user their save id. */
@@ -159,6 +156,7 @@ public class WorldState extends GameState {
 		
 		
 		Label title = new Label(t);
+		title.setWrapText(true);
 		title.setTextAlignment(TextAlignment.CENTER);
 		
 		TextField idShower = new TextField(message);

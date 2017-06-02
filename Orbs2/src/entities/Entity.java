@@ -29,6 +29,9 @@ public abstract class Entity {
 
 	protected Rectangle2D collisionBox;
 
+	public static boolean drawCollisionBox = false;
+	
+	
 
 	/********************
 	*					*
@@ -149,6 +152,9 @@ public abstract class Entity {
 		if(sprites != null) {
             this.worldState.getGraphics().drawImage(currentSprite, position.X * size, position.Y * size);
         }
+		if(drawCollisionBox) {
+			this.worldState.getGraphics().strokeRect(position.X*size, position.Y*size, size, size);
+		}
 	}
 
 } // End of class.

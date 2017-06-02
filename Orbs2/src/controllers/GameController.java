@@ -41,9 +41,9 @@ public class GameController {
 	
 	
 	// Game save stuff.
-	public static MongoClient mongoClient = new MongoClient();
-	public static MongoDatabase database = mongoClient.getDatabase("Orbs2");
-	public static MongoCollection<Document> collection = database.getCollection("GameSaves");
+	public static MongoClient mongoClient;
+	public static MongoDatabase database;
+	public static MongoCollection<Document> collection;
 	public static String saveID = "";
 	
 
@@ -63,6 +63,7 @@ public class GameController {
 
 	public GameController(Stage stage) {
 		this.stage = stage;
+		this.setupMongoClient();
 
 		// Initialize the assets.
 		assets = new Assets();
@@ -99,6 +100,17 @@ public class GameController {
 	}
 
 
+	/** Sets up the mongo db client so the user can save the game. */
+	private void setupMongoClient() {
+		try {
+			mongoClient = new MongoClient();
+			database = mongoClient.getDatabase("Orbs2");
+			collection = database.getCollection("GameSaves");
+		} catch(Exception err) {
+			System.out.println("Couldn't load MongoDB client. The game can be played, but cannot be saved.");
+		}
+	}
+	
 
 
 	/********************
