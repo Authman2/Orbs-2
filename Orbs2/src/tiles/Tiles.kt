@@ -5,6 +5,18 @@ import main_package.Assets
 import states.WorldState
 
 /**
+ EMPTY TILE
+*/
+class EmptyTile(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.EMPTY, ws) {
+	
+	init {
+		setSolid(false)
+	}
+	
+}
+
+
+/**
  GRASS TILE
 */
 class GrassTile(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.GRASS_1, ws) {
@@ -18,7 +30,7 @@ class GrassTile(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.GRASS_1, ws)
 /**
  WOOD TILE
 */
-class WoodTile(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WOOD_FLOOR, ws) {
+class WoodFloor(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WOOD_FLOOR, ws) {
 	
 	init {
 		setSolid(false)
@@ -105,6 +117,52 @@ class BlueRug_BR(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.BLUE_RUG_BR
 }
 
 
+/**
+ RED RUG TOP LEFT TILE
+*/
+class RedRug_TL(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.RED_RUG_TL, ws) {
+	
+	init {
+		setSolid(false)
+	}
+}
+
+
+/**
+ RED RUG BOTTOM LEFT TILE
+*/
+class RedRug_BL(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.RED_RUG_BL, ws) {
+	
+	init {
+		setSolid(false)
+	}
+}
+
+
+
+/**
+ RED RUG TOP RIGHT TILE
+*/
+class RedRug_TR(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.RED_RUG_TR, ws) {
+	
+	init {
+		setSolid(false)
+	}
+}
+
+
+
+/**
+ RED RUG BOTTOM RIGHT TILE
+*/
+class RedRug_BR(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.RED_RUG_BR, ws) {
+	
+	init {
+		setSolid(false)
+	}
+}
+
+
 
 /**
  HOUSE 1 TOP LEFT TILE
@@ -124,7 +182,9 @@ class HouseOne_L(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_1_L, 
 	
 	init {
 		setSolid(true)
+		defineCollisionArea(position.X*size, position.Y*size, size - 18, size)
 	}
+	
 }
 
 
@@ -135,7 +195,9 @@ class HouseOne_BL(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_1_BL
 	
 	init {
 		setSolid(true)
+		defineCollisionArea(position.X*size, position.Y*size + 8, size - 18, size - 8)
 	}
+	
 }
 
 
@@ -169,7 +231,9 @@ class HouseOne_R(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_1_R, 
 	
 	init {
 		setSolid(true)
+		defineCollisionArea(position.X*size + 18, position.Y*size, size - 18, size)
 	}
+	
 }
 
 
@@ -180,7 +244,9 @@ class HouseOne_BR(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_1_BR
 	
 	init {
 		setSolid(true)
+		defineCollisionArea(position.X*size + 18, position.Y*size + 8, size - 18, size - 8)
 	}
+	
 }
 
 
@@ -215,7 +281,9 @@ class HouseOne_Inner(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_1
 	
 	init {
 		setSolid(true)
+		defineCollisionArea(position.X*size, position.Y*size + 24, size, size - 24)
 	}
+	
 }
 
 
@@ -227,6 +295,7 @@ class HouseOne_Window(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_
 	init {
 		setSolid(true)
 	}
+	
 }
 
 
@@ -238,6 +307,7 @@ class HouseOne_Wall(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_1_
 	init {
 		setSolid(true)
 	}
+	
 }
 
 
@@ -261,6 +331,7 @@ class HouseOne_DoorR(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_1
 	init {
 		setSolid(true)
 	}
+	
 }
 
 
@@ -271,7 +342,9 @@ class HouseOne_DoorTL(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_
 	
 	init {
 		setSolid(true)
+		defineCollisionArea(position.X*size, position.Y*size + 24, size, size - 24)
 	}
+	
 }
 
 
@@ -282,5 +355,7 @@ class HouseOne_DoorTR(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_
 	
 	init {
 		setSolid(true)
+		defineCollisionArea(position.X*size, position.Y*size + 24, size, size - 24)
 	}
+	
 }

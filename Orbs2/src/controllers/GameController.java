@@ -2,6 +2,7 @@ package controllers;
 
 import org.bson.Document;
 
+import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -147,7 +148,7 @@ public class GameController {
 	public Stage getStage() {
 		return stage;
 	}
-
+	
 
 	/********************
 	*					*
@@ -178,7 +179,24 @@ public class GameController {
 		if(w == KeyCode.F) {
 			System.out.println("FPS: " + fps);
 		}
+		if(w == KeyCode.M) {
+			this.printDocuments(10);
+		}
 	}
 	
+	
+	/** Handles printing all of the game saves from the Mongo database. */
+	private void printDocuments(int limit) {
+		// The print block.
+		Block<Document> printBlock = new Block<Document>() {
+			public void apply(Document document) {
+				System.out.println(document.toJson());
+			}
+		};
+		
+		// Print each document.
+		System.out.println("ALL GAME SAVES IN MONGO DATABASE:");
+		collection.find().limit(limit).forEach(printBlock);
+	}
 
 } // End of class.

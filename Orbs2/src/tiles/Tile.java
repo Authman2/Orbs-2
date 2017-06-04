@@ -57,23 +57,4 @@ public class Tile extends Entity {
     }
 
 
-
-    /********************
-     *					*
-     *     ABSTRACT 	*
-     *					*
-     *********************/
-
-    public void initialize() {
-        super.initialize();
-    }
-
-    public void update() {
-        super.update();
-    }
-
-    public void draw() {
-        super.draw();
-    }
-
 } // End of class.

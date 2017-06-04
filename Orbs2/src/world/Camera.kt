@@ -23,10 +23,19 @@ class Camera(x: Float, y: Float) {
 	
 	/********************
 	*					*
-	*   INITIALIZATION	*
+	*      GETTERS		*
 	*					*
 	*********************/
 
+	/** Returns whether or not the camera is touching a certain entity. This means that the entity
+	 is within the camera view. */
+	public fun touching(ent: Entity): Boolean {
+		if( collisionBox.intersects( ent.renderBox ) ) {
+			return true;
+		}
+		return false;
+	}
+	
 	
 	
 	/********************

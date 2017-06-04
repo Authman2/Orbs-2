@@ -50,10 +50,10 @@ public class Player extends Entity {
 		// The walking animation.
 		Image[] up, down, left, right;
 
-		up = new Image[] { Assets.PLAYER_WALK_UP_1, Assets.PLAYER_UP, Assets.PLAYER_WALK_UP_2 };
-		down = new Image[] { Assets.PLAYER_WALK_DOWN_1, Assets.PLAYER_DOWN, Assets.PLAYER_WALK_DOWN_2 };
-		left = new Image[] { Assets.PLAYER_WALK_LEFT_1, Assets.PLAYER_LEFT, Assets.PLAYER_WALK_LEFT_2 };
-		right = new Image[] { Assets.PLAYER_WALK_RIGHT_1, Assets.PLAYER_RIGHT, Assets.PLAYER_WALK_RIGHT_2 };
+		up = new Image[] { Assets.PLAYER_WALK_UP_1, Assets.PLAYER_WALK_UP_2, Assets.PLAYER_UP };
+		down = new Image[] { Assets.PLAYER_WALK_DOWN_1, Assets.PLAYER_WALK_DOWN_2, Assets.PLAYER_DOWN };
+		left = new Image[] { Assets.PLAYER_WALK_LEFT_1, Assets.PLAYER_WALK_LEFT_2, Assets.PLAYER_LEFT };
+		right = new Image[] { Assets.PLAYER_WALK_RIGHT_1, Assets.PLAYER_WALK_RIGHT_2, Assets.PLAYER_RIGHT };
 	
 		this.walkUp = new Animator(up);
 		this.walkDown = new Animator(down);
@@ -126,9 +126,11 @@ public class Player extends Entity {
 	
 	/** Checks for collisions with solid objects */
 	private void checkCollision() {
-		if(worldState.getCurrentWorld().getTiles()
+		if(worldState.getCurrentWorld().getTilesL2()
 			.stream()
-			.anyMatch( tile -> tile.isSolid() && tile.collidingWith(this)))
+			.anyMatch( tile -> worldState.getCurrentWorld().getCamera().touching(tile)
+								&& tile.isSolid() 
+								&& tile.collidingWith(this)))
 		{
 			xVel = 0;
 			yVel = 0;
@@ -162,12 +164,13 @@ public class Player extends Entity {
 
 	public void initialize() {
 		super.initialize();
-		this.setSpeed(0.09f);
+		this.setSpeed(0.05f); // 0.05f should be the default speed. It works nicely at 60fps.
 	}
 
 	public void update() {
-		super.update();		
+		super.update();
 		
+		// This needs to be in update() for the player only because the player is actually moving.
 		this.defineCollisionArea(position.X*size + 5, position.Y*size + 15, size - 10, size - 15);
 		
 		this.checkCollision();

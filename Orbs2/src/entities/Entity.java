@@ -27,8 +27,7 @@ public abstract class Entity {
 
 	public Direction direction;
 
-	protected Rectangle2D collisionBox;
-	
+	protected Rectangle2D collisionBox, renderBox;
 	protected float definedX, definedY, definedWidth, definedHeight;
 
 	public static boolean drawCollisionBox = false;
@@ -55,6 +54,7 @@ public abstract class Entity {
 		this.definedY = position.Y*size;
 		this.definedWidth = size;
 		this.definedHeight = size;
+		this.renderBox = new Rectangle2D(position.X*size, position.Y*size, size, size);
 		this.collisionBox = new Rectangle2D(definedX, definedY, definedWidth, definedHeight);
 	}
 
@@ -131,6 +131,12 @@ public abstract class Entity {
 	public Rectangle2D getCollisionBox() {
 	    return collisionBox;
     }
+	
+	
+	/** Returns the rendering box of this entity. Not to be confused with its collision box. */
+	public Rectangle2D getRenderBox() {
+		return renderBox;
+	}
 
 
     /** Returns whether or not this entity is colliding with another. */
@@ -162,8 +168,6 @@ public abstract class Entity {
 		move();
 		updateDirection();
 		
-		this.collisionBox = new Rectangle2D(definedX, definedY, definedWidth, definedHeight);
-		
 		if(xVel == 0 && yVel == 0) { moving = false; } else { moving = true; }
 	}
 
@@ -172,7 +176,10 @@ public abstract class Entity {
             this.worldState.getGraphics().drawImage(currentSprite, position.X * size, position.Y * size);
         }
 		if(drawCollisionBox) {
-			this.worldState.getGraphics().strokeRect(position.X*size, position.Y*size, size, size);
+			this.worldState.getGraphics().strokeRect(collisionBox.getMinX(), 
+													collisionBox.getMinY(), 
+													collisionBox.getWidth(), 
+													collisionBox.getHeight());
 		}
 	}
 
