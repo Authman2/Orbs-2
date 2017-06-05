@@ -13,6 +13,7 @@ import javafx.scene.input.KeyCode
 import je.collections.ArrayConversion
 import je.files.ReadFile
 import je.visual.Vector2D
+import main_package.Orbs2
 import main_package.drawCollisionBoxes
 import main_package.printTilesRendered
 import states.WorldState
@@ -46,6 +47,7 @@ import tiles.TreeTop
 import tiles.Well
 import tiles.WoodFloor
 import java.util.ArrayList
+import java.io.*
 
 
 public open class World(player: Player?, ws: WorldState?, mapName: String?, size: Int) {
@@ -102,26 +104,40 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 	
 	// Creates the matrix of id's for the map.
 	private fun configureMap() {
-		var reader = ReadFile(World::class.java.getResource("../resources/maps/${mapName}_L1.txt").getFile())
-		try {
-			val s = reader.read().toString()
-			val arr = s.split(",").toTypedArray()
-			val map2D = ArrayConversion.OneToTwo(arr, this.mapSize)
-			
-			// Start making the tiles and the map.
-			this.tilesL1 = ArrayList<Tile>()
-			this.makeMap(map2D, tilesL1!!)
-			
-			reader = ReadFile(World::class.java.getResource("../resources/maps/${mapName}_L2.txt").getFile())
-			val s2 = reader.read().toString()
-			val arr2 = s2.split(",").toTypedArray()
-			val map2D2 = ArrayConversion.OneToTwo(arr2, this.mapSize)
-			
-			this.tilesL2 = ArrayList<Tile>()
-			this.makeMap(map2D2, tilesL2!!)
-		} catch (er: Exception) {
-			er.printStackTrace()
-		}
+		// Make the first layer of the map
+		var input = World::class.java.getResourceAsStream("/resources/maps/${mapName}_L1.txt")
+		var reader = BufferedReader(InputStreamReader(input));
+		var text = ""
+		if (input != null) {
+			var str = reader.readLine()                           
+            while (str != null) {    
+                text += str
+                try { str = reader.readLine() } catch(err: Exception) { break; }
+            }
+            reader.close();  
+        }
+        val arr = text.split(",").toTypedArray()
+        val map2D = ArrayConversion.OneToTwo(arr, this.mapSize)
+        this.tilesL1 = ArrayList<Tile>()
+        this.makeMap(map2D, tilesL1!!)
+
+
+        // Make the second layer of the map
+        input = World::class.java.getResourceAsStream("/resources/maps/${mapName}_L2.txt")
+		reader = BufferedReader(InputStreamReader(input));
+		text = ""
+		if (input != null) {
+			var str = reader.readLine()                           
+            while (str != null) {    
+                text += str
+                try { str = reader.readLine() } catch(err: Exception) { break; }
+            }
+            reader.close();  
+        }
+        val arr2 = text.split(",").toTypedArray()
+        val map2D2 = ArrayConversion.OneToTwo(arr2, this.mapSize)
+        this.tilesL2 = ArrayList<Tile>()
+        this.makeMap(map2D2, tilesL2!!)
 	}
 
 	
