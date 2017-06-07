@@ -1,5 +1,3 @@
-package tiles
-
 import je.visual.Vector2D
 import main_package.Assets
 import states.WorldState

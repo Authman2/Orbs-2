@@ -1,5 +1,12 @@
 package world
 
+import HouseOne_ConcaveCBL
+import HouseOne_ConcaveSideL
+import HouseOne_InnerCR
+import HouseOne_InnerSL
+import HouseOne_InnerSTL
+import HouseOne_InnerTop
+import HouseOne_InnerVerticalL
 import entities.Entity
 import entities.Player
 import javafx.scene.input.KeyCode
@@ -9,12 +16,38 @@ import je.visual.Vector2D
 import main_package.Orbs2
 import main_package.drawCollisionBoxes
 import main_package.printTilesRendered
-import main_package.printTasks
 import states.WorldState
-import tiles.*
+import tiles.BlueRug_BL
+import tiles.BlueRug_BR
+import tiles.BlueRug_TL
+import tiles.BlueRug_TR
+import tiles.GrassTile
+import tiles.HouseOne_BL
+import tiles.HouseOne_BR
+import tiles.HouseOne_BaseL
+import tiles.HouseOne_BaseR
+import tiles.HouseOne_DoorL
+import tiles.HouseOne_DoorR
+import tiles.HouseOne_DoorTL
+import tiles.HouseOne_DoorTR
+import tiles.HouseOne_Inner
+import tiles.HouseOne_L
+import tiles.HouseOne_R
+import tiles.HouseOne_TL
+import tiles.HouseOne_TR
+import tiles.HouseOne_Top
+import tiles.HouseOne_Wall
+import tiles.RedRug_BL
+import tiles.RedRug_BR
+import tiles.RedRug_TL
+import tiles.RedRug_TR
+import tiles.Tile
+import tiles.TreeBottom
+import tiles.TreeTop
+import tiles.Well
+import tiles.WoodFloor
 import java.util.ArrayList
 import java.io.*
-import tasks.TaskSystem
 
 
 public open class World(player: Player?, ws: WorldState?, mapName: String?, size: Int) {
@@ -229,9 +262,6 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 		}
 		if(code == KeyCode.D) {
 			drawCollisionBoxes()
-		}
-		if(code == KeyCode.T) {
-			printTasks()
 		}
 	}
 

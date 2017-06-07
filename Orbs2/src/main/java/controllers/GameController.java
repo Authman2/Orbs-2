@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.function.Function;
+
 import org.bson.Document;
 
 import com.mongodb.Block;
@@ -105,11 +107,12 @@ public class GameController {
 	private void setupMongoClient() {
 		try {
 			mongoClient = new MongoClient();
-			database = mongoClient.getDatabase("Orbs2");
-			collection = database.getCollection("GameSaves");
 		} catch(Exception err) {
 			System.out.println("Couldn't load MongoDB client. The game can be played, but cannot be saved.");
 		}
+
+		database = mongoClient.getDatabase("Orbs2");
+		collection = database.getCollection("GameSaves");
 	}
 	
 

@@ -27,10 +27,6 @@ public fun drawCollisionBoxes() {
 /** Prints out all of the current tasks in the task system. */
 public fun printTasks() {
 	TaskSystem.tasks.forEach { e ->
-		println("""
-		TASK: ${e.getTaskDescription()}
-		----> Started: ${e.isStarted()}
-		----> Completed: ${e.isCompleted()}
-		""")
+		println("TASK: ${e.getDescription()}")
 	};
 }
