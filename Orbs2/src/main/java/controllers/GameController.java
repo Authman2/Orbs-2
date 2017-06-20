@@ -13,10 +13,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import main_package.Assets;
-import states.ControlsState;
-import states.GameState;
-import states.MainMenuState;
-import states.WorldState;
+import states.*;
 
 /*
 * The GameController is the main controller used to organize all other
@@ -73,10 +70,11 @@ public class GameController {
 		assets.initialize();
 
 		// Setup the game states.
-		states = new GameState[3];
+		states = new GameState[4];
 		states[0] = new MainMenuState(this, stage);
 		states[1] = new WorldState(this, stage);
 		states[2] = new ControlsState(this, stage);
+		states[3] = new ViewTasksState(this, stage);
 
 		currentState = states[0];
 
@@ -109,6 +107,7 @@ public class GameController {
 			mongoClient = new MongoClient();
 		} catch(Exception err) {
 			System.out.println("Couldn't load MongoDB client. The game can be played, but cannot be saved.");
+			return;
 		}
 
 		database = mongoClient.getDatabase("Orbs2");

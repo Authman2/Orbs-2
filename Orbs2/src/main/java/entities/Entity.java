@@ -86,7 +86,9 @@ public abstract class Entity {
 
 	/** Changes the direction of the entity manually. */
 	public void changeDirection(Direction dir) {
-		this.direction = dir;
+		if(!worldState.getMenu().isOpen()) {
+			this.direction = dir;
+		}
 	}
 
 

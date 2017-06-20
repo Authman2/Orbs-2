@@ -23,6 +23,7 @@ import javafx.stage.StageStyle;
 import je.visual.Vector2D;
 import main_package.Orbs2;
 import world.World;
+import hud.*;
 
 
 public class WorldState extends GameState {
@@ -45,6 +46,9 @@ public class WorldState extends GameState {
     // The player.
     Player player;
     
+    // The menu that lets the player do different things in the game.
+    Menu menu;
+
 
 
 	/********************
@@ -55,13 +59,20 @@ public class WorldState extends GameState {
 
 	public WorldState(GameController gc, Stage stage) {
 		super(gc, stage);
-
 		canvas = new Canvas(Orbs2.WIDTH, Orbs2.HEIGHT);
 		graphics = canvas.getGraphicsContext2D();
 
+
+		menu = new Menu(graphics);
         player = new Player(new Vector2D(10,8), this);
 
 		setupWorlds();
+
+
+		// IMPORTANT: Scene Setup
+		root.getChildren().add(canvas);
+		scene = new Scene(root, Orbs2.WIDTH, Orbs2.HEIGHT);
+		handleKeyActions();
 	}
 
 
@@ -171,46 +182,7 @@ public class WorldState extends GameState {
 	}
 	
 	
-	
-	
-	
-
-	/********************
-	*					*
-	*	   GETTERS		*
-	*					*
-	*********************/
-
-	public World getCurrentWorld() {
-		return currentWorld;
-	}
-
-
-	public GraphicsContext getGraphics() {
-		return graphics;
-	}
-
-
-	public Player getPlayer() { return player; }
-
-
-
-
-	/********************
-	*					*
-	*	   ABSTRACT		*
-	*					*
-	*********************/
-
-	public void initialize() {
-		if(currentWorld != null) currentWorld.initialize();
-
-
-		// IMPORTANT: Scene Setup
-		root.getChildren().add(canvas);
-		scene = new Scene(root, Orbs2.WIDTH, Orbs2.HEIGHT);
-
-
+	private void handleKeyActions() {
 		// Key Input
 		scene.setOnKeyPressed(e -> {
 			KeyCode w = e.getCode();
@@ -222,21 +194,79 @@ public class WorldState extends GameState {
 				currentWorld.debug(w);
 				gc.debug(w);
 			}
+
+			// View Tasks
+			if(w == KeyCode.M) {
+				this.menu.toggle();
+			}
 		});
 		scene.setOnKeyReleased(e -> {
 			KeyCode w = e.getCode();
 			player.releaseKeyActions(w);
 		});
+
+		scene.setOnMouseClicked(e -> {
+			menu.mouseClickEvents(e);
+		});
+		scene.setOnMouseMoved(e -> {
+			menu.mouseMoveEvents(e);
+		});
+		scene.setOnMousePressed(e -> {
+			menu.mousePressedEvents(e);
+		});
+		scene.setOnMouseReleased(e -> {
+			menu.mouseReleasedEvents(e);
+		});
+	}
+	
+	
+
+	/********************
+	*					*
+	*	   GETTERS		*
+	*					*
+	*********************/
+
+	public World getCurrentWorld() { return currentWorld; }
+
+
+	public GraphicsContext getGraphics() { return graphics; }
+
+
+	public Player getPlayer() { return player; }
+
+
+	public Menu getMenu() { return menu; }
+
+
+
+	/********************
+	*					*
+	*	   ABSTRACT		*
+	*					*
+	*********************/
+
+	public void initialize() {
+		if(currentWorld != null) currentWorld.initialize();
+		if(menu != null) menu.initialize();
+		
 	}
 
 	public void update() {
-		if(currentWorld != null) currentWorld.update();
+		if(menu != null) {
+			if(menu.isOpen()) {
+				menu.update();
+			} else {
+				if(currentWorld != null) currentWorld.update();
+			}
+		}
 	}
 
 	public void draw() {
 		clear();
 
 		if(currentWorld != null) currentWorld.draw();
+		if(menu != null) menu.draw();
 	}
 
 } // End of class.

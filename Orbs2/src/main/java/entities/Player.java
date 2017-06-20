@@ -6,6 +6,7 @@ import je.visual.Vector2D;
 import main_package.Animator;
 import main_package.Assets;
 import states.WorldState;
+import tasks.TaskSystem;
 
 public class Player extends Entity {
 
@@ -167,6 +168,8 @@ public class Player extends Entity {
 	public void initialize() {
 		super.initialize();
 		this.setSpeed(0.05f); // 0.05f should be the default speed. It works nicely at 60fps.
+
+		System.out.println( TaskSystem.getTask("CHARGE_ORBS").toString() );
 	}
 
 	public void update() {

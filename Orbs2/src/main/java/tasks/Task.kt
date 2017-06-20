@@ -1,6 +1,7 @@
 package tasks;
 
-public class Task(var description: String, 
+public class Task(var description: String,
+                  var id: String,
                   var dependsOnTask: Task? = null,
                   var completion: (()->Unit)? = null ) {
 
@@ -53,6 +54,21 @@ public class Task(var description: String,
     
     /** Returns the description of the task. */
     public fun getTaskDescription(): String = description
+
+
+    /** Returns the ID of the task. */
+    public fun getID(): String = id
+
+
+    /** Returns a string description of this task. */
+    override public fun toString(): String {
+        return """Description: ${getTaskDescription()}
+        Started: ${isStarted()}
+        Completed: ${isCompleted()}
+        Short Name: ${getID()}
+        """;
+    }
+
 
 
 

@@ -14,8 +14,36 @@ public class TaskSystem() {
         
         @JvmStatic
         public var tasks: ArrayList<Task> = arrayListOf( 
-            Task(description = "Speak to the scientist in his laboratory.").start()
-         );
+            Task(id = "SPEAK_TO_SCIENTIST", description = "Speak to the scientist in his laboratory.").start(),
+            Task(id = "CHARGE_ORBS", description = "Take all 10 orbs to their charging stations so that you can return them to the scientist."),
+            Task(id = "", description = "Bring a bucket of water to the eldery woman."),
+            Task(id = "", description = "Buy a rope so you can help the little boy out of the well."),
+            Task(id = "", description = "Find the missing dog and bring it back to the dog park."),
+            Task(id = "", description = "Take swimming lessons at the recreational facility."),
+            Task(id = "", description = "Find the key required to enter the back room of the museum."),
+            Task(id = "", description = "Bring a batch of cookies to the desperate mother for her daughter's birthday party."),
+            Task(id = "", description = "Find the switch in the power plant to help the worker fix the town's electrical problem."),
+            Task(id = "", description = "Figure out what happened to the man who was supposed to transport the chopped wood in his pickup truck."),
+            Task(id = "", description = "Bring some tools to the man with the broken down truck."),
+            Task(id = "", description = "Distract the townspeople while the owner of the repair shop cleans up an oil issue."),
+            Task(id = "", description = "Deliver the message back to the lumberjack."),
+            Task(id = "", description = "Find a spacesuit so you can enter the space station."),
+            Task(id = "", description = "Find the code to the safe somewhere in the retired astronaut's house."),
+            Task(id = "", description = "Rent a horse so you can enter the horse race."),
+            Task(id = "", description = "Bring some bales of hay to the horses on the ranch."),
+            Task(id = "", description = "See if you can find someone with a powerful drill to help the miners create their tunnel."),
+            Task(id = "", description = "Convince the powerful CEO's employee to come back to work."),
+            Task(id = "", description = "Follow the directions on the note you found in the empty house."),
+            Task(id = "", description = "Figure out what's going on at the department store."),
+            Task(id = "", description = "Try to see if anyone knows the secret code at the department store."),
+            Task(id = "", description = "Buy a gift for the elderly man's grandson."),
+            Task(id = "", description = "Get to the bottom of the crime that is taking place on the roof of the departmnet store."),
+            Task(id = "", description = "Help the chef with his dinner! Bring him some apples."),
+            Task(id = "", description = "Help the chef with his dinner! Bring him some corn."),
+            Task(id = "", description = "Help the chef with his dinner! Bring him some lettuce."),
+            Task(id = "", description = "Help the chef with his dinner! Bring him some turkey."),
+            Task(id = "", description = "Help the chef with his dinner! Bring him some bread.")
+        );
 
 
         /********************
@@ -31,6 +59,12 @@ public class TaskSystem() {
         }
 
 
+        @JvmStatic
+        public fun getTask(id: String): Task? {
+            val task = tasks.filter { it.getID() == id }.get(0);
+            return task
+        }
+
 
 
         /********************
@@ -41,8 +75,8 @@ public class TaskSystem() {
 
         /** Adds a new task to the global task system. */
         @JvmStatic
-        public fun addTask(desc: String, depends: Task? = null, comp: (()->Unit)? = null) {
-            val task = Task(desc, depends, comp)
+        public fun addTask(desc: String, id: String, depends: Task? = null, comp: (()->Unit)? = null) {
+            val task = Task(desc, id, depends, comp)
             tasks.add(task);
         }
     

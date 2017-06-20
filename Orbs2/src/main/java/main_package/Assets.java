@@ -1,13 +1,21 @@
 package main_package;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
+import java.io.*;
 import java.io.File;
 import java.net.URL;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+
+import java.lang.reflect.Field;
 
 public class Assets {
 
@@ -44,11 +52,17 @@ public class Assets {
 	
 	public Assets() {
 		try {
+			// Load the sprite sheets.
 			URL res1 = getClass().getResource("/resources/spritesheet.png");
 			URL res2 = getClass().getResource("/resources/people.png");
 			
 			spritesheet = ImageIO.read( res1 );
 			playerSpritesheet = ImageIO.read( res2 );
+
+
+			// Load the text file that has all of their locations on the
+			// spritesheet.
+			
 		} 
 		catch (Exception e) {
 		    e.printStackTrace();
@@ -58,6 +72,43 @@ public class Assets {
 	
 	
 	public void initialize() {
+		InputStream tileLocs = getClass().getResourceAsStream("/resources/maps/TileLocations.txt");
+		BufferedReader reader = null;
+
+		// All of the fields in this class.
+		ArrayList<Field> fields = new ArrayList<>(Arrays.asList(Assets.class.getFields()));
+
+		
+		// Load the text file.
+		try {
+			reader = new BufferedReader(new InputStreamReader(tileLocs));
+
+			String str = reader.readLine();
+			while(str != null) {
+				String[] parts = str.split(" ");
+        	
+	        	String id = parts[0];
+	        	int x = Integer.parseInt(parts[1]);
+	        	int y = Integer.parseInt(parts[2]);
+	        	int w = Integer.parseInt(parts[3]);
+	        	int h = Integer.parseInt(parts[4]);
+
+		    	// fields.stream().sorted().forEach(e -> {
+		    	// 	System.out.println(e);
+		    	// });
+				
+
+
+
+				// Restart the loop.
+				try { str = reader.readLine(); } catch(Exception err) { err.printStackTrace(); break; }
+			}
+		} catch(Exception err) {
+			err.printStackTrace();
+		}
+
+
+
 		/* People */
 		PLAYER_UP = getSprite(playerSpritesheet, 32, 0, 32, 32);
 		PLAYER_DOWN = getSprite(playerSpritesheet, 0, 0, 32, 32);

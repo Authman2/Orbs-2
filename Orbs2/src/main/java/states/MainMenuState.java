@@ -62,6 +62,7 @@ public class MainMenuState extends GameState {
 		exitBtn = new PillButton("Exit");
 
 		this.setupMenu();
+		this.configureLayout();
 	}
 
 
@@ -88,6 +89,50 @@ public class MainMenuState extends GameState {
         
         root.getChildren().addAll(menuBar);
 	}
+
+	private void configureLayout() {
+		// Set element properties.
+		titleLabel.setTextAlignment(TextAlignment.CENTER);
+		titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 40));
+		
+		newGameBtn.setMinSize(100, 40);
+		loadGameBtn.setMinSize(100, 40);
+		controlsBtn.setMinSize(85, 40);
+		exitBtn.setMinSize(70, 40);
+		newGameBtn.getStyleClass().add("MainMenuButton");
+		loadGameBtn.getStyleClass().add("MainMenuButton");
+		controlsBtn.getStyleClass().add("MainMenuButton");
+		exitBtn.getStyleClass().add("MainMenuButton");
+		
+		newGameBtn.setOnAction(e -> { newGame(); });
+		loadGameBtn.setOnAction(e -> { loadGame(); });
+		controlsBtn.setOnAction(e -> { goToControls(); });
+		exitBtn.setOnAction(e-> { exitApp(); });
+		
+		// Add everything.
+		titleArea.setAlignment(Pos.CENTER);
+		HBox.setMargin(titleLabel, new Insets(30,0,0,0));
+		titleArea.getChildren().add(titleLabel);
+		
+		menuButtonsArea.setAlignment(Pos.CENTER);
+		VBox.setMargin(newGameBtn, new Insets(0,0,15,0));
+		VBox.setMargin(loadGameBtn, new Insets(0,0,15,0));
+		VBox.setMargin(controlsBtn, new Insets(0,0,15,0));
+		VBox.setMargin(exitBtn, new Insets(0,0,15,0));
+		menuButtonsArea.getChildren().addAll(newGameBtn, loadGameBtn, controlsBtn, exitBtn);
+		
+		
+		// Set the holder properties.
+		BorderPane holder = new BorderPane();
+		holder.setTop(titleArea);
+		holder.setCenter(menuButtonsArea);
+
+
+		// IMPORTANT: Scene Setup
+		root.getChildren().addAll(holder);
+		scene = new Scene(root, Orbs2.WIDTH, Orbs2.HEIGHT);
+	}
+
 
 
 	/********************
@@ -201,46 +246,7 @@ public class MainMenuState extends GameState {
 	*********************/
 
 	public void initialize() {
-		// Set element properties.
-		titleLabel.setTextAlignment(TextAlignment.CENTER);
-		titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 40));
 		
-		newGameBtn.setMinSize(100, 40);
-		loadGameBtn.setMinSize(100, 40);
-		controlsBtn.setMinSize(85, 40);
-		exitBtn.setMinSize(70, 40);
-		newGameBtn.getStyleClass().add("MainMenuButton");
-		loadGameBtn.getStyleClass().add("MainMenuButton");
-		controlsBtn.getStyleClass().add("MainMenuButton");
-		exitBtn.getStyleClass().add("MainMenuButton");
-		
-		newGameBtn.setOnAction(e -> { newGame(); });
-		loadGameBtn.setOnAction(e -> { loadGame(); });
-		controlsBtn.setOnAction(e -> { goToControls(); });
-		exitBtn.setOnAction(e-> { exitApp(); });
-		
-		// Add everything.
-		titleArea.setAlignment(Pos.CENTER);
-		HBox.setMargin(titleLabel, new Insets(30,0,0,0));
-		titleArea.getChildren().add(titleLabel);
-		
-		menuButtonsArea.setAlignment(Pos.CENTER);
-		VBox.setMargin(newGameBtn, new Insets(0,0,15,0));
-		VBox.setMargin(loadGameBtn, new Insets(0,0,15,0));
-		VBox.setMargin(controlsBtn, new Insets(0,0,15,0));
-		VBox.setMargin(exitBtn, new Insets(0,0,15,0));
-		menuButtonsArea.getChildren().addAll(newGameBtn, loadGameBtn, controlsBtn, exitBtn);
-		
-		
-		// Set the holder properties.
-		BorderPane holder = new BorderPane();
-		holder.setTop(titleArea);
-		holder.setCenter(menuButtonsArea);
-
-
-		// IMPORTANT: Scene Setup
-		root.getChildren().addAll(holder);
-		scene = new Scene(root, Orbs2.WIDTH, Orbs2.HEIGHT);
 	}
 
 	public void update() {
