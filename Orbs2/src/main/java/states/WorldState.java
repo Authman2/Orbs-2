@@ -63,7 +63,7 @@ public class WorldState extends GameState {
 		graphics = canvas.getGraphicsContext2D();
 
 
-		menu = new Menu(graphics);
+		menu = new Menu(gc, graphics);
         player = new Player(new Vector2D(10,8), this);
 
 		setupWorlds();

@@ -7,6 +7,8 @@ import javafx.scene.input.MouseEvent;
 import je.visual.Vector2D;
 
 import main_package.*;
+import controllers.*;
+import states.*;
 
 public class Menu {
 	private final float padding = 20;
@@ -41,20 +43,21 @@ public class Menu {
 	*					*
 	*********************/
 
-	public Menu(GraphicsContext g) {
+	public Menu(GameController gc, GraphicsContext g) {
 		this.graphics = g;
 		this.open = false;
 		this.width = 200;
 		this.height = 200;
 		this.position = new Vector2D(Orbs2.WIDTH - width - padding, 10 + padding);
 
-		this.menuItems = new MenuItem[3];
+		this.menuItems = new MenuItem[4];
 		menuItems[0] = new MenuItem("View Tasks", this, g);
 		menuItems[1] = new MenuItem("Inventory", this, g);
 		menuItems[2] = new MenuItem("Save Game", this, g);
+		menuItems[3] = new MenuItem("Close", this, g);
 
 		menuItems[0].setClickAction(e -> {
-			System.out.println("Tasks");
+			gc.goTo(3);
 			return null;
 		});
 		menuItems[1].setClickAction(e -> {
@@ -62,7 +65,11 @@ public class Menu {
 			return null;
 		});
 		menuItems[2].setClickAction(e -> {
-			System.out.println("Save");
+			( (WorldState) gc.getStates()[1] ).saveGame();
+			return null;
+		});
+		menuItems[3].setClickAction(e -> {
+			this.toggle();
 			return null;
 		});
 

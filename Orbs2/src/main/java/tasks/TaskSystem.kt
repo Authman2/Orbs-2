@@ -66,6 +66,9 @@ public class TaskSystem() {
         }
 
 
+        @JvmStatic
+        public fun getAllTasks(): ArrayList<Task> = tasks
+
 
         /********************
         *					*
