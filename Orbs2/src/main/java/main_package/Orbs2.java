@@ -24,7 +24,7 @@ public class Orbs2 extends Application {
 
         // Setup the scene.
         stage.setOnCloseRequest(e-> {
-            GameController.mongoClient.close();
+            
         });
         stage.setScene(gc.getCurrentState().getScene());
 		stage.setTitle("Orbs");

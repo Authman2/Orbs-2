@@ -1,11 +1,5 @@
 package states;
 
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
-
 import controllers.GameController;
 import entities.Player;
 import javafx.geometry.Pos;
@@ -64,7 +58,7 @@ public class WorldState extends GameState {
 
 
 		menu = new Menu(gc, graphics);
-        player = new Player(new Vector2D(10,8), this);
+        player = new Player(new Vector2D(15,8), this);
 
 		setupWorlds();
 
@@ -104,54 +98,14 @@ public class WorldState extends GameState {
 	
 	/** Handles saving the player data from the game. */
 	public void saveGame() {
-		// Check if the global variable for id is empty. If so, save a new file, otherise update.
-		// If there is already a save loaded, then just update.
-		if(GameController.saveID != "") {
-			
-			// Get the document that needs to be updated.
-			Document updating = GameController.collection.find(Filters.eq("_id",new ObjectId(GameController.saveID))).first();
-			
-			// Update the document.
-			GameController.collection.updateOne(
-					updating, 
-					Updates.combine( Updates.set("positionX", player.getPosition().X),
-									 Updates.set("positionY", player.getPosition().Y) )
-					);
-			
-			// Tell the user that the game was saved.
-			this.showIDDialog("Saved the game! Here is your save ID, keep it somewhere safe so you "
-							+ "can return to the same place next time you play.", 
-							  GameController.saveID);
-		} else {
-			
-			// Otherwise, save a new file.
-			Document data = new Document("positionX",player.getPosition().X)
-								 .append("positionY",player.getPosition().Y);
-			GameController.collection.insertOne(data);
-			
-			// Set the id for the entire game.
-			ObjectId o = data.getObjectId("_id");
-			GameController.saveID = o.toString();
-			
-			
-			// Tell the user their save id.
-			this.showIDDialog("Saved the game! Here is your save ID, keep it somewhere safe so you "
-							+ "can return to the same place next time you play.", 
-							o.toString());
-		}
+		
 	}
 	
 	
 	/** Handles loading the game data from a string id. Takes all the data from the save document
 	 * and puts it into the game. */
-	public void loadGame(Document data) {
-		Double savedPosX = Double.parseDouble(data.get("positionX").toString());
-		Double savedPosY = Double.parseDouble(data.get("positionY").toString());
+	public void loadGame() {
 		
-		
-		// Set player/world values based on save data.
-		player.getPosition().X = savedPosX.floatValue();
-		player.getPosition().Y = savedPosY.floatValue();
 	}
 	
 	

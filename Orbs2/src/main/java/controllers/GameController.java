@@ -2,13 +2,6 @@ package controllers;
 
 import java.util.function.Function;
 
-import org.bson.Document;
-
-import com.mongodb.Block;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -39,13 +32,7 @@ public class GameController {
 	// The stage for the application.
 	Stage stage;
 	
-	
-	// Game save stuff.
-	public static MongoClient mongoClient;
-	public static MongoDatabase database;
-	public static MongoCollection<Document> collection;
-	public static String saveID = "";
-	
+
 
 	
 	// Used for calculating the framerate.
@@ -63,7 +50,7 @@ public class GameController {
 
 	public GameController(Stage stage) {
 		this.stage = stage;
-		this.setupMongoClient();
+		this.setupSaveClient();
 
 		// Initialize the assets.
 		assets = new Assets();
@@ -101,17 +88,9 @@ public class GameController {
 	}
 
 
-	/** Sets up the mongo db client so the user can save the game. */
-	private void setupMongoClient() {
-		try {
-			mongoClient = new MongoClient();
-		} catch(Exception err) {
-			System.out.println("Couldn't load MongoDB client. The game can be played, but cannot be saved.");
-			return;
-		}
-
-		database = mongoClient.getDatabase("Orbs2");
-		collection = database.getCollection("GameSaves");
+	/** Sets up the database so the user can save the game. */
+	private void setupSaveClient() {
+		Networking.initDatabase();
 	}
 	
 
@@ -181,24 +160,8 @@ public class GameController {
 		if(w == KeyCode.F) {
 			System.out.println("FPS: " + fps);
 		}
-		if(w == KeyCode.M) {
-			this.printDocuments(10);
-		}
 	}
 	
-	
-	/** Handles printing all of the game saves from the Mongo database. */
-	private void printDocuments(int limit) {
-		// The print block.
-		Block<Document> printBlock = new Block<Document>() {
-			public void apply(Document document) {
-				System.out.println(document.toJson());
-			}
-		};
-		
-		// Print each document.
-		System.out.println("ALL GAME SAVES IN MONGO DATABASE:");
-		collection.find().limit(limit).forEach(printBlock);
-	}
+
 
 } // End of class.

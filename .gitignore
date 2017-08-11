@@ -5,3 +5,11 @@
 .project
 
 /Orbs2/build/
+
+*.json
+
+/Orbs2/*.json
+
+firebaseURL.txt
+/Orbs2/firebaseURL.txt
+/Orbs2/google-services.json

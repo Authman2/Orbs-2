@@ -5,7 +5,12 @@ import world.World
 import tasks.TaskSystem
 
 /* Extensions for debugging. */
-	
+//inline fun <T>guard(obj: T?, errorBlock: () -> T): T {
+//	if(obj != null) { return obj }
+//	else {
+//		return errorBlock
+//	}
+//}
 
 
 /** Prints out the number of tiles that are being rendered at a given moment. */

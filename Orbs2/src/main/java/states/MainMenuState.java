@@ -1,11 +1,6 @@
 package states;
 
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
-import com.mongodb.client.model.Filters;
-
-import controllers.GameController;
+import controllers.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -173,7 +168,7 @@ public class MainMenuState extends GameState {
 		
 		Button loadBtn = new Button("Load");
 		loadBtn.setOnAction(e -> {
-			this.loadGameFromID(idField.getText());
+			Networking.loadGame(idField.getText());
 			dialog.close();
 		});
 		hbox.setAlignment(Pos.CENTER);
@@ -185,36 +180,6 @@ public class MainMenuState extends GameState {
 		Scene s = new Scene(dialogPane, 400, 100);
 		dialog.setScene(s);
 		dialog.show();
-	}
-	
-	
-	/** Goes into the database looking for the game save data. */
-	private void loadGameFromID(String id) {
-		// Try loading the game save.
-		try {
-			
-			// Get the game save.
-			Document gameSave = GameController.collection.find(Filters.eq("_id",new ObjectId(id))).first();
-			GameController.saveID = id;
-			
-			// Load the game, then go to the world state.
-			( (WorldState) this.gc.getStates()[1] ).loadGame(gameSave);
-			gc.goTo(1);
-			
-		} catch(Exception err) {
-			Stage dialog = new Stage();
-			dialog.setTitle("Load Game");
-			dialog.initOwner(gc.getStage());
-	        dialog.initStyle(StageStyle.UTILITY);
-	        dialog.initModality(Modality.WINDOW_MODAL);
-	        
-	        Label label = new Label("Couldn't find a game save with that ID.");
-	        
-	        StackPane pane = new StackPane(label);
-	        Scene s = new Scene(pane, 400, 100);
-			dialog.setScene(s);
-			dialog.show();
-		}
 	}
 	
 	

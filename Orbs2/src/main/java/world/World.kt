@@ -41,6 +41,8 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 	var speed: Float = 0.15f
 	
 	// The matrix of tiles.
+	// L1 refers to the floor tiles.
+	// L2 refers to the see through items on top of the floor.
 	var tilesL1: ArrayList<Tile>? = null
 	var tilesL2: ArrayList<Tile>? = null
 	
@@ -83,7 +85,7 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
             }
             reader.close();  
         }
-        val arr = text.split(",").toTypedArray()
+        val arr = text.replace(" ","").split(",").toTypedArray()
         val map2D = ArrayConversion.OneToTwo(arr, this.mapSize)
         this.tilesL1 = ArrayList<Tile>()
         this.makeMap(map2D, tilesL1!!)
@@ -101,7 +103,7 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
             }
             reader.close();  
         }
-        val arr2 = text.split(",").toTypedArray()
+        val arr2 = text.replace(" ","").split(",").toTypedArray()
         val map2D2 = ArrayConversion.OneToTwo(arr2, this.mapSize)
         this.tilesL2 = ArrayList<Tile>()
         this.makeMap(map2D2, tilesL2!!)
