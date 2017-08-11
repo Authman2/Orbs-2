@@ -187,5 +187,17 @@ public class Assets {
 	public Image getSprite(BufferedImage ss, int x, int y, int width, int height) {
 		return SwingFXUtils.toFXImage(ss.getSubimage(x, y, width, height), null);
 	}
+
+
+	public Image fromString(String name) {
+		try {
+			Field e = Assets.class.getDeclaredField(name);
+		    e.setAccessible(true);
+		    Image img = (Image)e.get(this);
+		    return img;
+		} catch(Exception err) {
+			return new Image("");
+		}
+	}
 	
 }

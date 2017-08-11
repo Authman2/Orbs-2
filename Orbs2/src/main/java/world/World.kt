@@ -15,6 +15,7 @@ import tiles.*
 import java.util.ArrayList
 import java.io.*
 import tasks.TaskSystem
+import controllers.NPCManager
 
 
 public open class World(player: Player?, ws: WorldState?, mapName: String?, size: Int) {
@@ -50,8 +51,8 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 	// A reference to the player that is currently in this world.
 	var player: Player? = null
 	
-	// All of the entities in the game world.
-	var entities: ArrayList<Entity>? = null
+	// All of the npcs in the game world.
+	var npcManager: NPCManager? = null
 
 	
 	
@@ -61,7 +62,7 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 		this.mapName = mapName
 		this.mapSize = size
 		this.player = player
-		this.entities = ArrayList<Entity>()
+		this.npcManager = NPCManager(ws!!)
 		this.configureMap()
 	}
 
@@ -163,6 +164,7 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 	 *					*
 	 ********************/
 
+	 fun getNPCManager() = this.npcManager
 	
 	
 	
@@ -195,6 +197,7 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 //		if (tiles != null) {
 //			this.tiles!!.forEach({ e -> e.update() })
 //		}
+		npcManager?.update();
 	}
 
 	fun draw() {
@@ -210,6 +213,7 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 				.filter { it -> camera!!.touching(it); }
 				.forEach{ e -> e.draw() }
 		}
+		npcManager?.draw();
 		if (player != null) {
 			player!!.draw()
 		}

@@ -139,6 +139,15 @@ public class Player extends Entity {
 			yVel = 0;
 			moveOpposite();
 		}
+		// NPC solidity
+		else if(worldState.getCurrentWorld().getNPCManager().getNPCS().stream().anyMatch( npc -> worldState.getCurrentWorld().getCamera().touching(npc)
+																								&& npc.isSolid()
+																								&& npc.collidingWith(this) ))
+		{
+			xVel = 0;
+			yVel = 0;
+			moveOpposite();
+		}
 	}
 	
 	

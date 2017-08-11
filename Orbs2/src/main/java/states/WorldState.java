@@ -1,6 +1,6 @@
 package states;
 
-import controllers.GameController;
+import controllers.*;
 import entities.Player;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,6 +18,8 @@ import je.visual.Vector2D;
 import main_package.Orbs2;
 import world.World;
 import hud.*;
+import java.util.Map;
+import java.util.HashMap;
 
 
 public class WorldState extends GameState {
@@ -58,7 +60,7 @@ public class WorldState extends GameState {
 
 
 		menu = new Menu(gc, graphics);
-        player = new Player(new Vector2D(15,8), this);
+        player = new Player(new Vector2D(14,16), this);
 
 		setupWorlds();
 
@@ -98,14 +100,20 @@ public class WorldState extends GameState {
 	
 	/** Handles saving the player data from the game. */
 	public void saveGame() {
-		
+		Map<String, Object> saveData = new HashMap<String, Object>();
+		saveData.put("positionX", player.getPosition().X);
+		saveData.put("positionY", player.getPosition().Y);
+
+		Networking.saveGame(saveData, 
+							success -> { System.out.println("Saved!"); return null; },
+							failure -> { System.out.println("Problem saving game: " + failure); return null; }) ;
 	}
 	
 	
 	/** Handles loading the game data from a string id. Takes all the data from the save document
 	 * and puts it into the game. */
-	public void loadGame() {
-		
+	public void loadGame(String id) {
+		Networking.loadGame(id);
 	}
 	
 	

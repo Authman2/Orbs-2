@@ -16,7 +16,7 @@ public abstract class GameState {
 	Stage stage;
 	StackPane root;
 	Scene scene;
-	GameController gc;
+	public GameController gc;
 
 
 	/********************

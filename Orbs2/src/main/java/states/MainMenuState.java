@@ -168,7 +168,7 @@ public class MainMenuState extends GameState {
 		
 		Button loadBtn = new Button("Load");
 		loadBtn.setOnAction(e -> {
-			Networking.loadGame(idField.getText());
+			( (WorldState) this.gc.getStates()[1] ).loadGame(idField.getText());
 			dialog.close();
 		});
 		hbox.setAlignment(Pos.CENTER);

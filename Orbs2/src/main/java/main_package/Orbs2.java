@@ -1,6 +1,6 @@
 package main_package;
 
-import controllers.GameController;
+import controllers.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -17,6 +17,9 @@ public class Orbs2 extends Application {
 
 
     @Override public void start(Stage stage) {
+        // Setup the database.
+        Networking.initDatabase();
+
         // The game controller.
         GameController gc = new GameController(stage);
         gc.initialize();

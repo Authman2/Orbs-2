@@ -50,7 +50,6 @@ public class GameController {
 
 	public GameController(Stage stage) {
 		this.stage = stage;
-		this.setupSaveClient();
 
 		// Initialize the assets.
 		assets = new Assets();
@@ -88,11 +87,6 @@ public class GameController {
 	}
 
 
-	/** Sets up the database so the user can save the game. */
-	private void setupSaveClient() {
-		Networking.initDatabase();
-	}
-	
 
 
 	/********************
@@ -130,6 +124,11 @@ public class GameController {
 		return stage;
 	}
 	
+	public Assets getAssets() {
+		return assets;
+	}
+
+
 
 	/********************
 	*					*
