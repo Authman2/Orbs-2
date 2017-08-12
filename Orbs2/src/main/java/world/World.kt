@@ -8,6 +8,7 @@ import je.files.ReadFile
 import je.visual.Vector2D
 import main_package.Orbs2
 import main_package.drawCollisionBoxes
+import main_package.drawRenderBoxes
 import main_package.printTilesRendered
 import main_package.printTasks
 import states.WorldState
@@ -235,6 +236,9 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 		}
 		if(code == KeyCode.D) {
 			drawCollisionBoxes()
+		}
+		if(code == KeyCode.B) {
+			drawRenderBoxes()
 		}
 		if(code == KeyCode.T) {
 			printTasks()

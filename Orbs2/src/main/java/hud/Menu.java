@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.input.MouseEvent;
 
 import je.visual.Vector2D;
+import javafx.util.Pair;
+import java.util.function.Function;
 
 import main_package.*;
 import controllers.*;
@@ -43,35 +45,19 @@ public class Menu {
 	*					*
 	*********************/
 
-	public Menu(GameController gc, GraphicsContext g) {
+	public Menu(GameController gc, GraphicsContext g, Pair<String, Function<?,?>>[] items) {
 		this.graphics = g;
 		this.open = false;
 		this.width = 200;
 		this.height = 200;
 		this.position = new Vector2D(Orbs2.WIDTH - width - padding, 10 + padding);
 
-		this.menuItems = new MenuItem[4];
-		menuItems[0] = new MenuItem("View Tasks", this, g);
-		menuItems[1] = new MenuItem("Inventory", this, g);
-		menuItems[2] = new MenuItem("Save Game", this, g);
-		menuItems[3] = new MenuItem("Close", this, g);
-
-		menuItems[0].setClickAction(e -> {
-			gc.goTo(3);
-			return null;
-		});
-		menuItems[1].setClickAction(e -> {
-			System.out.println("Inventory");
-			return null;
-		});
-		menuItems[2].setClickAction(e -> {
-			( (WorldState) gc.getStates()[1] ).saveGame();
-			return null;
-		});
-		menuItems[3].setClickAction(e -> {
-			this.toggle();
-			return null;
-		});
+		this.menuItems = new MenuItem[items.length];
+		for(int i = 0; i < items.length; i++) {
+			Pair<String, Function<?,?>> pair = items[i];
+			this.menuItems[i] = new MenuItem(pair.getKey(), this, g);
+			this.menuItems[i].setClickAction(pair.getValue());
+		}
 
 		// Set relative positions of the menu items.
 		for(int i = 0; i < this.menuItems.length; i++) {
@@ -94,6 +80,22 @@ public class Menu {
 	/** Sets the menu to open/not open based on its current state. */
 	public void toggle() {
 		this.open = !this.open;
+	}
+
+
+	/** Sets the menu item at i. */
+	public void setMenuItem(int index, Pair<String, Function<?,?>> pair) {
+		this.menuItems[index] = new MenuItem(pair.getKey(), this, this.graphics);
+		this.menuItems[index].setClickAction(pair.getValue());
+
+		// Set relative positions of the menu items.
+		for(int i = 0; i < this.menuItems.length; i++) {
+			if(i == 0) {
+				menuItems[i].setRelativePos(position);
+			} else {
+				menuItems[i].setRelativePos( menuItems[i-1].getPosition() );
+			}
+		}
 	}
 
 
@@ -143,6 +145,8 @@ public class Menu {
 	public float getWidth() { return width; }
 
 	public float getHeight() { return height; }
+
+
 
 
 	

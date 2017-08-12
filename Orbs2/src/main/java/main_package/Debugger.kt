@@ -29,6 +29,13 @@ public fun drawCollisionBoxes() {
 
 
 
+/** Toggles drawing the render boxes. */
+public fun drawRenderBoxes() {
+	Entity.drawRenderBox = !Entity.drawRenderBox
+}
+
+
+
 /** Prints out all of the current tasks in the task system. */
 public fun printTasks() {
 	TaskSystem.tasks.forEach { e ->

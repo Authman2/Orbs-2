@@ -30,7 +30,7 @@ public abstract class Entity {
 	protected Rectangle2D collisionBox, renderBox;
 	protected float definedX, definedY, definedWidth, definedHeight;
 
-	public static boolean drawCollisionBox = false;
+	public static boolean drawCollisionBox = false, drawRenderBox = false;
 	
 	
 
@@ -143,7 +143,7 @@ public abstract class Entity {
 
     /** Returns whether or not this entity is colliding with another. */
     public boolean collidingWith(Entity ent) {
-        return this.collisionBox.intersects( ent.getCollisionBox() );
+    	return this.collisionBox.intersects( ent.getCollisionBox() );
     }
 
     
@@ -151,6 +151,14 @@ public abstract class Entity {
     public boolean collidingWith(Rectangle2D rect) {
         return this.collisionBox.intersects( rect );
     }
+
+
+    /** Returns whether or not this entity is next to another. */
+    public boolean nextTo(Entity ent) {
+    	return position.Distance(ent.position) <= 1.5;
+    }
+
+
 
 
 
@@ -182,6 +190,12 @@ public abstract class Entity {
 													collisionBox.getMinY(), 
 													collisionBox.getWidth(), 
 													collisionBox.getHeight());
+		}
+		if(drawRenderBox) {
+			this.worldState.getGraphics().strokeRect(renderBox.getMinX(), 
+													renderBox.getMinY(), 
+													renderBox.getWidth(), 
+													renderBox.getHeight());
 		}
 	}
 

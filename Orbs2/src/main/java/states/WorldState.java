@@ -1,7 +1,7 @@
 package states;
 
 import controllers.*;
-import entities.Player;
+import entities.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -20,6 +20,8 @@ import world.World;
 import hud.*;
 import java.util.Map;
 import java.util.HashMap;
+import javafx.util.Pair;
+import java.util.function.Function;
 
 
 public class WorldState extends GameState {
@@ -43,7 +45,7 @@ public class WorldState extends GameState {
     Player player;
     
     // The menu that lets the player do different things in the game.
-    Menu menu;
+    Menu menu, npcMenu;
 
 
 
@@ -59,7 +61,7 @@ public class WorldState extends GameState {
 		graphics = canvas.getGraphicsContext2D();
 
 
-		menu = new Menu(gc, graphics);
+		setupMenu();
         player = new Player(new Vector2D(14,16), this);
 
 		setupWorlds();
@@ -82,6 +84,50 @@ public class WorldState extends GameState {
         // worlds[4] = new World(this, "");
 
         currentWorld = worlds[0];
+	}
+
+
+	private void setupMenu() {
+		Pair[] items = new Pair[4];
+		items[0] = new Pair<String, Function<?,?>>("View Tasks", e -> { 
+			gc.goTo(3); 
+			return null;
+		});
+		items[1] = new Pair<String, Function<?,?>>("Inventory", e -> { 
+			System.out.println("Inventory");
+			return null;
+		});
+		items[2] = new Pair<String, Function<?,?>>("Save Game", e -> { 
+			saveGame();
+			return null;
+		});
+		items[3] = new Pair<String, Function<?,?>>("Close", e -> { 
+			menu.toggle();
+			return null;
+		});
+		menu = new Menu(gc, graphics, items);
+
+
+		// Setup the NPC dialog.
+        Pair[] items2 = new Pair[2];
+		items2[0] = new Pair<String, Function<?,?>>("Speak to ", e -> { 
+			 
+			return null;
+		});
+		items2[1] = new Pair<String, Function<?,?>>("Close", e -> { 
+			npcMenu.toggle();
+			return null;
+		});
+		npcMenu = new Menu(gc, graphics, items2);
+	}
+
+
+	public void toggleNPCMenu(NPC npc) {
+		npcMenu.setMenuItem(0, new Pair<String, Function<?,?>>("Speak to " + npc.getName(), e -> { 
+
+			return null;
+		}));
+		npcMenu.toggle();
 	}
 
 
@@ -157,9 +203,21 @@ public class WorldState extends GameState {
 				gc.debug(w);
 			}
 
-			// View Tasks
+			// Open Menu
 			if(w == KeyCode.M) {
-				this.menu.toggle();
+				if(!npcMenu.isOpen()) {
+					this.menu.toggle();
+				}
+			}
+			// Open NPC Menu
+			if(w == KeyCode.C) {
+				if(!menu.isOpen()) {
+					currentWorld.getNPCManager().getNPCS().stream().forEach(npc -> {
+						if(npc.nextTo(player)) {
+							this.toggleNPCMenu(npc);
+						}
+					});
+				}
 			}
 		});
 		scene.setOnKeyReleased(e -> {
@@ -169,15 +227,19 @@ public class WorldState extends GameState {
 
 		scene.setOnMouseClicked(e -> {
 			menu.mouseClickEvents(e);
+			npcMenu.mouseClickEvents(e);
 		});
 		scene.setOnMouseMoved(e -> {
 			menu.mouseMoveEvents(e);
+			npcMenu.mouseMoveEvents(e);
 		});
 		scene.setOnMousePressed(e -> {
 			menu.mousePressedEvents(e);
+			npcMenu.mousePressedEvents(e);
 		});
 		scene.setOnMouseReleased(e -> {
 			menu.mouseReleasedEvents(e);
+			npcMenu.mouseReleasedEvents(e);
 		});
 	}
 	
@@ -211,13 +273,14 @@ public class WorldState extends GameState {
 	public void initialize() {
 		if(currentWorld != null) currentWorld.initialize();
 		if(menu != null) menu.initialize();
-		
+		if(npcMenu != null) npcMenu.initialize();
 	}
 
 	public void update() {
 		if(menu != null) {
-			if(menu.isOpen()) {
-				menu.update();
+			if(menu.isOpen()) { menu.update(); } 
+			else if(npcMenu != null && npcMenu.isOpen()) {
+				npcMenu.update();
 			} else {
 				if(currentWorld != null) currentWorld.update();
 			}
@@ -229,6 +292,11 @@ public class WorldState extends GameState {
 
 		if(currentWorld != null) currentWorld.draw();
 		if(menu != null) menu.draw();
+		if(npcMenu != null) {
+			if(npcMenu.isOpen()) {
+				npcMenu.draw();
+			}
+		}
 	}
 
 } // End of class.

@@ -7,6 +7,9 @@ import main_package.Animator;
 import main_package.Assets;
 import states.WorldState;
 import tasks.TaskSystem;
+import hud.*;
+import javafx.util.Pair;
+import java.util.function.Function;
 
 public class Player extends Entity {
 
@@ -21,7 +24,8 @@ public class Player extends Entity {
 
 	// booleans for movement (only for moving in the opposite direction)
 	boolean up, down, left, right;
-	
+
+
 
 
 	/********************
@@ -73,10 +77,16 @@ public class Player extends Entity {
 	}
 
 
+
 	/** Handles the key actions */
 	public void keyActions(KeyCode code) {
 		switch(code) {
 		case UP:
+			changeDirection(Direction.UP);
+			up = true;
+			yVel = -speed;
+			break;
+		case W:
 			changeDirection(Direction.UP);
 			up = true;
 			yVel = -speed;
@@ -86,7 +96,17 @@ public class Player extends Entity {
 			down = true;
 			yVel = speed;
 			break;
+		case S:
+			changeDirection(Direction.DOWN);
+			down = true;
+			yVel = speed;
+			break;
 		case LEFT:
+			changeDirection(Direction.LEFT);
+			left = true;
+			xVel = -speed;
+			break;
+		case A:
 			changeDirection(Direction.LEFT);
 			left = true;
 			xVel = -speed;
@@ -95,7 +115,12 @@ public class Player extends Entity {
 			changeDirection(Direction.RIGHT);
 			right = true;
 			xVel = speed;
-			break;	
+			break;
+		case D:
+			changeDirection(Direction.RIGHT);
+			right = true;
+			xVel = speed;
+			break;
 		default: break;
 		}
 	}
@@ -108,7 +133,15 @@ public class Player extends Entity {
 			yVel = 0;
 			up = false;
 			break;
+		case W:
+			yVel = 0;
+			up = false;
+			break;
 		case DOWN:
+			yVel = 0;
+			down = false;
+			break;
+		case S:
 			yVel = 0;
 			down = false;
 			break;
@@ -116,7 +149,15 @@ public class Player extends Entity {
 			xVel = 0;
 			left = false;
 			break;
+		case A:
+			xVel = 0;
+			left = false;
+			break;
 		case RIGHT:
+			xVel = 0;
+			right = false;
+			break;	
+		case D:
 			xVel = 0;
 			right = false;
 			break;	
@@ -181,7 +222,7 @@ public class Player extends Entity {
 
 	public void update() {
 		super.update();
-		
+
 		// This needs to be in update() for the player only because the player is actually moving.
 		this.defineCollisionArea(position.X*size + 5, position.Y*size + 15, size - 10, size - 15);
 		
@@ -225,6 +266,12 @@ public class Player extends Entity {
 													collisionBox.getMinY(), 
 													collisionBox.getWidth(), 
 													collisionBox.getHeight());
+		}
+		if(drawRenderBox) {
+			this.worldState.getGraphics().strokeRect(renderBox.getMinX(), 
+													renderBox.getMinY(), 
+													renderBox.getWidth(), 
+													renderBox.getHeight());
 		}
 	}
 

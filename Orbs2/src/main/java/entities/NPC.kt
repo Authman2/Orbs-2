@@ -4,6 +4,9 @@ import je.visual.Vector2D
 import states.WorldState
 import main_package.*;
 import javafx.animation.AnimationTimer
+import hud.*
+import javafx.util.Pair
+import java.util.function.Function
 
 class NPC(pos: Vector2D, ws: WorldState) : Entity(pos, ws) {
 
@@ -12,6 +15,8 @@ class NPC(pos: Vector2D, ws: WorldState) : Entity(pos, ws) {
 	*	  VARIABLES		*
 	*					*
 	*********************/
+
+	var name: String = ""
 
 	var solid: Boolean = true
 	
@@ -26,9 +31,7 @@ class NPC(pos: Vector2D, ws: WorldState) : Entity(pos, ws) {
 	*********************/
 
 	init {
-		val sprites = arrayOf( Assets.SCIENTIST_UP, Assets.SCIENTIST_DOWN,
-							Assets.SCIENTIST_LEFT, Assets.SCIENTIST_RIGHT )
-		this.setSprites(sprites)
+		
 	}
 
 
@@ -43,11 +46,18 @@ class NPC(pos: Vector2D, ws: WorldState) : Entity(pos, ws) {
 
 
 
+
+
+
 	/********************
 	*					*
 	*	   SETTERS		*
 	*					*
 	*********************/
+
+	
+	
+
 
 
 	/********************

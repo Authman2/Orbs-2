@@ -74,6 +74,7 @@ public class NPCManager {
 	        		e.setAccessible(true);
 
 	        		NPC val = new NPC(new Vector2D(x,y), this.worldState);
+	        		val.setName(name);
 	        		val.setSprites( new Image[] {upSprite, downSprite, leftSprite, rightSprite});
 					e.set(this, val);
 
