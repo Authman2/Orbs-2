@@ -3,6 +3,7 @@ package main_package
 import entities.Entity
 import world.World
 import tasks.TaskSystem
+import states.*
 
 /* Extensions for debugging. */
 //inline fun <T>guard(obj: T?, errorBlock: () -> T): T {
@@ -11,7 +12,6 @@ import tasks.TaskSystem
 //		return errorBlock
 //	}
 //}
-
 
 /** Prints out the number of tiles that are being rendered at a given moment. */
 public fun World.printTilesRendered() {

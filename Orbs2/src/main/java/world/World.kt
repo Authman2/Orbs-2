@@ -19,16 +19,13 @@ import tasks.TaskSystem
 import controllers.*
 
 
-public open class World(player: Player?, ws: WorldState?, mapName: String?, size: Int) {
+public open class World(player: Player?, val worldState: WorldState, mapName: String?, size: Int) {
 	
 	/********************
 	 *					*
 	 *	   VARIABLES	*
 	 *					*
 	 ********************/
-	
-	// A reference to the world state.
-	var worldState: WorldState? = null
 	
 	// The rendering camera.
 	var camera: Camera? = null
@@ -58,12 +55,11 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 	
 	
 	init {
-		this.worldState = ws
 		this.camera = Camera(0f, 0f)
 		this.mapName = mapName
 		this.mapSize = size
 		this.player = player
-		this.npcManager = NPCManager(ws!!)
+		this.npcManager = NPCManager(worldState)
 		this.configureMap()
 	}
 
@@ -189,11 +185,11 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 //		if (tiles != null) {
 //			this.tiles!!.forEach({ e -> e.update() })
 //		}
-		npcManager?.update();
+		npcManager!!.update();
 	}
 
 	fun draw() {
-		worldState!!.graphics.translate(-camera!!.position.X.toDouble(), -camera!!.position.Y.toDouble())
+		worldState.graphics.translate(-camera!!.position.X.toDouble(), -camera!!.position.Y.toDouble())
 		
 		
 		if (tilesL1 != null && tilesL2 != null) {
@@ -205,12 +201,12 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 				.filter { it -> camera!!.touching(it); }
 				.forEach{ e -> e.draw() }
 		}
-		npcManager?.draw();
 		if (player != null) {
 			player!!.draw()
 		}
+		npcManager!!.draw();
 		
-		worldState!!.graphics.translate(camera!!.position.X.toDouble(), camera!!.position.Y.toDouble())
+		worldState.graphics.translate(camera!!.position.X.toDouble(), camera!!.position.Y.toDouble())
 	}
 	
 	

@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.HashMap;
 import javafx.util.Pair;
 import java.util.function.Function;
-
+import tasks.*;
 
 public class WorldState extends GameState {
 
@@ -47,6 +47,9 @@ public class WorldState extends GameState {
     // The menu that lets the player do different things in the game.
     Menu menu, npcMenu;
 
+    // One textbox for the whole game, just change the text it displays.
+    TextBox textBox;
+
 
 
 	/********************
@@ -60,8 +63,8 @@ public class WorldState extends GameState {
 		canvas = new Canvas(Orbs2.WIDTH, Orbs2.HEIGHT);
 		graphics = canvas.getGraphicsContext2D();
 
-
 		setupMenu();
+		textBox = new TextBox(this);
         player = new Player(new Vector2D(14,16), this);
 
 		setupWorlds();
@@ -133,8 +136,11 @@ public class WorldState extends GameState {
 
 
 	public void toggleNPCMenu(NPC npc) {
+		TextBox.finishedFunction = npc.getFinishedFunction();
 		npcMenu.setMenuItem(0, new Pair<String, Function<?,?>>("Speak to " + npc.getName(), e -> { 
-			// Open that npc's text box.
+			textBox.set(npc.getSpeech());
+			textBox.toggle();
+			npcMenu.toggle();
 			return null;
 		}));
 		npcMenu.toggle();
@@ -159,6 +165,16 @@ public class WorldState extends GameState {
 		HashMap<String, Object> saveData = new HashMap<String, Object>();
 		saveData.put("positionX", player.getPosition().X);
 		saveData.put("positionY", player.getPosition().Y);
+
+		// Save the started and completed tasks.
+		for(Task tsk : TaskSystem.getAllTasks()) {
+			if(tsk.isCompleted()) {
+				saveData.put(tsk.getID(), "completed");
+			} else if(tsk.isStarted()) {
+				saveData.put(tsk.getID(), "started");
+			}
+		}
+
 		if(Networking.gameSaveID != null)
 			saveData.put("key", Networking.gameSaveID);
 
@@ -174,6 +190,26 @@ public class WorldState extends GameState {
 		Object saveID = Networking.saveData.get("key");
 		Object posX = Networking.saveData.get("positionX");
 		Object posY = Networking.saveData.get("positionY");
+
+		for(String id : Networking.saveData.keySet()) {
+			if(id.equals("key") || id.equals("positionX") || id.equals("positionY")) {
+				continue;
+			}
+
+			Object taskStatus = Networking.saveData.get(id);
+			String status = (String) taskStatus;
+			if(status.equals("started")) {
+				TaskSystem.getTask(id).start();
+			} else if(status.equals("completed")) {
+				TaskSystem.getTask(id).setCompleted();
+			}
+
+			// Run the finished function for each npc.
+			for(NPC npc : currentWorld.getNPCManager().getNPCS()) {
+				if(npc.getFinishedFunction() != null)
+					npc.getFinishedFunction().apply(null);
+			}
+		}
 		
 		// Set the player's position.
 		Number x = (Number) posX;
@@ -231,11 +267,19 @@ public class WorldState extends GameState {
 			// Open NPC Menu
 			if(w == KeyCode.C) {
 				if(!menu.isOpen()) {
-					currentWorld.getNPCManager().getNPCS().stream().forEach(npc -> {
-						if(npc.nextTo(player)) {
-							this.toggleNPCMenu(npc);
+					// If a textbox is not open, than open it.
+					if(TextBox.open == false) {
+						currentWorld.getNPCManager().getNPCS().stream().forEach(npc -> {
+							if(npc.nextTo(player)) {
+								this.toggleNPCMenu(npc);
+							}
+						});
+					// Otherwise, cycle through it.
+					} else {
+						if(TextBox.currentlyOpened != null) {
+							TextBox.currentlyOpened.next();
 						}
-					});
+					}
 				}
 			}
 		});
@@ -274,6 +318,9 @@ public class WorldState extends GameState {
 
 
 	public GraphicsContext getGraphics() { return graphics; }
+
+
+	public Canvas getCanvas() { return canvas; }
 
 
 	public Player getPlayer() { return player; }
@@ -316,6 +363,10 @@ public class WorldState extends GameState {
 				npcMenu.draw();
 			}
 		}
+
+		if(textBox != null)
+			if(textBox.isOpen())
+				textBox.draw();
 	}
 
 } // End of class.

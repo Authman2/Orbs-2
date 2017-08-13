@@ -39,6 +39,7 @@ public class ViewTasksState extends GameState {
 	*					*
 	*********************/
 
+	TextArea textView = new TextArea();
 
 
 
@@ -56,27 +57,9 @@ public class ViewTasksState extends GameState {
 
 
 	private void handleLayout() {
-		TextArea textView = new TextArea();
 		textView.setEditable(false);
 		textView.setMaxWidth(Orbs2.WIDTH);
 		textView.setMaxHeight(Orbs2.HEIGHT);
-
-
-		StringBuilder builder = new StringBuilder();
-		builder.append("Click the 'Escape' key to go back to the game.\n"
-						+ "Tasks with \"\u2715\" next to them have not been completed, those with \"\u2713\" have been completed. \n\n");
-
-		List<Task> tasks = TaskSystem.getAllTasks().stream().filter( e -> e.isStarted() ).collect(Collectors.toList());
-		for(Task t : tasks) {
-			if(t.isCompleted()) {
-				builder.append( "(\u2713)    " + t.getTaskDescription() + "\n");
-			} else {
-				builder.append( "(\u2715)    " + t.getTaskDescription() + "\n");
-			}
-			//3642550
-		}
-		textView.setText(builder.toString());
-		
 
 		// IMPORTANT: Scene Setup
 		root.getChildren().add(textView);
@@ -129,7 +112,21 @@ public class ViewTasksState extends GameState {
 	*********************/
 
 	public void initialize() {
-		
+		// Set the text of the tasks
+		StringBuilder builder = new StringBuilder();
+		builder.append("Click the 'Escape' key to go back to the game.\n"
+						+ "Tasks with \"\u2715\" next to them have not been completed, those with \"\u2713\" have been completed. \n\n");
+
+		List<Task> tasks = TaskSystem.getAllTasks().stream().filter( e -> e.isStarted() ).collect(Collectors.toList());
+		for(Task t : tasks) {
+			if(t.isCompleted()) {
+				builder.append( "(\u2713)    " + t.getTaskDescription() + "\n");
+			} else {
+				builder.append( "(\u2715)    " + t.getTaskDescription() + "\n");
+			}
+			//3642550
+		}
+		textView.setText(builder.toString());
 	}
 
 	public void update() {

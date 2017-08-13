@@ -118,6 +118,12 @@ public class Task(var description: String,
     }
 
 
+    /** Directly sets the completed variable. Used for loading data. */
+    public fun setCompleted() {
+        this.completed = true;
+    }
+
+
     /** Sets the task to completed. Uses a completion block in case you want to define something
     here to do right after completing the task. 
         Use: 

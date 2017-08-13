@@ -16,11 +16,21 @@ class NPC(pos: Vector2D, ws: WorldState) : Entity(pos, ws) {
 	*					*
 	*********************/
 
+	// The name of the npc.
 	var name: String = ""
 
+	// Whether or not the npc is solid (usually will be).
 	var solid: Boolean = true
 	
+	// The timer for when the npc should turn in a different direction.
 	var timer: Long = 0
+
+	// All the the text that an npc will say.
+	val speech: ArrayList<String> = arrayListOf()
+
+	// The function to pass to the textbox for when you are done speaking to this npc.
+	var finishedFunction: Function<NPC,NPC>? = null
+
 
 
 
@@ -48,16 +58,19 @@ class NPC(pos: Vector2D, ws: WorldState) : Entity(pos, ws) {
 
 
 
-
 	/********************
 	*					*
 	*	   SETTERS		*
 	*					*
 	*********************/
 
-	
-	
+	/** Sets what this npc should say. */
+	fun setSpeech(text: ArrayList<String>) {
+		this.speech.clear();
+		this.speech.addAll(text);
+	}
 
+	
 
 
 	/********************

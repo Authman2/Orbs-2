@@ -30,7 +30,6 @@ repositories {
 dependencies {
     compile 'org.mongodb:mongodb-driver:3.4.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    // Firebase Java SDK
     compile 'com.google.firebase:firebase-admin:5.1.0'
 
     compile files('../../JavaPrograms/JAR_FILES/JExtras.jar')

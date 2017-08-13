@@ -50,6 +50,10 @@ public abstract class GameState {
 		return scene;
 	}
 
+	public StackPane getRoot() {
+		return root;
+	}
+
 
 
 	/********************

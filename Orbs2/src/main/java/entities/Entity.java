@@ -4,6 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import je.visual.Vector2D;
 import states.WorldState;
+import hud.*;
 
 public abstract class Entity {
 
@@ -67,8 +68,10 @@ public abstract class Entity {
 
 	/** Constantly moves the entity based on its x and y velocities. */
 	public void move() {
-		position.X += xVel;
-		position.Y += yVel;
+		if(TextBox.open == false) {
+			position.X += xVel;
+			position.Y += yVel;
+		}
 	}
 
 

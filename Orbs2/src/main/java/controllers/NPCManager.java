@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import je.visual.Vector2D;
+import java.util.HashMap;
+import tasks.*;
 
 public class NPCManager {
 
@@ -24,6 +26,9 @@ public class NPCManager {
 
 	// All the npcs.
 	private ArrayList<NPC> npcs;
+
+	// The speech for each npc;
+	private HashMap<String, ArrayList<String>> npcSpeech;
 	
 	// NPC objects.
 	private NPC scientist;
@@ -39,8 +44,11 @@ public class NPCManager {
 	public NPCManager(WorldState ws) {
 		this.worldState = ws;
 		this.npcs = new ArrayList<NPC>();
+		this.npcSpeech = new HashMap<String, ArrayList<String>>();
 
 		this.loadNPCsFromFile();
+		this.loadNPCSpeech();
+		this.configureFinishedFunctions();
 	}
 
 
@@ -87,6 +95,40 @@ public class NPCManager {
 
 
 
+
+	/**
+	*	Loads all the text that an NPC will say. In the folder resources/speech, you
+	* will find separate files for each NPC's speech, where each text slide is 
+	* separated by lines. There will also be different files for each npc depending
+	* on whether or not certain tasks have been completed.
+	*/
+	private void loadNPCSpeech() {
+		npcSpeech.put("scientist_1", Networking.read("speech/scientist_1.txt"));
+		npcSpeech.put("scientist_2", Networking.read("speech/scientist_2.txt"));
+
+		scientist.setSpeech(npcSpeech.get("scientist_1"));
+	}
+
+
+
+
+
+	/** Determines what to do when the player is done speaking to an npc. */
+	private void configureFinishedFunctions() {
+		scientist.setFinishedFunction(e -> {
+			if(!TaskSystem.getTask("SPEAK_TO_SCIENTIST").isCompleted()) {
+				TaskSystem.getTask("SPEAK_TO_SCIENTIST").complete();
+				TaskSystem.getTask("CHARGE_ORBS").start();
+				scientist.setSpeech(npcSpeech.get("scientist_2"));
+			}
+			return e;
+		});
+	}
+
+
+
+
+
 	/********************
 	*					*
 	*	   GETTERS		*
@@ -97,6 +139,10 @@ public class NPCManager {
 		return this.npcs;
 	}
 
+
+	public HashMap<String, ArrayList<String>> getNPCSpeech() {
+		return this.npcSpeech;
+	}
 
 
 
