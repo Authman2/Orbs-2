@@ -13,4 +13,6 @@
 firebaseURL.txt
 /Orbs2/firebaseURL.txt
 /Orbs2/google-services.json
-/Orbs2/src/resources/firebaseURL.txt
+/Orbs2/src/main/resources/firebaseURL.txt
+/Orbs2/src/main/resources/google-services.json
+/Orbs2/src/main/resources/*.json

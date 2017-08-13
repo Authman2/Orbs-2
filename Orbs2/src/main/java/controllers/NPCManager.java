@@ -49,53 +49,40 @@ public class NPCManager {
 	* the location data for each npc and placing them in the game world.
 	*/
 	private void loadNPCsFromFile() {
-		InputStream npcLocs = getClass().getResourceAsStream("/resources/maps/NPCLocations.txt");
-		BufferedReader reader = null;
+		ArrayList<String> lines = Networking.read("maps/NPCLocations.txt");
 
-		// Load the text file.
-		try {
-			reader = new BufferedReader(new InputStreamReader(npcLocs));
-
-			String str = reader.readLine();
-			while(str != null) {
-				String[] parts = str.split(" ");
+		for(String line : lines) {
+			String[] parts = line.split(" ");
         	
-	        	String name = parts[0];
-	        	int x = Integer.parseInt(parts[1]);
-	        	int y = Integer.parseInt(parts[2]);
-	        	Image upSprite = worldState.gc.getAssets().fromString(parts[3]);
-	        	Image downSprite = worldState.gc.getAssets().fromString(parts[4]);
-	        	Image leftSprite = worldState.gc.getAssets().fromString(parts[5]);
-	        	Image rightSprite = worldState.gc.getAssets().fromString(parts[6]);
+        	String name = parts[0];
+        	int x = Integer.parseInt(parts[1]);
+        	int y = Integer.parseInt(parts[2]);
+        	Image upSprite = worldState.gc.getAssets().fromString(parts[3]);
+        	Image downSprite = worldState.gc.getAssets().fromString(parts[4]);
+        	Image leftSprite = worldState.gc.getAssets().fromString(parts[5]);
+        	Image rightSprite = worldState.gc.getAssets().fromString(parts[6]);
 
-	        	// Create the NPC.
-	        	try {
-	        		Field e = NPCManager.class.getDeclaredField(name);
-	        		e.setAccessible(true);
+        	// Create the NPC.
+        	try {
+        		Field e = NPCManager.class.getDeclaredField(name);
+        		e.setAccessible(true);
 
-	        		NPC val = new NPC(new Vector2D(x,y), this.worldState);
-	        		val.setName(name);
-	        		val.setSprites( new Image[] {upSprite, downSprite, leftSprite, rightSprite});
-					e.set(this, val);
+        		NPC val = new NPC(new Vector2D(x,y), this.worldState);
+        		val.setName(name);
+        		val.setSprites( new Image[] {upSprite, downSprite, leftSprite, rightSprite});
+				e.set(this, val);
 
-					try {
-						NPC gotten = (NPC)e.get(this);
-						this.npcs.add(gotten);
-					} catch(Exception e3) {
+				try {
+					NPC gotten = (NPC)e.get(this);
+					this.npcs.add(gotten);
+				} catch(Exception e3) {
 
-					}
+				}
 
-	        	} catch(Exception err) {
-	        		err.printStackTrace();
-	        	}
-
-				// Restart the loop.
-				try { str = reader.readLine(); } catch(Exception err) { err.printStackTrace(); break; }
-			}
-			reader.close();
-		} catch(Exception err) {
-			err.printStackTrace();
-		}
+        	} catch(Exception err) {
+        		err.printStackTrace();
+        	}
+        }
 	}
 
 

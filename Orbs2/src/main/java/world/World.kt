@@ -16,7 +16,7 @@ import tiles.*
 import java.util.ArrayList
 import java.io.*
 import tasks.TaskSystem
-import controllers.NPCManager
+import controllers.*
 
 
 public open class World(player: Player?, ws: WorldState?, mapName: String?, size: Int) {
@@ -76,40 +76,25 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 	// Creates the matrix of id's for the map.
 	private fun configureMap() {
 		// Make the first layer of the map
-		var input = World::class.java.getResourceAsStream("/resources/maps/${mapName}_L1.txt")
-		var reader = BufferedReader(InputStreamReader(input));
+		val lines: ArrayList<String> = Networking.read("maps/${mapName}_L1.txt")
 		var text = ""
-		if (input != null) {
-			var str = reader.readLine()                           
-            while (str != null) {    
-                text += str
-                try { str = reader.readLine() } catch(err: Exception) { break; }
-            }
-            reader.close();  
-        }
-        val arr = text.replace(" ","").split(",").toTypedArray()
+		for(line in lines) { text += line }
+		val arr = text.replace(" ","").split(",").toTypedArray()
         val map2D = ArrayConversion.OneToTwo(arr, this.mapSize)
         this.tilesL1 = ArrayList<Tile>()
         this.makeMap(map2D, tilesL1!!)
 
 
         // Make the second layer of the map
-        input = World::class.java.getResourceAsStream("/resources/maps/${mapName}_L2.txt")
-		reader = BufferedReader(InputStreamReader(input));
-		text = ""
-		if (input != null) {
-			var str = reader.readLine()                           
-            while (str != null) {    
-                text += str
-                try { str = reader.readLine() } catch(err: Exception) { break; }
-            }
-            reader.close();  
-        }
+        val lines2: ArrayList<String> = Networking.read("maps/${mapName}_L2.txt")
+        text = ""
+        for(line in lines2) { text += line }
         val arr2 = text.replace(" ","").split(",").toTypedArray()
         val map2D2 = ArrayConversion.OneToTwo(arr2, this.mapSize)
         this.tilesL2 = ArrayList<Tile>()
         this.makeMap(map2D2, tilesL2!!)
 	}
+
 
 	
 	// Handles actually making the tile map.
@@ -158,6 +143,11 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 	}
 
 
+
+
+
+
+
 	
 	/********************
 	 *					*
@@ -165,9 +155,10 @@ public open class World(player: Player?, ws: WorldState?, mapName: String?, size
 	 *					*
 	 ********************/
 
-	 fun getNPCManager() = this.npcManager
+	fun getNPCManager() = this.npcManager
 	
-	
+
+
 	
 	
 	/********************

@@ -46,3 +46,12 @@ public fun printTasks() {
 		""")
 	};
 }
+
+
+
+
+
+/** Handles reading a file. */
+public fun readFile() {
+
+}

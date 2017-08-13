@@ -72,6 +72,13 @@ public abstract class Entity {
 	}
 
 
+	/** Directly changes an entity's position. */
+	public void setPosition(float x, float y) {
+		this.position.X = x;
+		this.position.Y = y;
+	}
+
+
 	/** Changes the sprite of the entity based on its direction. */
 	public void updateDirection() {
 		switch(this.direction) {

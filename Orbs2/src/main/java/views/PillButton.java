@@ -2,8 +2,10 @@ package views;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.Border;
+import java.util.ArrayList;
 
 import java.net.URL;
+import controllers.*;
 
 public class PillButton extends Button {
 
@@ -14,7 +16,7 @@ public class PillButton extends Button {
 		
 		setBorder(Border.EMPTY);
 		getStyleClass().add("PillButton");
-		URL path = getClass().getResource("/resources/styles/PillButton.css");
+		URL path = getClass().getResource("/styles/PillButton.css");
 		getStylesheets().add(path.toString());
 	}
 	

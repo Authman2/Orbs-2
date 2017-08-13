@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.0.0'
+    ext.kotlin_version = '1.1.1'
     dependencies {
         classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -18,7 +18,7 @@ apply plugin: 'javafx-gradle-plugin'
 
 mainClassName = 'main_package.Orbs2'
 
-defaultTasks 'jfxRun'
+defaultTasks 'run'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -34,27 +34,4 @@ dependencies {
     compile 'com.google.firebase:firebase-admin:5.1.0'
 
     compile files('../../JavaPrograms/JAR_FILES/JExtras.jar')
-}
-
-
-jar {
-    from('src') {
-        include '/resources/*.png'
-        include '/resources/maps/*.txt'
-        include '/resources/styles/*.css'
-    }
-    into 'resources', {
-        from 'resources'
-        from 'resources/maps'
-        from 'resources/styles'
-    }
-}
-
-
-jfx {
-    // minimal requirement for jfxJar-task
-    mainClass = 'main_package.Orbs2'
-    
-    // minimal requirement for jfxNative-task
-    vendor = 'YourName'
 }

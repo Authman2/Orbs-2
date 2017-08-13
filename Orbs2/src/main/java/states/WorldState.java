@@ -65,7 +65,7 @@ public class WorldState extends GameState {
         player = new Player(new Vector2D(14,16), this);
 
 		setupWorlds();
-
+		
 
 		// IMPORTANT: Scene Setup
 		root.getChildren().add(canvas);
@@ -88,7 +88,7 @@ public class WorldState extends GameState {
 
 
 	private void setupMenu() {
-		Pair[] items = new Pair[4];
+		Pair[] items = new Pair[6];
 		items[0] = new Pair<String, Function<?,?>>("View Tasks", e -> { 
 			gc.goTo(3); 
 			return null;
@@ -101,17 +101,27 @@ public class WorldState extends GameState {
 			saveGame();
 			return null;
 		});
-		items[3] = new Pair<String, Function<?,?>>("Close", e -> { 
+		items[3] = new Pair<String, Function<?,?>>("Main Menu", e -> { 
+			gc.goTo(0);
+			menu.toggle();
+			Networking.clear();
+			return null;
+		});
+		items[4] = new Pair<String, Function<?,?>>("Quit Game", e -> { 
+			System.exit(0);
+			return null;
+		});
+		items[5] = new Pair<String, Function<?,?>>("Close", e -> { 
 			menu.toggle();
 			return null;
 		});
+		
 		menu = new Menu(gc, graphics, items);
 
 
 		// Setup the NPC dialog.
         Pair[] items2 = new Pair[2];
 		items2[0] = new Pair<String, Function<?,?>>("Speak to ", e -> { 
-			 
 			return null;
 		});
 		items2[1] = new Pair<String, Function<?,?>>("Close", e -> { 
@@ -124,7 +134,7 @@ public class WorldState extends GameState {
 
 	public void toggleNPCMenu(NPC npc) {
 		npcMenu.setMenuItem(0, new Pair<String, Function<?,?>>("Speak to " + npc.getName(), e -> { 
-
+			// Open that npc's text box.
 			return null;
 		}));
 		npcMenu.toggle();
@@ -146,20 +156,30 @@ public class WorldState extends GameState {
 	
 	/** Handles saving the player data from the game. */
 	public void saveGame() {
-		Map<String, Object> saveData = new HashMap<String, Object>();
+		HashMap<String, Object> saveData = new HashMap<String, Object>();
 		saveData.put("positionX", player.getPosition().X);
 		saveData.put("positionY", player.getPosition().Y);
+		if(Networking.gameSaveID != null)
+			saveData.put("key", Networking.gameSaveID);
 
-		Networking.saveGame(saveData, 
-							success -> { System.out.println("Saved!"); return null; },
-							failure -> { System.out.println("Problem saving game: " + failure); return null; }) ;
+		Networking.saveData = saveData;
+		Networking.saveGame();
+		showIDDialog("Here is your save ID. Keep it somewhere safe so you can return to the same position next time you play.", Networking.gameSaveID); 
 	}
 	
 	
 	/** Handles loading the game data from a string id. Takes all the data from the save document
 	 * and puts it into the game. */
-	public void loadGame(String id) {
-		Networking.loadGame(id);
+	public void configureLoadedGame() {
+		Object saveID = Networking.saveData.get("key");
+		Object posX = Networking.saveData.get("positionX");
+		Object posY = Networking.saveData.get("positionY");
+		
+		// Set the player's position.
+		Number x = (Number) posX;
+		Number y = (Number) posY;
+		player.setPosition(x.floatValue(), y.floatValue());
+		
 	}
 	
 	
@@ -172,7 +192,6 @@ public class WorldState extends GameState {
         dialog.initModality(Modality.WINDOW_MODAL);
 		
 		BorderPane dialogPane = new BorderPane();
-		
 		
 		Label title = new Label(t);
 		title.setWrapText(true);

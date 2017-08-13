@@ -11,24 +11,23 @@ public class Orbs2 extends Application {
 
 
     public static void main(String[] args) {
+        // Setup the database.
+        Networking.initDatabase();
+
         // Launch app.
     	Application.launch(args);
     }
 
 
-    @Override public void start(Stage stage) {
-        // Setup the database.
-        Networking.initDatabase();
-
+    @Override 
+    public void start(Stage stage) {
         // The game controller.
         GameController gc = new GameController(stage);
         gc.initialize();
 
 
         // Setup the scene.
-        stage.setOnCloseRequest(e-> {
-            
-        });
+        stage.setOnCloseRequest(e -> { System.exit(0); });
         stage.setScene(gc.getCurrentState().getScene());
 		stage.setTitle("Orbs");
         stage.show(); 

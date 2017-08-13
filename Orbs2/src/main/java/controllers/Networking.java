@@ -17,7 +17,14 @@ import java.io.File;
 import java.net.URL;
 
 import java.util.Map;
-
+import java.util.HashMap;
+import javafx.util.Pair;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.BufferedReader;
+import java.net.URL;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 
 /** The class that handles all of the calls to the database. */
@@ -39,6 +46,8 @@ public class Networking {
 	// The id of the save that the current user is using.
 	public static String gameSaveID;
 
+	// The map that represents the game save data.
+	public static HashMap<String,Object> saveData;
 
 
 
@@ -48,44 +57,88 @@ public class Networking {
 	*					*
 	*********************/
 
-	/** Initializes the database by grabbing the API key. */
-	public static void initDatabase() {
-		InputStream firebaseURLLink = Networking.class.getResourceAsStream("/resources/firebaseURL.txt");
-		BufferedReader reader = null;
-
-		// Load the text file.
-		try {
-			reader = new BufferedReader(new InputStreamReader(firebaseURLLink));
-			String str = reader.readLine();
-			DATABASE_URL = str;
-			System.out.println("\nDATABSE: \n"+ str);
-			reader.close();
-
-			try {
-	            FileInputStream serviceAccount = new FileInputStream("../google-services.json");
-	            FirebaseOptions options = new FirebaseOptions.Builder()
-	                    .setCredential(FirebaseCredentials.fromCertificate(serviceAccount))
-	                    .setDatabaseUrl(DATABASE_URL)
-	                    .build();
-	            FirebaseApp.initializeApp(options);
-
-	            // Shared Database reference
-	        	fireRef = FirebaseDatabase.getInstance().getReference();
-
-	        } catch (Exception e) {
-	            System.out.println("ERROR: invalid service account credentials. See README.");
-	            System.out.println(e.getMessage());
-
-	            System.exit(1);
-	        }
-
-		} catch(Exception err) {
-			return;
+	/** Loads the firebase url into a string. */
+	public static Pair<String, String> loadFirebaseURL() {
+		ArrayList<String> lines = read("firebaseURL.txt");
+		
+		if(lines.size() > 1) {
+			return new Pair<String, String>(lines.get(0), lines.get(1));
+		} else {
+			return new Pair<String, String>("","");
 		}
 	}
 
 
 
+	/** Initializes the database by grabbing the API key. */
+	public static void initDatabase() {
+		Pair<String, String> pair = loadFirebaseURL();
+		DATABASE_URL = pair.getKey().trim().replace("\n","");
+
+		try {
+            FileInputStream fis = new FileInputStream(pair.getValue().trim());
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredential(FirebaseCredentials.fromCertificate(fis))
+                    .setDatabaseUrl(DATABASE_URL)
+                    .build();
+            FirebaseApp.initializeApp(options);
+
+            // Shared Database reference
+        	fireRef = FirebaseDatabase.getInstance().getReference();
+
+        	fis.close();
+        	return;
+        } catch (Exception e) {
+            System.out.println("ERROR: invalid service account credentials. See README.");
+            System.out.println(e.getMessage());
+
+            System.exit(1);
+        }
+	}
+
+
+
+	/********************
+	*					*
+	*	   GETTERS		*
+	*					*
+	*********************/
+
+	/** Reads a text file and returns an array list of the lines. */
+	public static ArrayList<String> read(String path) {
+		ArrayList<String> lines = new ArrayList<String>();
+
+		try {
+	    	InputStream inp = Networking.class.getResourceAsStream("/" + path);
+			BufferedReader reader = reader = new BufferedReader(new InputStreamReader(inp));
+
+			String str = reader.readLine();
+			while(str != null) {
+				lines.add(str);
+
+				// Restart the loop.
+				try { str = reader.readLine(); } catch(Exception err) { err.printStackTrace(); break; }
+			}
+			reader.close();
+	    } catch(Exception er) {
+	    	er.printStackTrace();
+	    }
+
+	    return lines;
+	}
+
+
+	/** Loads a buffered image from the resources. */
+	public static BufferedImage loadBufferedImage(String path) {
+		BufferedImage img = null;
+		try {
+			URL res = Networking.class.getResource("/" + path);
+			img = ImageIO.read( res );
+		} catch(Exception err) {
+			err.printStackTrace();
+		}
+		return img;
+	}
 
 
 
@@ -95,23 +148,37 @@ public class Networking {
 	*					*
 	*********************/
 
+	/** Clears all the game save data. This is used when returning to the home screen. */
+	public static void clear() {
+		if(saveData != null)
+			saveData.clear();
+		gameSaveID = null;
+	}
+
+
 	/** Trys to load a game from the given game ID. */
-	public static void loadGame(String gameID) {
-		DatabaseReference ref = fireRef.child(gameID);
+	//-KrNID9XL09S_VNhYAAN
+	public static void loadGame(String gameID, Function<?,?> then) {
+		DatabaseReference ref = fireRef.child(gameID.trim().replace("\n",""));
+
 		if(ref == null) {
-			System.out.println("There is no data for that save ID");
 			return;
 		}
+		gameSaveID = gameID;
 		ref.addListenerForSingleValueEvent(new ValueEventListener() {
 		    @Override
 		    public void onDataChange(DataSnapshot dataSnapshot) {
-		        Map<String, Object> data = dataSnapshot.getValue(Map.class);
-		        System.out.println(data);
+
+		    	//HashMap<String, Object> data = dataSnapshot.getValue(genericType);
+		        GenericTypeIndicator<HashMap<String,Object>> t = new GenericTypeIndicator<HashMap<String,Object>>() {};
+     			saveData = dataSnapshot.getValue(t);
+
+     			then.apply(null);
 		    }
 
 		    @Override
 		    public void onCancelled(DatabaseError databaseError) {
-		        System.out.println("The read failed: " + databaseError.getCode());
+		    	System.out.println("ERROR: " + databaseError.getCode());
 		    }
 		});
 	}
@@ -120,26 +187,23 @@ public class Networking {
 
 
 	/** Saves the game to the database. */
-	public static void saveGame(Map<String, Object> saveData, Function<?,?> success, Function<String,String> failure) {
+	public static void saveGame() {
 		/* If the game save id is not null, that means that you have loaded the game 
 		already and are currently running that save file. */
 		if(gameSaveID != null) {
 
 			// Assuming you are already working with a game save ID, just save the new data.
 			DatabaseReference ref = fireRef.child(gameSaveID);
-			ref.setValue(saveData, new DatabaseReference.CompletionListener() {
-			    @Override
-			    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-			        if (databaseError != null) {
-			            failure.apply(databaseError.getMessage().toString());
-			        } else {
-			            success.apply(null);
-			        }
-			    }
-			});
 
 			// Don't forget to set the variable of gameSaveID.
 			gameSaveID = ref.getKey();
+
+			ref.setValue(saveData, new DatabaseReference.CompletionListener() {
+			    @Override
+			    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+			        
+			    }
+			});
 
 		} else {
 			/* If the save id IS null, that means you either have not saved yet or you
@@ -151,20 +215,16 @@ public class Networking {
 			// Make sure to get the key from the reference point.
 			saveData.put("key", ref.getKey());
 
+			// Don't forget to set the variable of gameSaveID.
+			gameSaveID = ref.getKey();
+
 			// Finally, save the data.
 			ref.setValue(saveData, new DatabaseReference.CompletionListener() {
 			    @Override
 			    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-			        if (databaseError != null) {
-			            failure.apply(databaseError.getMessage().toString());
-			        } else {
-			            success.apply(null);
-			        }
+			       	
 			    }
 			});
-
-			// Don't forget to set the variable of gameSaveID.
-			gameSaveID = ref.getKey();
 		}
 	}
 
