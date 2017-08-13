@@ -137,10 +137,15 @@ public class WorldState extends GameState {
 
 	public void toggleNPCMenu(NPC npc) {
 		TextBox.finishedFunction = npc.getFinishedFunction();
-		npcMenu.setMenuItem(0, new Pair<String, Function<?,?>>("Speak to " + npc.getName(), e -> { 
-			textBox.set(npc.getSpeech());
-			textBox.toggle();
-			npcMenu.toggle();
+		npcMenu.setMenuItem(0, new Pair<String, Function<?,?>>("Interact", e -> { 
+			if(npc.getSpeech().size() > 0) {
+				textBox.set(npc.getSpeech());
+				textBox.toggle();
+				npcMenu.toggle();
+			}
+			else {
+				npcMenu.toggle();
+			}
 			return null;
 		}));
 		npcMenu.toggle();

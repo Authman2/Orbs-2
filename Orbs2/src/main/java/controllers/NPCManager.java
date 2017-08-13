@@ -31,7 +31,7 @@ public class NPCManager {
 	private HashMap<String, ArrayList<String>> npcSpeech;
 	
 	// NPC objects.
-	private NPC scientist;
+	private NPC scientist, boyRopeTask_1, boyRopeTask_2, boy_3, elderlyWomanWaterTask;
 
 
 
@@ -105,8 +105,17 @@ public class NPCManager {
 	private void loadNPCSpeech() {
 		npcSpeech.put("scientist_1", Networking.read("speech/scientist_1.txt"));
 		npcSpeech.put("scientist_2", Networking.read("speech/scientist_2.txt"));
+		npcSpeech.put("elderlyWoman_1_1", Networking.read("speech/elderlyWomanWaterTask_1.txt"));
+		npcSpeech.put("elderlyWoman_1_2", Networking.read("speech/elderlyWomanWaterTask_2.txt"));
+		npcSpeech.put("elderlyWoman_1_3", Networking.read("speech/elderlyWomanWaterTask_3.txt"));
+		npcSpeech.put("boyRopeTask_1", Networking.read("speech/boyRopeTask_1.txt"));
+		npcSpeech.put("boyRopeTask_2", Networking.read("speech/boyRopeTask_2.txt"));
+		npcSpeech.put("boyRopeTask_3", Networking.read("speech/boyRopeTask_3.txt"));
 
 		scientist.setSpeech(npcSpeech.get("scientist_1"));
+		elderlyWomanWaterTask.setSpeech(npcSpeech.get("elderlyWoman_1_1"));
+		boyRopeTask_1.setSpeech(npcSpeech.get("boyRopeTask_1"));
+		boyRopeTask_2.setSpeech(npcSpeech.get("boyRopeTask_1"));
 	}
 
 
@@ -122,6 +131,30 @@ public class NPCManager {
 				scientist.setSpeech(npcSpeech.get("scientist_2"));
 			}
 			return e;
+		});
+		elderlyWomanWaterTask.setFinishedFunction(e -> {
+			if(!TaskSystem.getTask("BUCKET_OF_WATER").isStarted()) {
+				TaskSystem.getTask("BUCKET_OF_WATER").start();
+			}
+			// else if the player has the bucket of water and the task is not completed
+			// else if(!TaskSystem.getTask("BUCKET_OF_WATER").isCompleted()) {
+
+			// }
+			return e;
+		});
+		boyRopeTask_1.setFinishedFunction(e -> {
+			if(!TaskSystem.getTask("ROPE").isStarted()) {
+				TaskSystem.getTask("ROPE").start();
+			}
+			// else if you have a rope and the task is not completed.
+			return null;
+		});
+		boyRopeTask_2.setFinishedFunction(e -> {
+			if(!TaskSystem.getTask("ROPE").isStarted()) {
+				TaskSystem.getTask("ROPE").start();
+			}
+			// else if you have a rope and the task is not completed.
+			return null;
 		});
 	}
 

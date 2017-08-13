@@ -201,10 +201,11 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
 				.filter { it -> camera!!.touching(it); }
 				.forEach{ e -> e.draw() }
 		}
+		npcManager!!.draw();
 		if (player != null) {
 			player!!.draw()
 		}
-		npcManager!!.draw();
+		
 		
 		worldState.graphics.translate(camera!!.position.X.toDouble(), camera!!.position.Y.toDouble())
 	}
