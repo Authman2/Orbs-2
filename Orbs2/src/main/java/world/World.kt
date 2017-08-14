@@ -11,6 +11,7 @@ import main_package.drawCollisionBoxes
 import main_package.drawRenderBoxes
 import main_package.printTilesRendered
 import main_package.printTasks
+import main_package.printPlayerPosition
 import states.WorldState
 import tiles.*
 import java.util.ArrayList
@@ -231,6 +232,9 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
 		if(code == KeyCode.T) {
 			printTasks()
 		}
+        if(code == KeyCode.P) {
+            printPlayerPosition();
+        }
 	}
 
 } // End of class.

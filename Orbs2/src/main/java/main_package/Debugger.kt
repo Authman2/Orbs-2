@@ -36,6 +36,13 @@ public fun drawRenderBoxes() {
 
 
 
+/** Prints the player's current position. */
+public fun World.printPlayerPosition() {
+    println("PLAYER POSITION: ${this.player!!.getPosition()}");
+}
+
+
+
 /** Prints out all of the current tasks in the task system. */
 public fun printTasks() {
 	TaskSystem.tasks.forEach { e ->

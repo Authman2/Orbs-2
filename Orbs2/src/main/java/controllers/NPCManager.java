@@ -31,7 +31,10 @@ public class NPCManager {
 	private HashMap<String, ArrayList<String>> npcSpeech;
 	
 	// NPC objects.
-	private NPC scientist, boyRopeTask_1, boyRopeTask_2, boy_3, elderlyWomanWaterTask;
+	private NPC scientist, boyRopeTask_1, boyRopeTask_2, boy_3, elderlyWomanWaterTask, boy_4, boy_5, girl_1,
+	girl_2, ropeTaskStoreOwner, 
+
+	girl_3, women_1, man_1, man_2, boy_6, man_3, women_2, girl_4, boy_7, boy_8, girl_5, boy_9, boy_10, boy_11;
 
 
 
@@ -60,7 +63,8 @@ public class NPCManager {
 		ArrayList<String> lines = Networking.read("maps/NPCLocations.txt");
 
 		for(String line : lines) {
-			String[] parts = line.split(" ");
+            String[] parts = line.split(" ");
+            if(parts.length < 7) continue;
         	
         	String name = parts[0];
         	int x = Integer.parseInt(parts[1]);
@@ -111,11 +115,54 @@ public class NPCManager {
 		npcSpeech.put("boyRopeTask_1", Networking.read("speech/boyRopeTask_1.txt"));
 		npcSpeech.put("boyRopeTask_2", Networking.read("speech/boyRopeTask_2.txt"));
 		npcSpeech.put("boyRopeTask_3", Networking.read("speech/boyRopeTask_3.txt"));
+		npcSpeech.put("boy_3", Networking.read("speech/boy_3.txt"));
+		npcSpeech.put("boy_4_5", Networking.read("speech/boy_4_5.txt"));
+		npcSpeech.put("girl_1", Networking.read("speech/girl_1.txt"));
+		npcSpeech.put("girl_2", Networking.read("speech/girl_2.txt"));
+		npcSpeech.put("ropeTaskStoreOwner_0", Networking.read("speech/ropeTaskStoreOwner_0.txt"));
+		npcSpeech.put("ropeTaskStoreOwner_1", Networking.read("speech/ropeTaskStoreOwner_1.txt"));
+		npcSpeech.put("ropeTaskStoreOwner_2", Networking.read("speech/ropeTaskStoreOwner_2.txt"));
+		npcSpeech.put("ropeTaskStoreOwner_3", Networking.read("speech/ropeTaskStoreOwner_3.txt"));
+        npcSpeech.put("girl_3", Networking.read("speech/girl_3.txt"));
+        npcSpeech.put("women_1", Networking.read("speech/women_1.txt"));
+        npcSpeech.put("man_1", Networking.read("speech/man_1.txt"));
+        npcSpeech.put("man_2", Networking.read("speech/man_2.txt"));
+        npcSpeech.put("boy_6", Networking.read("speech/boy_6.txt"));
+        npcSpeech.put("man_3", Networking.read("speech/man_3.txt"));
+        npcSpeech.put("women_2", Networking.read("speech/women_2.txt"));
+        npcSpeech.put("girl_4", Networking.read("speech/girl_4.txt"));
+        npcSpeech.put("boy_7", Networking.read("speech/boy_7.txt"));
+        npcSpeech.put("boy_8", Networking.read("speech/boy_8.txt"));
+        npcSpeech.put("girl_5", Networking.read("speech/girl_5.txt"));
+        npcSpeech.put("boy_9", Networking.read("speech/boy_9.txt"));
+        npcSpeech.put("boy_10", Networking.read("speech/boy_10.txt"));
+        npcSpeech.put("boy_11", Networking.read("speech/boy_11.txt"));
+        
 
 		scientist.setSpeech(npcSpeech.get("scientist_1"));
 		elderlyWomanWaterTask.setSpeech(npcSpeech.get("elderlyWoman_1_1"));
 		boyRopeTask_1.setSpeech(npcSpeech.get("boyRopeTask_1"));
 		boyRopeTask_2.setSpeech(npcSpeech.get("boyRopeTask_1"));
+		boy_3.setSpeech(npcSpeech.get("boy_3"));
+		boy_4.setSpeech(npcSpeech.get("boy_4_5"));
+		boy_5.setSpeech(npcSpeech.get("boy_4_5"));
+		girl_1.setSpeech(npcSpeech.get("girl_1"));
+		girl_2.setSpeech(npcSpeech.get("girl_2"));
+		ropeTaskStoreOwner.setSpeech(npcSpeech.get("ropeTaskStoreOwner_0"));
+        girl_3.setSpeech(npcSpeech.get("girl_3"));
+        women_1.setSpeech(npcSpeech.get("women_1"));
+        man_1.setSpeech(npcSpeech.get("man_1"));
+        man_2.setSpeech(npcSpeech.get("man_2"));
+        boy_6.setSpeech(npcSpeech.get("boy_6"));
+        man_3.setSpeech(npcSpeech.get("man_3"));
+        women_2.setSpeech(npcSpeech.get("women_2"));
+        girl_4.setSpeech(npcSpeech.get("girl_4"));
+        boy_7.setSpeech(npcSpeech.get("boy_7"));
+        boy_8.setSpeech(npcSpeech.get("boy_8"));
+        girl_5.setSpeech(npcSpeech.get("girl_5"));
+        boy_9.setSpeech(npcSpeech.get("boy_9"));
+        boy_10.setSpeech(npcSpeech.get("boy_10"));
+        boy_11.setSpeech(npcSpeech.get("boy_11"));
 	}
 
 
@@ -145,6 +192,7 @@ public class NPCManager {
 		boyRopeTask_1.setFinishedFunction(e -> {
 			if(!TaskSystem.getTask("ROPE").isStarted()) {
 				TaskSystem.getTask("ROPE").start();
+				ropeTaskStoreOwner.setSpeech(npcSpeech.get("ropeTaskStoreOwner_1"));
 			}
 			// else if you have a rope and the task is not completed.
 			return null;
@@ -152,8 +200,13 @@ public class NPCManager {
 		boyRopeTask_2.setFinishedFunction(e -> {
 			if(!TaskSystem.getTask("ROPE").isStarted()) {
 				TaskSystem.getTask("ROPE").start();
+				ropeTaskStoreOwner.setSpeech(npcSpeech.get("ropeTaskStoreOwner_1"));
 			}
 			// else if you have a rope and the task is not completed.
+			return null;
+		});
+		ropeTaskStoreOwner.setFinishedFunction(e -> {
+			// if the user has started the rope task and has enough coins or doesn't, change text.
 			return null;
 		});
 	}
