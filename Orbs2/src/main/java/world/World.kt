@@ -100,6 +100,7 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
 			for (j in 0..map[0].size - 1) {
 				when (map[i][j]) {
 					"1" -> tiles.add( GrassTile(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "2" -> tiles.add( CobbleStoneTile(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"22","68","88","108" -> tiles.add( WoodFloor(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"3" -> tiles.add( Well(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"21" -> tiles.add( TreeTop(Vector2D(j.toFloat(), i.toFloat()), worldState) );
@@ -125,15 +126,48 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
 					"48" -> tiles.add( HouseOne_Top(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"25" -> tiles.add( RedRug_TL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"26" -> tiles.add( RedRug_TR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "32" -> tiles.add( HOUSE_INNERWALL_FACING_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"45" -> tiles.add( RedRug_BL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"46" -> tiles.add( RedRug_BR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
-					"52" -> tiles.add( HouseOne_InnerSL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"52" -> tiles.add( HOUSE_INNERWALL_FACING_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"72" -> tiles.add( HouseOne_InnerTop(Vector2D(j.toFloat(), i.toFloat()), worldState) );
-					"73" -> tiles.add( HouseOne_InnerCR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
-					"53" -> tiles.add( HouseOne_InnerVerticalL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"73" -> tiles.add( HOUSE_INNER_CONVEX_CBR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "74" -> tiles.add( HOUSE_INNER_CONVEX_CBL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+					"53" -> tiles.add( HOUSE_1_VERTICAL_WALL_L(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "54" -> tiles.add( HOUSE_1_VERTICAL_WALL_R(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"33" -> tiles.add( HouseOne_InnerSTL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "34" -> tiles.add( HouseOne_InnerSTR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"51" -> tiles.add( HouseOne_ConcaveCBL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 					"71" -> tiles.add( HouseOne_ConcaveSideL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "61" -> tiles.add( WATER_TOP_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "62" -> tiles.add( WATER_TOP(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "63" -> tiles.add( WATER_TOP_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "81" -> tiles.add( WATER_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "82" -> tiles.add( WATER(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "83" -> tiles.add( WATER_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "101" -> tiles.add( WATER_BOTTOM_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "102" -> tiles.add( WATER_BOTTOM(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "103" -> tiles.add( WATER_BOTTOM_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "64" -> tiles.add( SAND_TOP_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "65" -> tiles.add( SAND_TOP(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "66" -> tiles.add( SAND_TOP_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "84" -> tiles.add( SAND_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "85" -> tiles.add( SAND(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "86" -> tiles.add( SAND_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "104" -> tiles.add( SAND_BOTTOM_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "105" -> tiles.add( SAND_BOTTOM(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "106" -> tiles.add( SAND_BOTTOM_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "121" -> tiles.add( TV_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "122" -> tiles.add( TV_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "123" -> tiles.add( TV(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "141" -> tiles.add( TABLE_TOP_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "142" -> tiles.add( TABLE_TOP_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "161" -> tiles.add( TABLE_BOTTOM_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "162" -> tiles.add( TABLE_BOTTOM_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "181" -> tiles.add( ROAD_MIDDLE(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "182" -> tiles.add( ROAD(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "124" -> tiles.add( LAMP_TOP(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "144" -> tiles.add( LAMP_BOTTOM(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 				}
 			}
 		}

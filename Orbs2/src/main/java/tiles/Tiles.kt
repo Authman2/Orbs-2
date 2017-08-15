@@ -17,6 +17,18 @@ class EmptyTile(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.EMPTY, ws) {
 
 
 /**
+ COBBLESTONE TILE
+*/
+class CobbleStoneTile(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.COBBLESTONE, ws) {
+	
+	init {
+		setSolid(false)
+	}
+	
+}
+
+
+/**
  GRASS TILE
 */
 class GrassTile(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.GRASS_1, ws) {
