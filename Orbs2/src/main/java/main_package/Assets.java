@@ -66,11 +66,18 @@ public class Assets {
                         WATER_BOTTOM_LEFT, WATER_LEFT, WATER;
     public static Image TV_LEFT, TV_RIGHT, TV, LAMP_TOP, LAMP_BOTTOM, TABLE_TOP_LEFT, TABLE_TOP_RIGHT,
                         TABLE_BOTTOM_LEFT, TABLE_BOTTOM_RIGHT;
-    public static Image ROAD_MIDDLE, ROAD;
+    public static Image ROAD_MIDDLE, ROAD_SIDEWAYS, ROAD;
 	
-	public static Image WELL;
+	public static Image WELL, DOOR, ROCK;
 	
-	
+	public static Image GRASS_2, FLOWER_1, FLOWER_2, BREAKABLE_TREE, WHIRLPOOL, TOWEL_1_TOP, TOWEL_1_BOTTOM,
+                        TOWEL_2_TOP, TOWEL_2_BOTTOM;
+    
+    public static Image SWAMP_TOP_LEFT, SWAMP_TOP, SWAMP_TOP_RIGHT, SWAMP_RIGHT, SWAMP_BOTTOM_RIGHT, SWAMP_BOTTOM,
+                        SWAMP_BOTTOM_LEFT, SWAMP_LEFT, SWAMP;
+    
+    
+    
 	
 	
 	

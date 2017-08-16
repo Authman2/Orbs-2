@@ -95,6 +95,7 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
 
 	
 	// Handles actually making the tile map.
+    //-KrRKf1cA5OAwMCeA3FQ
 	private fun makeMap(map: Array<Array<String>>?, tiles: ArrayList<Tile>) {
 		for (i in map!!.indices) {
 			for (j in 0..map[0].size - 1) {
@@ -168,6 +169,27 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
                     "182" -> tiles.add( ROAD(Vector2D(j.toFloat(), i.toFloat()), worldState) );
                     "124" -> tiles.add( LAMP_TOP(Vector2D(j.toFloat(), i.toFloat()), worldState) );
                     "144" -> tiles.add( LAMP_BOTTOM(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "4" -> tiles.add( BREAKABLE_TREE(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "5" -> tiles.add( GRASS_2(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "6" -> tiles.add( FLOWER_1(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "7" -> tiles.add( FLOWER_2(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "8" -> tiles.add( ROCK(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "27" -> tiles.add( WHIRLPOOL(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "201" -> tiles.add( ROAD_SIDEWAYS(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "143" -> tiles.add( DOOR(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "125" -> tiles.add( TOWEL_1_TOP(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "126" -> tiles.add( TOWEL_2_TOP(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "145" -> tiles.add( TOWEL_1_BOTTOM(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "146" -> tiles.add( TOWEL_2_BOTTOM(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "127" -> tiles.add( SWAMP_TOP_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "128" -> tiles.add( SWAMP_TOP(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "129" -> tiles.add( SWAMP_TOP_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "147" -> tiles.add( SWAMP_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "148" -> tiles.add( SWAMP(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "149" -> tiles.add( SWAMP_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "167" -> tiles.add( SWAMP_BOTTOM_LEFT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "168" -> tiles.add( SWAMP_BOTTOM(Vector2D(j.toFloat(), i.toFloat()), worldState) );
+                    "169" -> tiles.add( SWAMP_BOTTOM_RIGHT(Vector2D(j.toFloat(), i.toFloat()), worldState) );
 				}
 			}
 		}
