@@ -210,57 +210,57 @@ class SAND(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.SAND, ws) { init 
 class WATER_TOP_LEFT(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WATER_TOP_LEFT, ws) {
 	
 	init {
-		setSolid(false)
+		setSolid(true)
 	}
 	
 }
 class WATER_TOP(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WATER_TOP, ws) {
 	
 	init {
-		setSolid(false)
+		setSolid(true)
 	}
 	
 }
 class WATER_TOP_RIGHT(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WATER_TOP_RIGHT, ws) {
 	
 	init {
-		setSolid(false)
+		setSolid(true)
 	}
 	
 }
 class WATER_RIGHT(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WATER_RIGHT, ws) {
 	
 	init {
-		setSolid(false)
+		setSolid(true)
 	}
 	
 }
 class WATER_BOTTOM_RIGHT(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WATER_BOTTOM_RIGHT, ws) {
 	
 	init {
-		setSolid(false)
+		setSolid(true)
 	}
 	
 }
 class WATER_BOTTOM(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WATER_BOTTOM, ws) {
 	
 	init {
-		setSolid(false)
+		setSolid(true)
 	}
 	
 }
 class WATER_BOTTOM_LEFT(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WATER_BOTTOM_LEFT, ws) {
 	
 	init {
-		setSolid(false)
+		setSolid(true)
 	}
 	
 }
 class WATER_LEFT(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WATER_LEFT, ws) {
 	
 	init {
-		setSolid(false)
+		setSolid(true)
 	}
 	
 }
-class WATER(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WATER, ws) { init { setSolid(false) } }
+class WATER(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.WATER, ws) { init { setSolid(true) } }

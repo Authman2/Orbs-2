@@ -11,6 +11,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import controllers.*;
+import hud.*;
+import entities.*;
+import minigames.*;
 
 public class CompletionHandlers {
 
@@ -26,7 +29,7 @@ public class CompletionHandlers {
 
 
     // Handlers
-    public static Function0 speakToScientistHandler = new Function0() {
+    public Function0 speakToScientistHandler = new Function0() {
         public Unit invoke() {
             if(!TaskSystem.getTask("SPEAK_TO_SCIENTIST").isCompleted()) {
 				TaskSystem.getTask("SPEAK_TO_SCIENTIST").complete();
@@ -40,7 +43,7 @@ public class CompletionHandlers {
             return null;
         }
     };
-    public static Function0 elderlyWomanWaterTaskHandler = new Function0() {
+    public Function0 elderlyWomanWaterTaskHandler = new Function0() {
         public Unit invoke() {
             if(!TaskSystem.getTask("BUCKET_OF_WATER").isStarted()) {
 				TaskSystem.getTask("BUCKET_OF_WATER").start();
@@ -54,7 +57,7 @@ public class CompletionHandlers {
             return null;
         }
     };
-    public static Function0 boyRopeTaskHandler = new Function0() {
+    public Function0 boyRopeTaskHandler = new Function0() {
         public Unit invoke() {
             if(!TaskSystem.getTask("ROPE").isStarted()) {
 				TaskSystem.getTask("ROPE").start();
@@ -71,7 +74,7 @@ public class CompletionHandlers {
             return null;
         }
     };
-    public static Function0 ropeTaskStoreOwnerHandler = new Function0() {
+    public Function0 ropeTaskStoreOwnerHandler = new Function0() {
         public Unit invoke() {
             if(TaskSystem.getTask("ROPE").isStarted() && InventoryState.contains("COIN")) {
 				if(InventoryState.getItem("COIN").getQuantity() == 20) {
@@ -85,7 +88,7 @@ public class CompletionHandlers {
             return null;
         }
     };
-    public static Function0 coinManHandler = new Function0() {
+    public Function0 coinManHandler = new Function0() {
         public Unit invoke() {
             if(!InventoryState.contains("COIN") && !TaskSystem.getTask("ROPE").isCompleted() && !InventoryState.contains("ROPE")) {
 				Coin c = new Coin();
@@ -96,6 +99,64 @@ public class CompletionHandlers {
 			}
             return null;
         }   
+    };
+    public Function0 lostDogHandler = new Function0() {
+        public Unit invoke() {
+            if(TaskSystem.getTask("MISSING_DOG").isStarted()) {
+                NPCManager.dogOwnerWoman.setSpeech(NPCManager.npcSpeech.get("dogOwnerWoman_2"));
+                
+                InventoryState.addToInventory(new Dog(), CompletionHandlers.worldState);
+                NPCManager.npcs.remove(NPCManager.lostDog);
+                TextBox.open = false;
+            }
+            return null;
+        }
+    };
+    public Function0 dogOwnerWomanHandler = new Function0() {
+        public Unit invoke() {
+            if(!TaskSystem.getTask("MISSING_DOG").isStarted()) {
+                TaskSystem.getTask("MISSING_DOG").start();
+                NPCManager.lostDog.setSpeech(NPCManager.npcSpeech.get("lostDog_2"));
+            } else {
+                if(!TaskSystem.getTask("MISSING_DOG").isCompleted() && InventoryState.contains("DOG")) {
+                    InventoryState.addToInventory(new PoolMembershipCard(), CompletionHandlers.worldState);
+                    InventoryState.removeItem("DOG");
+                    
+                    NPCManager.dogOwnerWoman.setSpeech(NPCManager.npcSpeech.get("dogOwnerWoman_3"));
+                    TaskSystem.getTask("MISSING_DOG").complete();
+                    NPCManager.swimmingLessonsWoman.setSpeech(NPCManager.npcSpeech.get("swimmingLessonsWoman_2"));
+                }
+            }
+            return null;
+        }
+    };
+    public Function0 swimmingLessonsWomanHandler = new Function0() {
+        public Unit invoke() {
+            if(!TaskSystem.getTask("SWIMMING_LESSONS").isStarted()) {
+                TaskSystem.getTask("SWIMMING_LESSONS").start();
+            }
+            if(SwimmingMG.swimmingTaskCompleted == true) {
+                NPCManager.swimmingLessonsWoman.setSpeech(NPCManager.npcSpeech.get("swimmingLessonsWoman_4"));
+                TaskSystem.getTask("SWIMMING_LESSONS").complete();
+
+                Player.canSwim = true;
+                CompletionHandlers.worldState.getCurrentWorld().getTilesL1().stream().forEach(it -> {
+                    if(it.getClass().getName().contains("WATER")) {
+                        it.setSolid(false);
+                    }
+                });
+                CompletionHandlers.worldState.getCurrentWorld().getTilesL2().stream().forEach(it -> {
+                    if(it.getClass().getName().contains("WATER")) {
+                        it.setSolid(false);
+                    }
+                });
+            }
+            else if(SwimmingMG.swimmingTaskCompleted == false) {
+                CompletionHandlers.worldState.gc.goTo(5);
+            }
+            
+            return null;
+        }
     };
     
 
@@ -169,8 +230,55 @@ public class CompletionHandlers {
             return null;
         }
     };
-
-
+    public static Function0 lostDogHandler_Loaded = new Function0() {
+        public Unit invoke() {
+            if(TaskSystem.getTask("MISSING_DOG").isStarted()) {
+                NPCManager.lostDog.setSpeech(NPCManager.npcSpeech.get("lostDog_2"));
+            }
+            if(InventoryState.contains("DOG") || TaskSystem.getTask("MISSING_DOG").isCompleted()) {
+                NPCManager.npcs.remove(NPCManager.lostDog);
+            }
+            return null;
+        }
+    };
+    public static Function0 dogOwnerWomanHandler_Loaded = new Function0() {
+        public Unit invoke() {
+            if(TaskSystem.getTask("MISSING_DOG").isCompleted()) {
+                NPCManager.dogOwnerWoman.setSpeech(NPCManager.npcSpeech.get("dogOwnerWoman_3"));
+            }
+            else if(TaskSystem.getTask("MISSING_DOG").isStarted()) {
+                if(InventoryState.contains("DOG")) {
+                    NPCManager.dogOwnerWoman.setSpeech(NPCManager.npcSpeech.get("dogOwnerWoman_2"));
+                }
+            }
+            return null;
+        }
+    };
+    public static Function0 swimmingLessonsWomanHandler_Loaded = new Function0() {
+        public Unit invoke() {
+            if(TaskSystem.getTask("SWIMMING_LESSONS").isCompleted()) {
+                NPCManager.swimmingLessonsWoman.setSpeech(NPCManager.npcSpeech.get("swimmingLessonsWoman_4"));
+                
+                // Make sure the player can swim.
+                SwimmingMG.swimmingTaskCompleted = true;
+                Player.canSwim = true;
+                CompletionHandlers.worldState.getCurrentWorld().getTilesL1().stream().forEach(it -> {
+                    if(it.getClass().getName().contains("WATER")) {
+                        it.setSolid(false);
+                    }
+                });
+                CompletionHandlers.worldState.getCurrentWorld().getTilesL2().stream().forEach(it -> {
+                    if(it.getClass().getName().contains("WATER")) {
+                        it.setSolid(false);
+                    }
+                });
+            }
+            else if(InventoryState.contains("POOL_MEMBERSHIP_CARD")) {
+                NPCManager.swimmingLessonsWoman.setSpeech(NPCManager.npcSpeech.get("swimmingLessonsWoman_2"));
+            }
+            return null;
+        }
+    };
 
 
 

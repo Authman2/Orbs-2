@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import main_package.Assets;
 import states.*;
+import minigames.*;
 
 /*
 * The GameController is the main controller used to organize all other
@@ -56,12 +57,13 @@ public class GameController {
 		assets.initialize();
 
 		// Setup the game states.
-		states = new GameState[5];
+		states = new GameState[6];
 		states[0] = new MainMenuState(this, stage);
 		states[1] = new WorldState(this, stage);
 		states[2] = new ControlsState(this, stage);
 		states[3] = new ViewTasksState(this, stage);
         states[4] = new InventoryState(this, stage);
+        states[5] = new SwimmingMG(this, stage);
 
 		currentState = states[0];
 

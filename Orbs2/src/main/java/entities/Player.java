@@ -24,6 +24,9 @@ public class Player extends Entity {
 
 	// booleans for movement (only for moving in the opposite direction)
 	boolean up, down, left, right;
+    
+    // Whether or not the player can swim.
+    public static boolean canSwim = false;
 
 
 

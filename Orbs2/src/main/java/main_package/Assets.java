@@ -76,6 +76,9 @@ public class Assets {
     public static Image SWAMP_TOP_LEFT, SWAMP_TOP, SWAMP_TOP_RIGHT, SWAMP_RIGHT, SWAMP_BOTTOM_RIGHT, SWAMP_BOTTOM,
                         SWAMP_BOTTOM_LEFT, SWAMP_LEFT, SWAMP;
     
+    public static Image DOG_1_UP, DOG_1_DOWN, DOG_1_LEFT, DOG_1_RIGHT,
+                        DOG_2_UP, DOG_2_DOWN, DOG_2_LEFT, DOG_2_RIGHT,
+                        HORSE_UP, HORSE_DOWN, HORSE_LEFT, HORSE_RIGHT;
     
     
 	

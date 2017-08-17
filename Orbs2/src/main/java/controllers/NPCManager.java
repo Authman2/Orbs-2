@@ -39,10 +39,11 @@ public class NPCManager {
 	// NPC objects.
 	public static NPC scientist, boyRopeTask_1, boyRopeTask_2, boy_3, elderlyWomanWaterTask, boy_4, boy_5, girl_1,
 	girl_2, ropeTaskStoreOwner, girl_3, women_1, man_1, man_2, boy_6, man_3, women_2, girl_4, boy_7, boy_8, 
-	girl_5, boy_9, boy_10, boy_11, coinMan;
+	girl_5, boy_9, boy_10, boy_11, coinMan, dog_1, dog_2, dog_3, dog_4, dog_5, dog_6, dog_7, lostDog, dogOwnerWoman,
+    girl_6, man_4, man_5, swimmingLessonsWoman;
 
 
-
+//-KrhvqCIGS_2i3CbmWT7
 
 	/********************
 	*					*
@@ -137,6 +138,9 @@ public class NPCManager {
 		boyRopeTask_2.setFinishedFunction(cHandlers.boyRopeTaskHandler);
 		ropeTaskStoreOwner.setFinishedFunction(cHandlers.ropeTaskStoreOwnerHandler);
 		coinMan.setFinishedFunction(cHandlers.coinManHandler);
+        lostDog.setFinishedFunction(cHandlers.lostDogHandler);
+        dogOwnerWoman.setFinishedFunction(cHandlers.dogOwnerWomanHandler);
+        swimmingLessonsWoman.setFinishedFunction(cHandlers.swimmingLessonsWomanHandler);
 	}
 
 
@@ -180,6 +184,16 @@ public class NPCManager {
         npcSpeech.put("boy_11", Networking.read("speech/boy_11.txt"));
 		npcSpeech.put("coinMan_1", Networking.read("speech/coinMan_1.txt"));
 		npcSpeech.put("coinMan_2", Networking.read("speech/coinMan_2.txt"));
+        npcSpeech.put("dog", Networking.read("speech/dog.txt"));
+        npcSpeech.put("lostDog_1", Networking.read("speech/lostDog_1.txt"));
+        npcSpeech.put("lostDog_2", Networking.read("speech/lostDog_2.txt"));
+        npcSpeech.put("dogOwnerWoman_1", Networking.read("speech/dogOwnerWoman_1.txt"));
+        npcSpeech.put("dogOwnerWoman_2", Networking.read("speech/dogOwnerWoman_2.txt"));
+        npcSpeech.put("dogOwnerWoman_3", Networking.read("speech/dogOwnerWoman_3.txt"));
+        npcSpeech.put("swimmingLessonsWoman_1", Networking.read("speech/swimmingLessonsWoman_1.txt"));
+        npcSpeech.put("swimmingLessonsWoman_2", Networking.read("speech/swimmingLessonsWoman_2.txt"));
+        npcSpeech.put("swimmingLessonsWoman_3", Networking.read("speech/swimmingLessonsWoman_3.txt"));
+        npcSpeech.put("swimmingLessonsWoman_4", Networking.read("speech/swimmingLessonsWoman_4.txt"));
 
 		scientist.setSpeech(npcSpeech.get("scientist_1"));
 		elderlyWomanWaterTask.setSpeech(npcSpeech.get("elderlyWoman_1_1"));
@@ -206,6 +220,12 @@ public class NPCManager {
         boy_10.setSpeech(npcSpeech.get("boy_10"));
 		boy_11.setSpeech(npcSpeech.get("boy_11"));
 		coinMan.setSpeech(npcSpeech.get("coinMan_1"));
+        dog_1.setSpeech(npcSpeech.get("dog")); dog_2.setSpeech(npcSpeech.get("dog"));
+        dog_3.setSpeech(npcSpeech.get("dog")); dog_4.setSpeech(npcSpeech.get("dog"));
+        dog_5.setSpeech(npcSpeech.get("dog")); dog_6.setSpeech(npcSpeech.get("dog"));
+        lostDog.setSpeech(npcSpeech.get("lostDog_1"));
+        dogOwnerWoman.setSpeech(npcSpeech.get("dogOwnerWoman_1"));
+        swimmingLessonsWoman.setSpeech(npcSpeech.get("swimmingLessonsWoman_1"));
 	}
 
 
