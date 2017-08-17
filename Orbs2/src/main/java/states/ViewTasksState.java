@@ -119,6 +119,7 @@ public class ViewTasksState extends GameState {
 
 		List<Task> tasks = TaskSystem.getAllTasks().stream().filter( e -> e.isStarted() ).collect(Collectors.toList());
 		for(Task t : tasks) {
+			//System.out.println(t);
 			if(t.isCompleted()) {
 				builder.append( "(\u2713)    " + t.getTaskDescription() + "\n");
 			} else {

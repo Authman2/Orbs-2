@@ -1,5 +1,7 @@
 package tasks;
 
+import states.*
+
 public class Task(var description: String,
                   var id: String,
                   var dependsOnTask: Task? = null,
@@ -110,7 +112,7 @@ public class Task(var description: String,
     /** Sets the task to completed. */
     public fun complete() {
         this.completed = true;
-        
+            
         val comp = completion
         if(comp != null) {
             comp()
@@ -122,6 +124,23 @@ public class Task(var description: String,
     public fun setCompleted() {
         this.completed = true;
     }
+
+
+    public fun setStarted() {
+        this.started = true;
+    }
+
+
+    /** Sets the completed variable to false. */
+    public fun setNotStarted() {
+        this.started = false;
+    }
+
+    /** Directly sets completed to false. */
+    public fun setNotCompleted() {
+        this.completed = false;
+    }
+
 
 
     /** Sets the task to completed. Uses a completion block in case you want to define something

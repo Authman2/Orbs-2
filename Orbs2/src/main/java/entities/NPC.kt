@@ -6,7 +6,7 @@ import main_package.*;
 import javafx.animation.AnimationTimer
 import hud.*
 import javafx.util.Pair
-import java.util.function.Function
+import kotlin.Function0
 
 class NPC(pos: Vector2D, ws: WorldState) : Entity(pos, ws) {
 
@@ -29,7 +29,7 @@ class NPC(pos: Vector2D, ws: WorldState) : Entity(pos, ws) {
 	val speech: ArrayList<String> = arrayListOf()
 
 	// The function to pass to the textbox for when you are done speaking to this npc.
-	var finishedFunction: Function<NPC,NPC>? = null
+	var finishedFunction: Function0<Unit>? = null
 
 
 

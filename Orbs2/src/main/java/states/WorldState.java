@@ -15,6 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import je.visual.Vector2D;
+import kotlin.jvm.functions.Function0;
 import main_package.Orbs2;
 import world.World;
 import hud.*;
@@ -22,7 +23,12 @@ import java.util.Map;
 import java.util.HashMap;
 import javafx.util.Pair;
 import java.util.function.Function;
+
+import CompletionHandlers.CompletionHandlers;
 import tasks.*;
+import items.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class WorldState extends GameState {
 
@@ -97,7 +103,7 @@ public class WorldState extends GameState {
 			return null;
 		});
 		items[1] = new Pair<String, Function<?,?>>("Inventory", e -> { 
-			System.out.println("Inventory");
+			gc.goTo(4);
 			return null;
 		});
 		items[2] = new Pair<String, Function<?,?>>("Save Game", e -> { 
@@ -180,6 +186,13 @@ public class WorldState extends GameState {
 			}
 		}
 
+		// Get all the inventory items.
+		List<String> items = new ArrayList<String>();
+		for(Item itm : InventoryState.inventory) {
+			items.add(itm.getIdentifier() + " " + itm.getQuantity());
+		}
+		saveData.put("items", items);
+
 		if(Networking.gameSaveID != null)
 			saveData.put("key", Networking.gameSaveID);
 
@@ -196,31 +209,51 @@ public class WorldState extends GameState {
 		Object posX = Networking.saveData.get("positionX");
 		Object posY = Networking.saveData.get("positionY");
 
-		for(String id : Networking.saveData.keySet()) {
-			if(id.equals("key") || id.equals("positionX") || id.equals("positionY")) {
-				continue;
-			}
+		// Get all the inventory items.
+		if(Networking.saveData.get("items") != null) {
+			for(String itemPair : (List<String>)Networking.saveData.get("items")) {
+				String[] arr = itemPair.split(" ");
+				String id = arr[0];
+				int quant = Integer.parseInt(arr[1]);
 
-			Object taskStatus = Networking.saveData.get(id);
-			String status = (String) taskStatus;
-			if(status.equals("started")) {
-				TaskSystem.getTask(id).start();
-			} else if(status.equals("completed")) {
-				TaskSystem.getTask(id).setCompleted();
-			}
-
-			// Run the finished function for each npc.
-			for(NPC npc : currentWorld.getNPCManager().getNPCS()) {
-				if(npc.getFinishedFunction() != null)
-					npc.getFinishedFunction().apply(null);
+				Item itm = InventoryState.fromString(id);
+				itm.setQuantity(quant);
+				InventoryState.inventory.add(itm);
 			}
 		}
+
+		// Re-finish all of the tasks.
+		for(String id : Networking.saveData.keySet()) {
+			// FIRST: Make sure it is not one of the other save properties.
+			if(id.equals("key") || id.equals("positionX") || id.equals("positionY") || id.equals("items")) {
+				continue;
+			}
+			
+			// SECOND: Get the status (started/completed) and set the actual task to that value.
+			Object taskStatus = Networking.saveData.get(id);
+			String status = (String) taskStatus;
+			//System.out.println(id + ", " + status);
+
+			if(status.equals("started")) {
+				TaskSystem.getTask(id).start();
+			}
+			if(status.equals("completed")) {
+				TaskSystem.getTask(id).setStarted();
+				TaskSystem.getTask(id).complete();
+			}
+		}
+
+
+		// Invoke all of the functions that must be called to load the completed tasks properly.
+		for(Function0 func : CompletionHandlers.onLoadHandlers) {
+			func.invoke();
+		}
 		
+
 		// Set the player's position.
 		Number x = (Number) posX;
 		Number y = (Number) posY;
 		player.setPosition(x.floatValue(), y.floatValue());
-		
 	}
 	
 	
@@ -262,7 +295,7 @@ public class WorldState extends GameState {
 				currentWorld.debug(w);
 				gc.debug(w);
 			}
-
+			
 			// Open Menu
 			if(w == KeyCode.M) {
 				if(!npcMenu.isOpen()) {
@@ -332,6 +365,9 @@ public class WorldState extends GameState {
 
 
 	public Menu getMenu() { return menu; }
+
+
+	public TextBox getTextBox() { return textBox; }
 
 
 

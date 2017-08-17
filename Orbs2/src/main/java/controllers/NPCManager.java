@@ -1,10 +1,13 @@
 package controllers;
 
+import CompletionHandlers.CompletionHandlers;
 import entities.NPC;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
 import main_package.*;
-import states.*;
+import states.WorldState;
+import states.InventoryState;
+import items.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,17 +27,42 @@ public class NPCManager {
 	// A reference to the world state.
 	WorldState worldState;
 
+	// A reference to the CompletionHandlers class, which defines what should happen when speaking to npcs.
+	CompletionHandlers cHandlers;
+
 	// All the npcs.
-	private ArrayList<NPC> npcs;
+	public static ArrayList<NPC> npcs;
 
 	// The speech for each npc;
-	private HashMap<String, ArrayList<String>> npcSpeech;
+	public static HashMap<String, ArrayList<String>> npcSpeech;
 	
 	// NPC objects.
-	private NPC scientist, boyRopeTask_1, boyRopeTask_2, boy_3, elderlyWomanWaterTask, boy_4, boy_5, girl_1,
-	girl_2, ropeTaskStoreOwner, 
+	public static NPC scientist, boyRopeTask_1, boyRopeTask_2, boy_3, elderlyWomanWaterTask, boy_4, boy_5, girl_1,
+	girl_2, ropeTaskStoreOwner, girl_3, women_1, man_1, man_2, boy_6, man_3, women_2, girl_4, boy_7, boy_8, 
+	girl_5, boy_9, boy_10, boy_11, coinMan;
 
-	girl_3, women_1, man_1, man_2, boy_6, man_3, women_2, girl_4, boy_7, boy_8, girl_5, boy_9, boy_10, boy_11;
+
+
+
+	/********************
+	*					*
+	*      GETTERS		*
+	*					*
+	*********************/
+
+	public ArrayList<NPC> getNPCs() {
+		return npcs;
+	}
+
+	public HashMap<String, ArrayList<String>> getSpeech() {
+		return npcSpeech;
+	}
+
+	public CompletionHandlers getCHandlers() {
+		return this.cHandlers;
+	}
+
+
 
 
 
@@ -46,6 +74,7 @@ public class NPCManager {
 
 	public NPCManager(WorldState ws) {
 		this.worldState = ws;
+		this.cHandlers = new CompletionHandlers(ws);
 		this.npcs = new ArrayList<NPC>();
 		this.npcSpeech = new HashMap<String, ArrayList<String>>();
 
@@ -100,6 +129,18 @@ public class NPCManager {
 
 
 
+	/** Determines what to do when the player is done speaking to an npc. */
+	private void configureFinishedFunctions() {
+		scientist.setFinishedFunction(cHandlers.speakToScientistHandler);
+		elderlyWomanWaterTask.setFinishedFunction(cHandlers.elderlyWomanWaterTaskHandler);
+		boyRopeTask_1.setFinishedFunction(cHandlers.boyRopeTaskHandler);
+		boyRopeTask_2.setFinishedFunction(cHandlers.boyRopeTaskHandler);
+		ropeTaskStoreOwner.setFinishedFunction(cHandlers.ropeTaskStoreOwnerHandler);
+		coinMan.setFinishedFunction(cHandlers.coinManHandler);
+	}
+
+
+
 	/**
 	*	Loads all the text that an NPC will say. In the folder resources/speech, you
 	* will find separate files for each NPC's speech, where each text slide is 
@@ -137,7 +178,8 @@ public class NPCManager {
         npcSpeech.put("boy_9", Networking.read("speech/boy_9.txt"));
         npcSpeech.put("boy_10", Networking.read("speech/boy_10.txt"));
         npcSpeech.put("boy_11", Networking.read("speech/boy_11.txt"));
-        
+		npcSpeech.put("coinMan_1", Networking.read("speech/coinMan_1.txt"));
+		npcSpeech.put("coinMan_2", Networking.read("speech/coinMan_2.txt"));
 
 		scientist.setSpeech(npcSpeech.get("scientist_1"));
 		elderlyWomanWaterTask.setSpeech(npcSpeech.get("elderlyWoman_1_1"));
@@ -162,54 +204,10 @@ public class NPCManager {
         girl_5.setSpeech(npcSpeech.get("girl_5"));
         boy_9.setSpeech(npcSpeech.get("boy_9"));
         boy_10.setSpeech(npcSpeech.get("boy_10"));
-        boy_11.setSpeech(npcSpeech.get("boy_11"));
+		boy_11.setSpeech(npcSpeech.get("boy_11"));
+		coinMan.setSpeech(npcSpeech.get("coinMan_1"));
 	}
 
-
-
-
-
-	/** Determines what to do when the player is done speaking to an npc. */
-	private void configureFinishedFunctions() {
-		scientist.setFinishedFunction(e -> {
-			if(!TaskSystem.getTask("SPEAK_TO_SCIENTIST").isCompleted()) {
-				TaskSystem.getTask("SPEAK_TO_SCIENTIST").complete();
-				TaskSystem.getTask("CHARGE_ORBS").start();
-				scientist.setSpeech(npcSpeech.get("scientist_2"));
-			}
-			return e;
-		});
-		elderlyWomanWaterTask.setFinishedFunction(e -> {
-			if(!TaskSystem.getTask("BUCKET_OF_WATER").isStarted()) {
-				TaskSystem.getTask("BUCKET_OF_WATER").start();
-			}
-			// else if the player has the bucket of water and the task is not completed
-			// else if(!TaskSystem.getTask("BUCKET_OF_WATER").isCompleted()) {
-
-			// }
-			return e;
-		});
-		boyRopeTask_1.setFinishedFunction(e -> {
-			if(!TaskSystem.getTask("ROPE").isStarted()) {
-				TaskSystem.getTask("ROPE").start();
-				ropeTaskStoreOwner.setSpeech(npcSpeech.get("ropeTaskStoreOwner_1"));
-			}
-			// else if you have a rope and the task is not completed.
-			return null;
-		});
-		boyRopeTask_2.setFinishedFunction(e -> {
-			if(!TaskSystem.getTask("ROPE").isStarted()) {
-				TaskSystem.getTask("ROPE").start();
-				ropeTaskStoreOwner.setSpeech(npcSpeech.get("ropeTaskStoreOwner_1"));
-			}
-			// else if you have a rope and the task is not completed.
-			return null;
-		});
-		ropeTaskStoreOwner.setFinishedFunction(e -> {
-			// if the user has started the rope task and has enough coins or doesn't, change text.
-			return null;
-		});
-	}
 
 
 

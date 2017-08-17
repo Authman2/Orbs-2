@@ -8,7 +8,8 @@ import javafx.scene.control.TextArea;
 import java.util.StringTokenizer;
 import je.visual.Vector2D;
 import java.util.function.Function;
-
+import kotlin.jvm.functions.Function0;
+import kotlin.Unit;
 public class TextBox {
 
 	/********************
@@ -36,7 +37,7 @@ public class TextBox {
 	public static TextBox currentlyOpened;
 
 	// The function to carry out once this textbox is closed.
-	public static Function<?,?> finishedFunction;
+	public static Function0<Unit> finishedFunction;
 
 
 
@@ -67,7 +68,8 @@ public class TextBox {
 			open = false;
 			currentSlide = 0;
 			if(finishedFunction != null)
-				finishedFunction.apply(null);
+				finishedFunction.invoke();
+				//finishedFunction.apply(null);
 		} else {
 			currentSlide++;
 		}

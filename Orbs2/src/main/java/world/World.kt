@@ -291,6 +291,9 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
         if(code == KeyCode.P) {
             printPlayerPosition();
         }
+		if(code == KeyCode.L) {
+			player!!.setSpeed(2.5f)
+		}
 	}
 
 } // End of class.
