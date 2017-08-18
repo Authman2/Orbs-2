@@ -158,6 +158,36 @@ public class CompletionHandlers {
             return null;
         }
     };
+    public Function0 birthdaySnacksMomHandler = new Function0() {
+        public Unit invoke() {
+            if(!TaskSystem.getTask("COOKIES").isStarted()) {
+                TaskSystem.getTask("COOKIES").start();
+
+                if(InventoryState.contains("BATCH_OF_COOKIES")) {
+                    NPCManager.birthdaySnacksMom.setSpeech(NPCManager.npcSpeech.get("birthdaySnacksMom_2"));
+                }
+            }
+            else {
+                if(InventoryState.contains("BATCH_OF_COOKIES")) {
+                    InventoryState.addToInventory(new MuseumCard(), CompletionHandlers.worldState);
+                    InventoryState.removeItem("BATCH_OF_COOKIES");
+                    NPCManager.birthdaySnacksMom.setSpeech(NPCManager.npcSpeech.get("birthdaySnacksMom_3"));
+
+                    TaskSystem.getTask("COOKIES").complete();
+                }
+            }
+            return null;
+        }
+    };
+    public Function0 electricityManHandler = new Function0() {
+        public Unit invoke() {
+            if(!TaskSystem.getTask("POWER_PLANT").isStarted()) {
+                TaskSystem.getTask("POWER_PLANT").start();
+            }
+            return null;
+        }
+    };
+
     
 
     // Load Game Handlers
@@ -275,6 +305,19 @@ public class CompletionHandlers {
             }
             else if(InventoryState.contains("POOL_MEMBERSHIP_CARD")) {
                 NPCManager.swimmingLessonsWoman.setSpeech(NPCManager.npcSpeech.get("swimmingLessonsWoman_2"));
+            }
+            return null;
+        }
+    };
+    public static Function0 birthdaySnacksMomHandler_Loaded = new Function0() {
+        public Unit invoke() {
+            if(TaskSystem.getTask("COOKIES").isCompleted()) {
+                NPCManager.birthdaySnacksMom.setSpeech(NPCManager.npcSpeech.get("birthdaySnacksMom_3"));
+            } 
+            else if(TaskSystem.getTask("COOKIES").isStarted()) {
+                if(InventoryState.contains("BATCH_OF_COOKIES")) {
+                    NPCManager.birthdaySnacksMom.setSpeech(NPCManager.npcSpeech.get("birthdaySnacksMom_2"));
+                }
             }
             return null;
         }
