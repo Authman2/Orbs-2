@@ -61,6 +61,13 @@ public class ActionObject extends Entity {
 
 
 
+    @Override
+    public boolean nextTo(Entity ent) {
+        return position.Distance(ent.position) <= 0.9;
+    }
+
+
+
 
     /********************
 	*					*

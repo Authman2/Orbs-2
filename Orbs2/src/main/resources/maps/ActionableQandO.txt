@@ -8,3 +8,27 @@ doorBlock_7 - Question 4: The average person has over 1,460 of what each year?
 doorBlock_8 - Question 4: The average person has over 1,460 of what each year?
 doorBlock_9 - Question 5: Which country were the 1992 Winter Olympic Games held in?
 doorBlock_10 - Question 5: Which country were the 1992 Winter Olympic Games held in?
+tree_1 - Would you like to cut down this tree?
+tree_2 - Would you like to cut down this tree?
+tree_3 - Would you like to cut down this tree?
+tree_4 - Would you like to cut down this tree?
+tree_5 - Would you like to cut down this tree?
+tree_6 - Would you like to cut down this tree?
+tree_7 - Would you like to cut down this tree?
+tree_8 - Would you like to cut down this tree?
+tree_9 - Would you like to cut down this tree?
+tree_10 - Would you like to cut down this tree?
+tree_11 - Would you like to cut down this tree?
+tree_12 - Would you like to cut down this tree?
+tree_13 - Would you like to cut down this tree?
+tree_14 - Would you like to cut down this tree?
+tree_15 - Would you like to cut down this tree?
+tree_16 - Would you like to cut down this tree?
+tree_17 - Would you like to cut down this tree?
+tree_18 - Would you like to cut down this tree?
+tree_19 - Would you like to cut down this tree?
+tree_20 - Would you like to cut down this tree?
+tree_21 - Would you like to cut down this tree?
+tree_22 - Would you like to cut down this tree?
+tree_23 - Would you like to cut down this tree?
+tree_24 - Would you like to cut down this tree?

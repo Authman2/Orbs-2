@@ -159,7 +159,7 @@ public class ActionDialog extends TextBox {
     *********************/
     
     public void initialize() {
-
+        selectedIndex = 0;
     }
 
 

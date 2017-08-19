@@ -22,16 +22,23 @@ class ActionableManager(val worldState: WorldState) {
 
 
     // The objects.
-    lateinit var doorBlock_1: ActionObject
-    lateinit var doorBlock_2: ActionObject
-    lateinit var doorBlock_3: ActionObject
-    lateinit var doorBlock_4: ActionObject
-    lateinit var doorBlock_5: ActionObject
-    lateinit var doorBlock_6: ActionObject
-    lateinit var doorBlock_7: ActionObject
-    lateinit var doorBlock_8: ActionObject
-    lateinit var doorBlock_9: ActionObject
-    lateinit var doorBlock_10: ActionObject
+    lateinit var doorBlock_1: ActionObject; lateinit var doorBlock_2: ActionObject
+    lateinit var doorBlock_3: ActionObject; lateinit var doorBlock_4: ActionObject
+    lateinit var doorBlock_5: ActionObject; lateinit var doorBlock_6: ActionObject
+    lateinit var doorBlock_7: ActionObject; lateinit var doorBlock_8: ActionObject
+    lateinit var doorBlock_9: ActionObject; lateinit var doorBlock_10: ActionObject
+    lateinit var tree_1: ActionObject; lateinit var tree_2: ActionObject; 
+    lateinit var tree_3: ActionObject; lateinit var tree_4: ActionObject; 
+    lateinit var tree_5: ActionObject; lateinit var tree_6: ActionObject;
+    lateinit var tree_7: ActionObject; lateinit var tree_8: ActionObject; 
+    lateinit var tree_9: ActionObject; lateinit var tree_10: ActionObject;
+    lateinit var tree_11: ActionObject; lateinit var tree_12: ActionObject;
+    lateinit var tree_13: ActionObject; lateinit var tree_14: ActionObject; 
+    lateinit var tree_15: ActionObject; lateinit var tree_16: ActionObject; 
+    lateinit var tree_17: ActionObject; lateinit var tree_18: ActionObject;
+    lateinit var tree_19: ActionObject; lateinit var tree_20: ActionObject; 
+    lateinit var tree_21: ActionObject; lateinit var tree_22: ActionObject; 
+    lateinit var tree_23: ActionObject; lateinit var tree_24: ActionObject;
 
 
 
@@ -132,6 +139,22 @@ class ActionableManager(val worldState: WorldState) {
             actionObjects.remove(doorBlock_10)
         })
         doorBlock_10.cloneOptions(doorBlock_9)
+
+
+        // Trees: Yes to cut down the tree, no to not.
+        for(field in ActionableManager::class.java.getDeclaredFields()) {
+            if(field.getName().contains("tree")) {
+                val gotten: ActionObject = field.get(this) as ActionObject
+                gotten.getOptions().put("Yes", { 
+                    if(InventoryState.contains("HATCHET")) actionObjects.remove(gotten)
+                    else { 
+                        worldState.getTextBox().set(arrayListOf<String>("You need a hatchet to cut down a tree.","You need a hatchet to cut down a tree.")) 
+                        worldState.getTextBox().open();
+                    }
+                })
+                gotten.getOptions().put("No", {})
+            }
+        }
     }
 
     
