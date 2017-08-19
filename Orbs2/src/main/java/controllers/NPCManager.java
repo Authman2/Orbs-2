@@ -204,6 +204,8 @@ public class NPCManager {
         npcSpeech.put("birthdaySnacksMom_3", Networking.read("speech/birthdaySnacksMom_3.txt"));
         npcSpeech.put("birthdaySnacksGirl", Networking.read("speech/birthdaySnacksGirl.txt"));
         npcSpeech.put("electricityMan_1", Networking.read("speech/electricityMan_1.txt"));
+        npcSpeech.put("electricityMan_2", Networking.read("speech/electricityMan_2.txt"));
+        npcSpeech.put("electricityMan_3", Networking.read("speech/electricityMan_3.txt"));
 
 		scientist.setSpeech(npcSpeech.get("scientist_1"));
 		elderlyWomanWaterTask.setSpeech(npcSpeech.get("elderlyWoman_1_1"));

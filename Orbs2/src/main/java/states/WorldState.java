@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.HashMap;
 import javafx.util.Pair;
 import java.util.function.Function;
+import kotlin.Unit;
 
 import CompletionHandlers.CompletionHandlers;
 import tasks.*;
@@ -54,7 +55,11 @@ public class WorldState extends GameState {
     Menu menu, npcMenu;
 
     // One textbox for the whole game, just change the text it displays.
-    TextBox textBox;
+	TextBox textBox;
+	
+	// One action box for the whole game, just change the text and the options.
+	ActionDialog actionBox;
+
 
 
 
@@ -71,10 +76,9 @@ public class WorldState extends GameState {
 
 		setupMenu();
 		textBox = new TextBox(this);
+		actionBox = new ActionDialog(this);
         player = new Player(new Vector2D(14,16), this);
-
 		setupWorlds();
-		
 
 		// IMPORTANT: Scene Setup
 		root.getChildren().add(canvas);
@@ -287,8 +291,14 @@ public class WorldState extends GameState {
 		// Key Input
 		scene.setOnKeyPressed(e -> {
 			KeyCode w = e.getCode();
-				
-			player.keyActions(w);
+
+			// Player can only move when no other HUD is showing.
+			if(!menu.isOpen() && !textBox.isOpen() && !actionBox.isOpen()) {
+				player.keyActions(w);
+			}
+
+			// Action box keys.
+			if(actionBox.isOpen()) { actionBox.keyActions(w); }
 			
 			// Debugging
 			if(e.isShiftDown()) { 
@@ -321,11 +331,12 @@ public class WorldState extends GameState {
 				}
 			}
 		});
+
+
 		scene.setOnKeyReleased(e -> {
 			KeyCode w = e.getCode();
 			player.releaseKeyActions(w);
 		});
-
 		scene.setOnMouseClicked(e -> {
 			menu.mouseClickEvents(e);
 			npcMenu.mouseClickEvents(e);
@@ -345,6 +356,9 @@ public class WorldState extends GameState {
 	}
 	
 	
+
+
+
 
 	/********************
 	*					*
@@ -371,6 +385,9 @@ public class WorldState extends GameState {
 
 
 
+
+
+
 	/********************
 	*					*
 	*	   ABSTRACT		*
@@ -386,11 +403,10 @@ public class WorldState extends GameState {
 	public void update() {
 		if(menu != null) {
 			if(menu.isOpen()) { menu.update(); } 
-			else if(npcMenu != null && npcMenu.isOpen()) {
-				npcMenu.update();
-			} else {
-				if(currentWorld != null) currentWorld.update();
-			}
+			else if(npcMenu != null && npcMenu.isOpen()) { npcMenu.update(); } 
+			else if(textBox != null && textBox.isOpen()) { textBox.update(); }
+			else if(actionBox != null && actionBox.isOpen()) { actionBox.update(); } 
+			else { if(currentWorld != null) currentWorld.update(); }
 		}
 	}
 
@@ -405,9 +421,13 @@ public class WorldState extends GameState {
 			}
 		}
 
-		if(textBox != null)
-			if(textBox.isOpen())
-				textBox.draw();
+		if(textBox != null) {
+			if(textBox.isOpen()) { textBox.draw(); }
+		}
+
+		if(actionBox != null) {
+			if(actionBox.isOpen()) { actionBox.draw(); }
+		}
 	}
 
 } // End of class.

@@ -68,7 +68,7 @@ public class Assets {
                         TABLE_BOTTOM_LEFT, TABLE_BOTTOM_RIGHT;
     public static Image ROAD_MIDDLE, ROAD_SIDEWAYS, ROAD;
 	
-	public static Image WELL, DOOR, ROCK;
+	public static Image WELL, DOOR, ROCK, DOOR_BLOCK;
 	
 	public static Image GRASS_2, FLOWER_1, FLOWER_2, BREAKABLE_TREE, WHIRLPOOL, TOWEL_1_TOP, TOWEL_1_BOTTOM,
                         TOWEL_2_TOP, TOWEL_2_BOTTOM;

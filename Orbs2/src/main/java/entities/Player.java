@@ -26,7 +26,7 @@ public class Player extends Entity {
 	boolean up, down, left, right;
     
     // Whether or not the player can swim.
-    public static boolean canSwim = false;
+    public static boolean canSwim = false, generatorStarted = false;
 
 
 

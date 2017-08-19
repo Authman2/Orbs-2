@@ -184,6 +184,13 @@ public class CompletionHandlers {
             if(!TaskSystem.getTask("POWER_PLANT").isStarted()) {
                 TaskSystem.getTask("POWER_PLANT").start();
             }
+            else {
+                if(Player.generatorStarted == true) {
+                    InventoryState.addToInventory(new Pickaxe(), CompletionHandlers.worldState);
+
+                    TaskSystem.getTask("POWER_PLANT").complete();
+                }
+            }
             return null;
         }
     };
@@ -317,6 +324,18 @@ public class CompletionHandlers {
             else if(TaskSystem.getTask("COOKIES").isStarted()) {
                 if(InventoryState.contains("BATCH_OF_COOKIES")) {
                     NPCManager.birthdaySnacksMom.setSpeech(NPCManager.npcSpeech.get("birthdaySnacksMom_2"));
+                }
+            }
+            return null;
+        }
+    };
+    public static Function0 electricityManHandler_Loaded = new Function0() {
+        public Unit invoke() {
+            if(TaskSystem.getTask("POWER_PLANT").isCompleted()) {
+                NPCManager.electricityMan.setSpeech(NPCManager.npcSpeech.get("electricityMan_3"));
+            } else {
+                if(Player.generatorStarted == true) {
+                    NPCManager.electricityMan.setSpeech(NPCManager.npcSpeech.get("electricityMan_2"));
                 }
             }
             return null;
