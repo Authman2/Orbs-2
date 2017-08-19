@@ -38,7 +38,7 @@ public fun drawRenderBoxes() {
 
 /** Prints the player's current position. */
 public fun World.printPlayerPosition() {
-    println("PLAYER POSITION: ${this.player!!.getPosition()}");
+    println("PLAYER POSITION: ${this.player.getPosition()}");
 }
 
 

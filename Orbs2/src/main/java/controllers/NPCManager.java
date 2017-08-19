@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import je.visual.Vector2D;
 import java.util.HashMap;
 import tasks.*;
+import world.Camera;
 
 public class NPCManager {
 
@@ -284,16 +285,20 @@ public class NPCManager {
 	}
 
 
-	public void update() {
+	public void update(Camera camera) {
 		for(NPC npc : this.npcs) {
-			npc.update();
+			if(camera.touching(npc)) {
+				npc.update();
+			}
 		}
 	}
 
 
-	public void draw() {
+	public void draw(Camera camera) {
 		for(NPC npc : this.npcs) {
-			npc.draw();
+			if(camera.touching(npc)) {
+				npc.draw();
+			}
 		}
 	}
 

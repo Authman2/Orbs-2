@@ -192,6 +192,12 @@ public class Player extends Entity {
 			yVel = 0;
 			moveOpposite();
 		}
+		else if(worldState.getCurrentWorld().getActionableManager().getActionObjects().stream().anyMatch( it -> worldState.getCurrentWorld().getCamera().touching(it)
+																												&& it.isSolid() && it.collidingWith(this))) {
+			xVel = 0;
+			yVel = 0;
+			moveOpposite();
+		}
 	}
 	
 	

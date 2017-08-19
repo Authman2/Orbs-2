@@ -10,6 +10,9 @@ import je.visual.Vector2D;
 import java.util.function.Function;
 import kotlin.jvm.functions.Function0;
 import kotlin.Unit;
+import javafx.scene.input.KeyCode;
+import javafx.util.Pair;
+
 public class TextBox {
 
 	/********************
@@ -102,6 +105,12 @@ public class TextBox {
 	}
 
 
+	/** Automatically opens the text box. */
+	public void open() {
+		open = true;
+		currentlyOpened = this;
+	}
+
 
 	/** Removes all the text slides. */
 	public void clear() {
@@ -175,6 +184,45 @@ public class TextBox {
 	*	    OTHER		*
 	*					*
 	*********************/
+
+	public void keyActions(KeyCode w) {
+		if(w == KeyCode.C) {
+
+			// If a text box is not already open.
+			if(open == false) {
+				worldState.getCurrentWorld().getNPCManager().getNPCS().stream().forEach(npc -> {
+					// If you are next to an NPC.
+					if(npc.nextTo(worldState.getPlayer())) {
+						// Set the finished function.
+						finishedFunction = npc.getFinishedFunction();
+
+						// Set the menu options.
+						worldState.getNPCMenu().setMenuItem(0, new Pair<String, Function<?,?>>("Interact", e -> { 
+							if(npc.getSpeech().size() > 0) {
+								set(npc.getSpeech());
+								toggle();
+								worldState.getNPCMenu().toggle();
+							}
+							else {
+								worldState.getNPCMenu().toggle();
+							}
+							return null;
+						}));
+						worldState.getNPCMenu().toggle();
+					}
+				});
+			} 
+			// If a text box is open.
+			else {
+				if(TextBox.currentlyOpened != null) {
+					TextBox.currentlyOpened.next();
+				}
+			}
+		}
+	}
+
+
+
 
 	// The width that a line can be, determined by the width of the screen.
 	int lineWidth = 100;

@@ -145,21 +145,6 @@ public class WorldState extends GameState {
 	}
 
 
-	public void toggleNPCMenu(NPC npc) {
-		TextBox.finishedFunction = npc.getFinishedFunction();
-		npcMenu.setMenuItem(0, new Pair<String, Function<?,?>>("Interact", e -> { 
-			if(npc.getSpeech().size() > 0) {
-				textBox.set(npc.getSpeech());
-				textBox.toggle();
-				npcMenu.toggle();
-			}
-			else {
-				npcMenu.toggle();
-			}
-			return null;
-		}));
-		npcMenu.toggle();
-	}
 
 
 
@@ -298,7 +283,10 @@ public class WorldState extends GameState {
 			}
 
 			// Action box keys.
-			if(actionBox.isOpen()) { actionBox.keyActions(w); }
+			if(!textBox.isOpen()) actionBox.keyActions(w);
+			
+			// Text box keys.
+			if(!actionBox.isOpen()) textBox.keyActions(w);
 			
 			// Debugging
 			if(e.isShiftDown()) { 
@@ -310,24 +298,6 @@ public class WorldState extends GameState {
 			if(w == KeyCode.M) {
 				if(!npcMenu.isOpen()) {
 					this.menu.toggle();
-				}
-			}
-			// Open NPC Menu
-			if(w == KeyCode.C) {
-				if(!menu.isOpen()) {
-					// If a textbox is not open, than open it.
-					if(TextBox.open == false) {
-						currentWorld.getNPCManager().getNPCS().stream().forEach(npc -> {
-							if(npc.nextTo(player)) {
-								this.toggleNPCMenu(npc);
-							}
-						});
-					// Otherwise, cycle through it.
-					} else {
-						if(TextBox.currentlyOpened != null) {
-							TextBox.currentlyOpened.next();
-						}
-					}
 				}
 			}
 		});
@@ -381,9 +351,13 @@ public class WorldState extends GameState {
 	public Menu getMenu() { return menu; }
 
 
+	public Menu getNPCMenu() { return npcMenu; }
+
+
 	public TextBox getTextBox() { return textBox; }
 
 
+	public ActionDialog getActionBox() { return actionBox; }
 
 
 

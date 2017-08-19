@@ -8,6 +8,7 @@ import kotlin.jvm.functions.Function0;
 import main_package.Orbs2;
 import states.*;
 import javafx.scene.input.KeyCode;
+import entities.*;
 
 public class ActionDialog extends TextBox {
 
@@ -106,9 +107,43 @@ public class ActionDialog extends TextBox {
             if(selectedIndex >= choices.size()) selectedIndex = 0;
         }
         if(e == KeyCode.C) {
-            if(selectedIndex == 0) { if(option1 != null) option1.invoke(); }
-            else if(selectedIndex == 1) { if(option2 != null) option2.invoke(); }
-            else if(selectedIndex == 2) { if(option3 != null) option3.invoke(); }
+            // If the action box is not already open.
+            if(actionDialogOpen == false) {
+                worldState.getCurrentWorld().getActionableManager().getActionObjects().stream().forEach(ao -> {
+                    if( ao.nextTo(worldState.getPlayer()) ) {
+                        choices.clear();
+                        clear();
+                        add(ao.getActionQuestion());
+                        
+                        // Add all of the options and their function values.
+                        String[] c = new String[ao.getOptions().size()];
+                        int i = 0;
+                        for(String s : ao.getOptions().keySet()) {
+                            c[i] = s;
+                            i++;
+                        }
+                        i = 0;
+                        for(Function0 f : ao.getOptions().values()) {
+                            if(i == 0) option1 = f;
+                            else if(i == 1) option2 = f;
+                            else if(i == 2) option3 = f;
+                            i++;
+                        }
+                        i = 0;
+                        setChoices(c);
+                        toggle();
+                        return;
+                    }
+                });
+
+            // If it is open.
+            } else {
+                toggle();
+                if(selectedIndex == 0) { if(option1 != null) option1.invoke(); }
+                else if(selectedIndex == 1) { if(option2 != null) option2.invoke(); }
+                else if(selectedIndex == 2) { if(option3 != null) option3.invoke(); }
+                selectedIndex = 0;
+            }
         }
     }
 

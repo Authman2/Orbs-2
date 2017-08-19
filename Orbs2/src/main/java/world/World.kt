@@ -20,13 +20,13 @@ import tasks.TaskSystem
 import controllers.*
 
 
-public open class World(player: Player?, val worldState: WorldState, mapName: String?, size: Int) {
+public open class World(var player: Player, val worldState: WorldState, mapName: String?, size: Int) {
 	
 	/********************
-	 *					*
-	 *	   VARIABLES	*
-	 *					*
-	 ********************/
+	*					*
+	*	   VARIABLES	*
+	*					*
+	********************/
 	
 	// The rendering camera.
 	var camera: Camera? = null
@@ -46,12 +46,11 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
 	var tilesL1: ArrayList<Tile>? = null
 	var tilesL2: ArrayList<Tile>? = null
 	
-	
-	// A reference to the player that is currently in this world.
-	var player: Player? = null
-	
 	// All of the npcs in the game world.
-	var npcManager: NPCManager? = null
+	val npcManager: NPCManager
+
+	// All of the actionable objects in the game.
+	val actionableManager: ActionableManager
 
 	
 	
@@ -61,14 +60,15 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
 		this.mapSize = size
 		this.player = player
 		this.npcManager = NPCManager(worldState)
+		this.actionableManager = ActionableManager(worldState)
 		this.configureMap()
 	}
 
 	/********************
-	 *					*
-	 *	   SETTERS		*
-	 *					*
-	 ********************/
+	*					*
+	*	   SETTERS		*
+	*					*
+	********************/
 	
 	// Creates the matrix of id's for the map.
 	private fun configureMap() {
@@ -95,7 +95,6 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
 
 	
 	// Handles actually making the tile map.
-    //-KrRKf1cA5OAwMCeA3FQ
 	private fun makeMap(map: Array<Array<String>>?, tiles: ArrayList<Tile>) {
 		for (i in map!!.indices) {
 			for (j in 0..map[0].size - 1) {
@@ -203,26 +202,24 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
 
 	
 	/********************
-	 *					*
-	 *	   GETTERS		*
-	 *					*
-	 ********************/
+	*					*
+	*	   GETTERS		*
+	*					*
+	********************/
 
 	fun getNPCManager() = this.npcManager
 	
 
-
+	
 	
 	
 	/********************
-	 *					*
-	 *	   ABSTRACT		*
-	 *					*
-	 ********************/
+	*					*
+	*	   ABSTRACT		*
+	*					*
+	********************/
 	fun initialize() {
-		if (player != null) {
-			player!!.initialize()
-		}
+		player.initialize()
 		
 		/* the Initialize methods in Tile and Entity don't actually do anything, so don't waste
 		   time calling them. */ 
@@ -232,37 +229,31 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
 	}
 
 	fun update() {
-		if (player != null) {
-			player!!.update()
-			camera!!.update(player!!)
-		}
-		
+		player.update()
+		camera!!.update(player)
+		npcManager.update(camera!!)
+		actionableManager.update(camera!!)
 		
 		/* For right now, you don't need to update each tile. */
 //		if (tiles != null) {
 //			this.tiles!!.forEach({ e -> e.update() })
 //		}
-		npcManager!!.update();
+		
 	}
 
 	fun draw() {
 		worldState.graphics.translate(-camera!!.position.X.toDouble(), -camera!!.position.Y.toDouble())
 		
-		
 		if (tilesL1 != null && tilesL2 != null) {
 			// Only draw the tiles that are within the camera view
-			this.tilesL1!!
-				.filter { it -> camera!!.touching(it); }
-				.forEach { e -> e.draw(); }
-			this.tilesL2!!
-				.filter { it -> camera!!.touching(it); }
-				.forEach{ e -> e.draw() }
+			this.tilesL1!!.filter { it -> camera!!.touching(it); }.forEach { e -> e.draw(); }
+			this.tilesL2!!.filter { it -> camera!!.touching(it); }.forEach{ e -> e.draw() }
 		}
-		npcManager!!.draw();
-		if (player != null) {
-			player!!.draw()
-		}
-		
+
+		// Draw the npcs and player
+		actionableManager.draw(camera!!)
+		npcManager.draw(camera!!)
+		player.draw()
 		
 		worldState.graphics.translate(camera!!.position.X.toDouble(), camera!!.position.Y.toDouble())
 	}
@@ -292,7 +283,7 @@ public open class World(player: Player?, val worldState: WorldState, mapName: St
             printPlayerPosition();
         }
 		if(code == KeyCode.L) {
-			player!!.setSpeed(2.5f)
+			player.setSpeed(2.5f)
 		}
 	}
 
