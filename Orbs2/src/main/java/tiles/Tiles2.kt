@@ -52,19 +52,31 @@ class HouseOne_InnerCL(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE
 
 
 class HOUSE_1_VERTICAL_WALL_L(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_1_VERTICAL_WALL_L, ws) {
-    init { setSolid(true) }
+    init { 
+		setSolid(true)
+		defineCollisionArea( (position.X*size + 5).toFloat() , (position.Y*size).toFloat(), (12).toFloat(), (size - 8).toFloat())
+	}
 }
 
 class HOUSE_1_VERTICAL_WALL_R(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_1_VERTICAL_WALL_R, ws) {
-    init { setSolid(true) }
+    init { 
+		setSolid(true)
+		defineCollisionArea( (position.X*size + 15).toFloat() , (position.Y*size).toFloat(), (size - 22).toFloat(), (size - 8).toFloat())
+	}
 }
 
 class HOUSE_INNER_CONVEX_CBL(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_INNER_CONVEX_CBL, ws) {
-    init { setSolid(true) }
+    init { 
+		setSolid(true)
+		defineCollisionArea( (position.X*size + 15).toFloat() , (position.Y*size).toFloat(), (12).toFloat(), (size).toFloat())
+	}
 }
 
 class HOUSE_INNER_CONVEX_CBR(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_INNER_CONVEX_CBR, ws) {
-    init { setSolid(true) }
+    init { 
+		setSolid(true)
+		defineCollisionArea( (position.X*size + 2).toFloat() , (position.Y*size).toFloat(), (15).toFloat(), (size).toFloat())
+	}
 }
 class HOUSE_INNERWALL_FACING_LEFT(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HOUSE_INNERWALL_FACING_LEFT, ws) {
     init { setSolid(true) }
@@ -114,6 +126,7 @@ class HouseOne_ConcaveCBL(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HO
 	
 	init {
 		setSolid(true)
+		defineCollisionArea( (position.X*size).toFloat() , (position.Y*size + 24).toFloat(), (14).toFloat(), (size - 10).toFloat())
 	}
 	
 }
@@ -123,6 +136,7 @@ class HouseOne_ConcaveCBR(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.HO
 	
 	init {
 		setSolid(true)
+		defineCollisionArea( (position.X*size + 12).toFloat() , (position.Y*size + 24).toFloat(), (size - 15).toFloat(), (size - 10).toFloat())
 	}
 	
 }
@@ -132,6 +146,7 @@ class HouseOne_ConcaveSideL(pos: Vector2D?, ws: WorldState?) : Tile(pos, Assets.
 	
 	init {
 		setSolid(true)
+		defineCollisionArea( (position.X*size).toFloat() , (position.Y*size).toFloat(), (14).toFloat(), (size).toFloat())
 	}
 	
 }

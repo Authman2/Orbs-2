@@ -39,6 +39,7 @@ class ActionableManager(val worldState: WorldState) {
     lateinit var tree_19: ActionObject; lateinit var tree_20: ActionObject; 
     lateinit var tree_21: ActionObject; lateinit var tree_22: ActionObject; 
     lateinit var tree_23: ActionObject; lateinit var tree_24: ActionObject;
+    lateinit var generator: ActionObject
 
 
 
@@ -140,6 +141,13 @@ class ActionableManager(val worldState: WorldState) {
         })
         doorBlock_10.cloneOptions(doorBlock_9)
 
+        // Define the collision area for each door.
+        for(field in ActionableManager::class.java.getDeclaredFields()) {
+            if(field.getName().contains("door")) {
+                val gotten: ActionObject = field.get(this) as ActionObject
+                gotten.defineCollisionArea( (gotten.position.X*32 + 18).toFloat() , (gotten.position.Y*32).toFloat(), (32 - 18).toFloat(), (32 - 8).toFloat())
+            }
+        }
 
         // Trees: Yes to cut down the tree, no to not.
         for(field in ActionableManager::class.java.getDeclaredFields()) {
@@ -155,6 +163,22 @@ class ActionableManager(val worldState: WorldState) {
                 gotten.getOptions().put("No", {})
             }
         }
+
+        // Generator task.
+        generator.getOptions().put("Yes", {
+            worldState.getTextBox().set(
+                arrayListOf<String>("...", "...", "... ...", "... ... ...", "You mess around with the machine a bit and finally get it to work!")
+            )
+            Player.generatorStarted = true
+            worldState.getTextBox().open();
+        })
+        generator.getOptions().put("No", {
+            worldState.getTextBox().set(
+                arrayListOf<String>("* You decide not to touch the machine. It seemed pretty complicated, anyway.*",
+                                    "* You decide not to touch the machine. It seemed pretty complicated, anyway.*")
+            )
+            worldState.getTextBox().open();
+        })
     }
 
     

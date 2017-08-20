@@ -32,3 +32,4 @@ tree_21 - Would you like to cut down this tree?
 tree_22 - Would you like to cut down this tree?
 tree_23 - Would you like to cut down this tree?
 tree_24 - Would you like to cut down this tree?
+generator - This must be the malfunctioning generator. Would you like to try to restart it?
