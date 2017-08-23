@@ -25,8 +25,10 @@ public class Player extends Entity {
 	// booleans for movement (only for moving in the opposite direction)
 	boolean up, down, left, right;
     
-    // Whether or not the player can swim.
-    public static boolean canSwim = false, generatorStarted = false;
+    // Minigame/Task booleans.
+	public static boolean canSwim = false;
+	public static boolean generatorStarted = false;
+	public static boolean distractedTownspeople = false;
 
 
 
@@ -297,5 +299,12 @@ public class Player extends Entity {
 	public void drawSprite(Image img) {
 		this.worldState.getGraphics().drawImage(img, position.X*size, position.Y*size);
 	}
+
+
+
+
+	public void startGenerator() { generatorStarted = true; }
+
+
 
 } // End of class.

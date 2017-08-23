@@ -272,6 +272,7 @@ public class WorldState extends GameState {
 	}
 	
 	
+	
 	private void handleKeyActions() {
 		// Key Input
 		scene.setOnKeyPressed(e -> {
@@ -389,19 +390,11 @@ public class WorldState extends GameState {
 
 		if(currentWorld != null) currentWorld.draw();
 		if(menu != null) menu.draw();
-		if(npcMenu != null) {
-			if(npcMenu.isOpen()) {
-				npcMenu.draw();
-			}
-		}
-
-		if(textBox != null) {
-			if(textBox.isOpen()) { textBox.draw(); }
-		}
-
-		if(actionBox != null) {
-			if(actionBox.isOpen()) { actionBox.draw(); }
-		}
+		if(npcMenu != null) if(npcMenu.isOpen()) npcMenu.draw();
+		
+		// Draw the action box and text box.
+		if(actionBox != null) { if(actionBox.isOpen()) { actionBox.draw(); } }
+		if(textBox != null) { if(textBox.isOpen()) { textBox.draw(); } }
 	}
 
 } // End of class.

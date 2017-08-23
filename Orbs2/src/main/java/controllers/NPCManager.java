@@ -1,6 +1,7 @@
 package controllers;
 
 import CompletionHandlers.CompletionHandlers;
+import controllers.Networking;
 import entities.NPC;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
@@ -41,13 +42,11 @@ public class NPCManager {
 	public static NPC scientist, boyRopeTask_1, boyRopeTask_2, boy_3, elderlyWomanWaterTask, boy_4, boy_5, girl_1,
 	girl_2, ropeTaskStoreOwner, girl_3, women_1, man_1, man_2, boy_6, man_3, women_2, girl_4, boy_7, boy_8, 
 	girl_5, boy_9, boy_10, boy_11, coinMan, dog_1, dog_2, dog_3, dog_4, dog_5, dog_6, dog_7, lostDog, dogOwnerWoman,
-    girl_6, man_4, man_5, swimmingLessonsWoman,
+	girl_6, man_4, man_5, swimmingLessonsWoman, birthdaySnacksMom, birthdaySnacksGirl, electricityMan,
+	
+	forestMan, forestPickupDriver, oilSpillMan, distractionPerson;
 
 
-    birthdaySnacksMom, birthdaySnacksGirl, electricityMan;
-
-
-//-KrhvqCIGS_2i3CbmWT7
 
 	/********************
 	*					*
@@ -146,7 +145,11 @@ public class NPCManager {
         dogOwnerWoman.setFinishedFunction(cHandlers.dogOwnerWomanHandler);
         swimmingLessonsWoman.setFinishedFunction(cHandlers.swimmingLessonsWomanHandler);
         birthdaySnacksMom.setFinishedFunction(cHandlers.birthdaySnacksMomHandler);
-        electricityMan.setFinishedFunction(cHandlers.electricityManHandler);
+		electricityMan.setFinishedFunction(cHandlers.electricityManHandler);
+		forestMan.setFinishedFunction(cHandlers.forestManHandler);
+		forestPickupDriver.setFinishedFunction(cHandlers.forestPickupDriverHandler);
+		oilSpillMan.setFinishedFunction(cHandlers.oilSpillManHandler);
+		distractionPerson.setFinishedFunction(cHandlers.distractionPerson);
 	}
 
 
@@ -206,8 +209,18 @@ public class NPCManager {
         npcSpeech.put("birthdaySnacksGirl", Networking.read("speech/birthdaySnacksGirl.txt"));
         npcSpeech.put("electricityMan_1", Networking.read("speech/electricityMan_1.txt"));
         npcSpeech.put("electricityMan_2", Networking.read("speech/electricityMan_2.txt"));
-        npcSpeech.put("electricityMan_3", Networking.read("speech/electricityMan_3.txt"));
-
+		npcSpeech.put("electricityMan_3", Networking.read("speech/electricityMan_3.txt"));
+		npcSpeech.put("forestMan_1", Networking.read("speech/forestMan_1.txt"));
+		npcSpeech.put("forestMan_2", Networking.read("speech/forestMan_2.txt"));
+		npcSpeech.put("forestMan_3", Networking.read("speech/forestMan_3.txt"));
+		npcSpeech.put("forestPickupDriver_1", Networking.read("speech/forestPickupDriver_1.txt"));
+		npcSpeech.put("forestPickupDriver_2", Networking.read("speech/forestPickupDriver_2.txt"));
+		npcSpeech.put("forestPickupDriver_3", Networking.read("speech/forestPickupDriver_3.txt"));
+		npcSpeech.put("oilSpillMan_1", Networking.read("speech/oilSpillMan_1.txt"));
+		npcSpeech.put("oilSpillMan_2", Networking.read("speech/oilSpillMan_2.txt"));
+		npcSpeech.put("oilSpillMan_3", Networking.read("speech/oilSpillMan_3.txt"));
+		npcSpeech.put("distractionPerson", Networking.read("speech/distractionPerson.txt"));
+		
 		scientist.setSpeech(npcSpeech.get("scientist_1"));
 		elderlyWomanWaterTask.setSpeech(npcSpeech.get("elderlyWoman_1_1"));
 		boyRopeTask_1.setSpeech(npcSpeech.get("boyRopeTask_1"));
@@ -241,7 +254,11 @@ public class NPCManager {
         swimmingLessonsWoman.setSpeech(npcSpeech.get("swimmingLessonsWoman_1"));
         birthdaySnacksMom.setSpeech(npcSpeech.get("birthdaySnacksMom_1"));
         birthdaySnacksGirl.setSpeech(npcSpeech.get("birthdaySnacksGirl"));
-        electricityMan.setSpeech(npcSpeech.get("electricityMan_1"));
+		electricityMan.setSpeech(npcSpeech.get("electricityMan_1"));
+		forestMan.setSpeech(npcSpeech.get("forestMan_1"));
+		forestPickupDriver.setSpeech(npcSpeech.get("forestPickupDriver_1"));
+		oilSpillMan.setSpeech(npcSpeech.get("oilSpillMan_1"));
+		distractionPerson.setSpeech(npcSpeech.get("distractionPerson"));
 	}
 
 

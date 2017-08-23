@@ -12,6 +12,7 @@ import kotlin.jvm.functions.Function0;
 import kotlin.Unit;
 import javafx.scene.input.KeyCode;
 import javafx.util.Pair;
+import entities.*;
 
 public class TextBox {
 
@@ -67,12 +68,10 @@ public class TextBox {
 
 	/** Goes to the next text slide. */
 	public void next() {
-		if(currentSlide >= text.size() - 1) {
+		if(onLast()) {
 			open = false;
 			currentSlide = 0;
-			if(finishedFunction != null)
-				finishedFunction.invoke();
-				//finishedFunction.apply(null);
+			if(finishedFunction != null) finishedFunction.invoke();
 		} else {
 			currentSlide++;
 		}
@@ -108,7 +107,6 @@ public class TextBox {
 	/** Automatically opens the text box. */
 	public void open() {
 		open = true;
-		currentlyOpened = this;
 	}
 
 
@@ -144,7 +142,7 @@ public class TextBox {
 
 	/** Returns whether or not this text box is on the last slide.*/
 	public boolean onLast() {
-		if(currentSlide == text.size() - 1) return true;
+		if(currentSlide >= text.size() - 1) return true;
 		return false;
 	}
 	
@@ -163,7 +161,8 @@ public class TextBox {
 	}
 
 	public void update() {
-
+		// System.out.println("CI: " + this.currentSlide);
+		// System.out.println("SIZE: " + this.text.size());
 	}
 
 	public void draw() {
@@ -172,7 +171,8 @@ public class TextBox {
 		worldState.getGraphics().fillRect(position.X, position.Y, Orbs2.WIDTH, 120);
 
 		// Display the word wrapped version of the text.
-		worldState.getGraphics().strokeText( wordWrapped(text.get(currentSlide)), position.X + 5, position.Y + 15);
+		if(currentSlide < text.size())
+			worldState.getGraphics().strokeText( wordWrapped(text.get(currentSlide)), position.X + 5, position.Y + 15);
 	}
 
 
@@ -190,7 +190,7 @@ public class TextBox {
 
 			// If a text box is not already open.
 			if(open == false) {
-				worldState.getCurrentWorld().getNPCManager().getNPCS().stream().forEach(npc -> {
+				for(NPC npc : worldState.getCurrentWorld().getNPCManager().getNPCS()) {
 					// If you are next to an NPC.
 					if(npc.nextTo(worldState.getPlayer())) {
 						// Set the finished function.
@@ -203,20 +203,22 @@ public class TextBox {
 								toggle();
 								worldState.getNPCMenu().toggle();
 							}
-							else {
-								worldState.getNPCMenu().toggle();
-							}
+							else { worldState.getNPCMenu().toggle(); }
 							return null;
 						}));
 						worldState.getNPCMenu().toggle();
 					}
-				});
+				};
 			} 
 			// If a text box is open.
 			else {
-				if(TextBox.currentlyOpened != null) {
-					TextBox.currentlyOpened.next();
+				// Basically if it is an item text box.
+				if(text.get(currentSlide).contains("received")) {
+					open = false;
+					currentSlide = 0;
+					return;
 				}
+				next();
 			}
 		}
 	}

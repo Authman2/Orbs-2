@@ -1,0 +1,6 @@
+Welcome to the 9th annual Speed Click competition! Here is how the competition works:
+1.) Multi-colored dots will appear on the screen in random locations. Your job is to click only the primary colored dots.
+2.) Each time you click a primary colored dot(red, blue, and yellow) you earn 2 points.
+3.) Each time you click a secondary colored dot(green, orange, and purple) you lose 1 point.
+4.) You must finish with at least 15 points to win!
+Good luck!

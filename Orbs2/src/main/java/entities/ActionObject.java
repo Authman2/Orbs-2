@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import states.*;
 import je.visual.Vector2D;
-import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
 import java.util.Map.Entry;
 
 /***
@@ -23,10 +23,13 @@ public class ActionObject extends Entity {
     String actionQuestion = "";
 
     // The options to put on the action box as well as the actions to carry out.
-    HashMap<String, Function0> options;
+    ArrayList<String> options;
 	
     // Whether or not this action object is solid (which it should be for all AO).
     boolean solid = true;
+
+    // The function to carry out when an option is clicked.
+    Function1 completion;
     
 
 
@@ -39,7 +42,7 @@ public class ActionObject extends Entity {
     
     public ActionObject(Vector2D pos, WorldState ws) {
         super(pos, ws);
-        this.options = new HashMap<String, Function0>();
+        this.options = new ArrayList<String>();
     }
 
 
@@ -53,7 +56,9 @@ public class ActionObject extends Entity {
 	*					*
 	*********************/
 
-    public HashMap<String, Function0> getOptions() { return options; }
+    public ArrayList<String> getOptions() { return options; }
+
+    public Function1 getCompletion() { return completion; }
 
     public String getActionQuestion() { return actionQuestion; }
 
@@ -77,33 +82,15 @@ public class ActionObject extends Entity {
 
     public void setQuestion(String a) { this.actionQuestion = a; }
 
+    public void setCompletion(Function1 c) { this.completion = c; }
 
     public void cloneOptions(ActionObject from) {
-        for (Entry<String,Function0> pair : from.getOptions().entrySet()){
-            this.options.put(pair.getKey(), pair.getValue());
-        }
+        this.options.addAll(from.getOptions());
     }
 
 
 
 
-    /********************
-	*					*
-	*	   ABSTRACT		*
-	*					*
-	*********************/
-
-    public void initialize() {
-
-    }
-
-    public void update() {
-        
-    }
-
-    public void draw() {
-        super.draw();
-    }
-
+    
 
 }

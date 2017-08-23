@@ -33,3 +33,47 @@ tree_22 - Would you like to cut down this tree?
 tree_23 - Would you like to cut down this tree?
 tree_24 - Would you like to cut down this tree?
 generator - This must be the malfunctioning generator. Would you like to try to restart it?
+rock_1 - Would you like to break this rock?
+rock_2 - Would you like to break this rock?
+rock_3 - Would you like to break this rock?
+rock_4 - Would you like to break this rock?
+rock_5 - Would you like to break this rock?
+rock_6 - Would you like to break this rock?
+rock_7 - Would you like to break this rock?
+rock_8 - Would you like to break this rock?
+rock_9 - Would you like to break this rock?
+rock_10 - Would you like to break this rock?
+rock_11 - Would you like to break this rock?
+rock_12 - Would you like to break this rock?
+rock_13 - Would you like to break this rock?
+rock_14 - Would you like to break this rock?
+rock_15 - Would you like to break this rock?
+rock_16 - Would you like to break this rock?
+rock_17 - Would you like to break this rock?
+rock_18 - Would you like to break this rock?
+rock_19 - Would you like to break this rock?
+rock_20 - Would you like to break this rock?
+rock_21 - Would you like to break this rock?
+rock_22 - Would you like to break this rock?
+rock_23 - Would you like to break this rock?
+rock_24 - Would you like to break this rock?
+rock_25 - Would you like to break this rock?
+rock_26 - Would you like to break this rock?
+rock_27 - Would you like to break this rock?
+rock_28 - Would you like to break this rock?
+rock_29 - Would you like to break this rock?
+rock_30 - Would you like to break this rock?
+rock_31 - Would you like to break this rock?
+rock_32 - Would you like to break this rock?
+rock_33 - Would you like to break this rock?
+rock_34 - Would you like to break this rock?
+rock_35 - Would you like to break this rock?
+rock_36 - Would you like to break this rock?
+rock_37 - Would you like to break this rock?
+rock_38 - Would you like to break this rock?
+rock_39 - Would you like to break this rock?
+rock_40 - Would you like to break this rock?
+rock_41 - Would you like to break this rock?
+rock_42 - Would you like to break this rock?
+rock_43 - Would you like to break this rock?
+rock_44 - Would you like to break this rock?

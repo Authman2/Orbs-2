@@ -57,13 +57,14 @@ public class GameController {
 		assets.initialize();
 
 		// Setup the game states.
-		states = new GameState[6];
+		states = new GameState[7];
 		states[0] = new MainMenuState(this, stage);
 		states[1] = new WorldState(this, stage);
 		states[2] = new ControlsState(this, stage);
 		states[3] = new ViewTasksState(this, stage);
         states[4] = new InventoryState(this, stage);
-        states[5] = new SwimmingMG(this, stage);
+		states[5] = new SwimmingMG(this, stage);
+		states[6] = new ColoredDotsMG(this, stage);
 
 		currentState = states[0];
 

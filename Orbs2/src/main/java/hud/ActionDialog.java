@@ -5,12 +5,14 @@ import javafx.scene.paint.Color;
 import kotlin.Pair;
 import je.visual.Vector2D;
 import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
 import main_package.Orbs2;
 import states.*;
 import javafx.scene.input.KeyCode;
 import entities.*;
+import java.util.StringTokenizer;
 
-public class ActionDialog extends TextBox {
+public class ActionDialog {
 
     /********************
 	*					*
@@ -18,21 +20,27 @@ public class ActionDialog extends TextBox {
 	*					*
     *********************/
     
+    // A reference to the world state.
+	WorldState worldState;
+
+    // The question that is displayed on the dialog.
+    String question;
+
     // All of the clickable choices to display.
     ArrayList<String> choices;
     
-    // The functions to carry out for each choice.
-    Function0 option1, option2, option3;
+    // The function to carry out when an option is clicked.
+    Function1 clickedFunction;
 
     // The position to start drawing the choices box.
-    Vector2D choicesPosition;
+    Vector2D choicesPosition, position;
     double[] choicesY;
 
     // The index of the currently selected item.
     int selectedIndex = 0;
 
     // Static boolean for when an action box, specifically, is open.
-    public static boolean actionDialogOpen = false;
+    public static boolean open = false;
 
 
 
@@ -44,8 +52,10 @@ public class ActionDialog extends TextBox {
 	*********************/
 
     public ActionDialog(WorldState ws) {
-        super(ws);
+        worldState = ws;
+        question = "";
         this.choices = new ArrayList<String>();
+        this.position = new Vector2D(0, Orbs2.HEIGHT - 120);
         this.choicesPosition = new Vector2D(Orbs2.WIDTH - 130, Orbs2.HEIGHT - 250);
     }
 
@@ -58,10 +68,37 @@ public class ActionDialog extends TextBox {
 	*					*
 	*********************/
 
-    @Override
-    public boolean isOpen() {
-        return actionDialogOpen;
+    public boolean isOpen() { return open; }
+
+
+    // The width that a line can be, determined by the width of the screen.
+	int lineWidth = 100;
+    
+    /** Returns a word wrapped version of the text. */
+    private String wordWrapped(String text) {
+        String ret = "";
+        int spaceLeft = lineWidth;
+        int spaceWidth = 1;
+
+        StringTokenizer tokenizer = new StringTokenizer(text);
+        while(tokenizer.hasMoreTokens()) {
+            String wordInLine = tokenizer.nextToken();
+            
+            // Add a line break.
+            if((wordInLine.length() + spaceWidth) > spaceLeft) {
+                ret += "\n" + wordInLine + " ";
+                spaceLeft = lineWidth - wordInLine.length();
+            } else {
+                ret += wordInLine + " ";
+                spaceLeft -= (wordInLine.length() + spaceWidth);
+            }
+        }
+        return ret;
     }
+
+
+
+
 
 
 
@@ -83,19 +120,30 @@ public class ActionDialog extends TextBox {
             }
         }
     }
-
     
-    @Override
     public void toggle() {
-        actionDialogOpen = !actionDialogOpen;
+        open = !open;
     }
 
-
-    public void setOptionOne(Function0 o) { this.option1 = o; }
-    public void setOptionTwo(Function0 o) { this.option2 = o; }
-    public void setOptionThree(Function0 o) { this.option3 = o; }
+    public void setClickedFunction(Function1 o) { this.clickedFunction = o; }
 
 
+
+	/** Automatically opens the text box. */
+	public void open() {
+		open = true;
+	}
+
+
+
+
+
+
+    /********************
+	*					*
+	*	    OTHER		*
+	*					*
+    *********************/
 
     public void keyActions(KeyCode e) {
         if(e == KeyCode.UP || e == KeyCode.W) {
@@ -107,42 +155,31 @@ public class ActionDialog extends TextBox {
             if(selectedIndex >= choices.size()) selectedIndex = 0;
         }
         if(e == KeyCode.C) {
-            // If the action box is not already open.
-            if(actionDialogOpen == false) {
-                worldState.getCurrentWorld().getActionableManager().getActionObjects().stream().forEach(ao -> {
-                    if( ao.nextTo(worldState.getPlayer()) ) {
+            if(open == false) {
+                selectedIndex = 0;
+                for(ActionObject ao : worldState.getCurrentWorld().getActionableManager().getActionObjects()) {
+                    // If an action object is next to the player, reset the choices.
+                    if(ao.nextTo(worldState.getPlayer())) {
                         choices.clear();
-                        clear();
-                        add(ao.getActionQuestion());
-                        
-                        // Add all of the options and their function values.
+                        this.question = ao.getActionQuestion();
+                        this.clickedFunction = ao.getCompletion();
+
                         String[] c = new String[ao.getOptions().size()];
-                        int i = 0;
-                        for(String s : ao.getOptions().keySet()) {
-                            c[i] = s;
-                            i++;
+                        for(int i = 0; i < ao.getOptions().size(); i++) { 
+                            c[i] = ao.getOptions().get(i);
                         }
-                        i = 0;
-                        for(Function0 f : ao.getOptions().values()) {
-                            if(i == 0) option1 = f;
-                            else if(i == 1) option2 = f;
-                            else if(i == 2) option3 = f;
-                            i++;
-                        }
-                        i = 0;
                         setChoices(c);
                         toggle();
-                        return;
+                        break;
                     }
-                });
-
-            // If it is open.
-            } else {
-                toggle();
-                if(selectedIndex == 0) { if(option1 != null) option1.invoke(); }
-                else if(selectedIndex == 1) { if(option2 != null) option2.invoke(); }
-                else if(selectedIndex == 2) { if(option3 != null) option3.invoke(); }
-                selectedIndex = 0;
+                }
+            }
+            else {
+                               
+                if(clickedFunction != null) clickedFunction.invoke(choices.get(selectedIndex));
+                this.choices.clear();
+                this.question = "";
+                open = false; 
             }
         }
     }
@@ -169,8 +206,19 @@ public class ActionDialog extends TextBox {
 
 
     public void draw() {
-        super.draw();
 
+        // TEXT BOX
+        worldState.getGraphics().setStroke(Color.BLACK);
+		worldState.getGraphics().setFill(Color.WHITE);
+		worldState.getGraphics().fillRect(position.X, position.Y, Orbs2.WIDTH, 120);
+
+		// Display the word wrapped version of the text.
+        worldState.getGraphics().strokeText( wordWrapped(question), position.X + 5, position.Y + 15);
+        
+
+
+
+        // ACTION BOX
         // Draw the background of the choices
         worldState.getGraphics().setFill(Color.WHITE);
         worldState.getGraphics().fillRect((double)choicesPosition.X, (double)choicesPosition.Y, 125.0, 125.0);
@@ -182,10 +230,12 @@ public class ActionDialog extends TextBox {
             worldState.getGraphics().strokeText(choices.get(i), (double)choicesPosition.X + 15, choicesY[i]);
         }
 
-        // Draw the indicator of the
+        // Draw the indicator on the selected option.
         worldState.getGraphics().setFill(Color.BLACK);
-        worldState.getGraphics().fillRect((double)choicesPosition.X + 5, choicesY[selectedIndex] - 10, 5, 5);
+        if(selectedIndex <= choicesY.length - 1)
+            worldState.getGraphics().fillRect((double)choicesPosition.X + 5, choicesY[selectedIndex] - 10, 5, 5);
     }
 
+    
 
 }

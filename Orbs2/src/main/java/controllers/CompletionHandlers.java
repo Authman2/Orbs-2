@@ -183,17 +183,58 @@ public class CompletionHandlers {
         public Unit invoke() {
             if(!TaskSystem.getTask("POWER_PLANT").isStarted()) {
                 TaskSystem.getTask("POWER_PLANT").start();
+
+                if(Player.generatorStarted == true)
+                    NPCManager.electricityMan.setSpeech(NPCManager.npcSpeech.get("electricityMan_2"));
             }
             else {
                 if(Player.generatorStarted == true) {
-                    InventoryState.addToInventory(new Pickaxe(), CompletionHandlers.worldState);
+                    if(!InventoryState.contains("PICKAXE"))
+                        InventoryState.addToInventory(new Pickaxe(), CompletionHandlers.worldState);
 
+                    NPCManager.electricityMan.setSpeech(NPCManager.npcSpeech.get("electricityMan_3"));
                     TaskSystem.getTask("POWER_PLANT").complete();
                 }
             }
             return null;
         }
     };
+    public Function0 forestManHandler = new Function0() {
+        public Unit invoke() {
+            if(!TaskSystem.getTask("WOOD_TRANSPORTER").isStarted()) {
+                TaskSystem.getTask("WOOD_TRANSPORTER").start();
+            }
+            return null;
+        }
+    };
+    public Function0 forestPickupDriverHandler = new Function0() {
+        public Unit invoke() {
+            if(!TaskSystem.getTask("BROKEN_DOWN_TRUCK").isStarted()) {
+                TaskSystem.getTask("BROKEN_DOWN_TRUCK").start();
+            }
+            else if(InventoryState.contains("CAR_PARTS")) {
+
+            }
+            return null;
+        }
+    };
+    public Function0 oilSpillManHandler = new Function0() {
+        public Unit invoke() {
+            if(!TaskSystem.getTask("OIL_ISSUE").isStarted()) {
+                TaskSystem.getTask("OIL_ISSUE").start();
+            }
+            
+            return null;
+        }
+    };
+    public Function0 distractionPerson = new Function0() {
+        public Unit invoke() {
+            // Go to the minigame.
+            CompletionHandlers.worldState.gc.goTo(6);
+            return null;
+        }
+    };
+
 
     
 
@@ -341,6 +382,27 @@ public class CompletionHandlers {
             return null;
         }
     };
+    public static Function0 forestManHandler_Loaded = new Function0() {
+        public Unit invoke() {
+            return null;
+        }
+    };
+    public static Function0 forestPickupDriverHandler_Loaded = new Function0() {
+        public Unit invoke() {
+            return null;
+        }
+    };
+    public Function0 oilSpillManHandler_Loaded = new Function0() {
+        public Unit invoke() {
+            
+            return null;
+        }
+    };
+    public Function0 distractionPerson_Loaded = new Function0() {
+        public Unit invoke() {
+            return null;
+        }
+    };
 
 
 
@@ -353,7 +415,7 @@ public class CompletionHandlers {
     *********************/
     
     public CompletionHandlers(WorldState ws) {
-        this.worldState = ws;
+        worldState = ws;
 
         // Add all of the load handlers to the list.
         for(Field f : CompletionHandlers.class.getFields()) {

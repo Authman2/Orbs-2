@@ -6,6 +6,8 @@ import entities.*
 import controllers.Networking
 import javafx.scene.image.Image
 import kotlin.jvm.*
+import tasks.*
+import hud.*
 
 import je.visual.Vector2D
 
@@ -40,6 +42,28 @@ class ActionableManager(val worldState: WorldState) {
     lateinit var tree_21: ActionObject; lateinit var tree_22: ActionObject; 
     lateinit var tree_23: ActionObject; lateinit var tree_24: ActionObject;
     lateinit var generator: ActionObject
+    lateinit var rock_1: ActionObject; lateinit var rock_2: ActionObject; 
+    lateinit var rock_3: ActionObject; lateinit var rock_4: ActionObject; 
+    lateinit var rock_5: ActionObject; lateinit var rock_6: ActionObject;
+    lateinit var rock_7: ActionObject; lateinit var rock_8: ActionObject; 
+    lateinit var rock_9: ActionObject; lateinit var rock_10: ActionObject;
+    lateinit var rock_11: ActionObject; lateinit var rock_12: ActionObject;
+    lateinit var rock_13: ActionObject; lateinit var rock_14: ActionObject; 
+    lateinit var rock_15: ActionObject; lateinit var rock_16: ActionObject; 
+    lateinit var rock_17: ActionObject; lateinit var rock_18: ActionObject;
+    lateinit var rock_19: ActionObject; lateinit var rock_20: ActionObject; 
+    lateinit var rock_21: ActionObject; lateinit var rock_22: ActionObject; 
+    lateinit var rock_23: ActionObject; lateinit var rock_24: ActionObject;
+    lateinit var rock_25: ActionObject; lateinit var rock_26: ActionObject; 
+    lateinit var rock_27: ActionObject; lateinit var rock_28: ActionObject; 
+    lateinit var rock_29: ActionObject; lateinit var rock_30: ActionObject;
+    lateinit var rock_31: ActionObject; lateinit var rock_32: ActionObject; 
+    lateinit var rock_33: ActionObject; lateinit var rock_34: ActionObject;
+    lateinit var rock_35: ActionObject; lateinit var rock_36: ActionObject;
+    lateinit var rock_37: ActionObject; lateinit var rock_38: ActionObject; 
+    lateinit var rock_39: ActionObject; lateinit var rock_40: ActionObject; 
+    lateinit var rock_41: ActionObject; lateinit var rock_42: ActionObject;
+    lateinit var rock_43: ActionObject; lateinit var rock_44: ActionObject;
 
 
 
@@ -61,85 +85,128 @@ class ActionableManager(val worldState: WorldState) {
         this.loadQs()
 
         // SECOND: set their options.
-        doorBlock_1.getOptions().put("Jersey City", {
-            worldState.getTextBox().set( arrayListOf<String>("Incorrect!", "Incorrect!") );
-            worldState.getTextBox().open(); 
-        })
-        doorBlock_1.getOptions().put("Princeton", { 
-            worldState.getTextBox().set( arrayListOf<String>("Incorrect!", "Incorrect!") );
-            worldState.getTextBox().open();
-        })
-        doorBlock_1.getOptions().put("Trenton", { 
-            worldState.getTextBox().set( arrayListOf<String>("Correct!", "Correct!") );
-            worldState.getTextBox().open();
-            actionObjects.remove(doorBlock_1)
-            actionObjects.remove(doorBlock_2)
-        })
+        doorBlock_1.getOptions().add("Jersey City")
+        doorBlock_1.getOptions().add("Princeton")
+        doorBlock_1.getOptions().add("Trenton")
+        doorBlock_1.setCompletion {
+            TextBox.finishedFunction = null
+            if(it == "Trenton") {
+                worldState.getTextBox().set(arrayListOf<String>("Correct!")) 
+                worldState.getTextBox().toggle();
+                actionObjects.remove(doorBlock_1)
+            } else {
+                worldState.getTextBox().set(arrayListOf<String>("Incorrect!")) 
+                worldState.getTextBox().toggle();
+            }
+        }
         doorBlock_2.cloneOptions(doorBlock_1);
 
-        doorBlock_3.getOptions().put("12", {  
-            worldState.getTextBox().set( arrayListOf<String>("Correct!", "Correct!") );
-            worldState.getTextBox().open();
-            actionObjects.remove(doorBlock_3)
-            actionObjects.remove(doorBlock_4)
-        })
-        doorBlock_3.getOptions().put("5", {
-            worldState.getTextBox().set( arrayListOf<String>("Incorrect!", "Incorrect!") );
-            worldState.getTextBox().open(); 
-        })
-        doorBlock_3.getOptions().put("9", {
-            worldState.getTextBox().set( arrayListOf<String>("Incorrect!", "Incorrect!") );
-            worldState.getTextBox().open(); 
-        })
+        doorBlock_3.getOptions().add("12")
+        doorBlock_3.getOptions().add("5")
+        doorBlock_3.getOptions().add("9")
+        doorBlock_3.setCompletion {
+            TextBox.finishedFunction = null
+            if(it == "12") {
+                worldState.getTextBox().set(arrayListOf<String>("Correct!")) 
+                worldState.getTextBox().toggle();
+                actionObjects.remove(doorBlock_3)
+            } else {
+                worldState.getTextBox().set(arrayListOf<String>("Incorrect!")) 
+                worldState.getTextBox().toggle();
+            }
+        }
         doorBlock_4.cloneOptions(doorBlock_3)
+        doorBlock_4.setCompletion {
+            TextBox.finishedFunction = null
+            if(it == "12") {
+                worldState.getTextBox().set(arrayListOf<String>("Correct!")) 
+                worldState.getTextBox().toggle();
+                actionObjects.remove(doorBlock_4)
+            } else {
+                worldState.getTextBox().set(arrayListOf<String>("Incorrect!")) 
+                worldState.getTextBox().toggle();
+            }
+        }
 
-        doorBlock_5.getOptions().put("1", {
-            worldState.getTextBox().set( arrayListOf<String>("Incorrect!", "Incorrect!") );
-            worldState.getTextBox().open(); 
-        })
-        doorBlock_5.getOptions().put("9", {
-            worldState.getTextBox().set( arrayListOf<String>("Correct!", "Correct!") );
-            worldState.getTextBox().open();
-            actionObjects.remove(doorBlock_5)
-            actionObjects.remove(doorBlock_6)
-        })
-        doorBlock_5.getOptions().put("7", {
-            worldState.getTextBox().set( arrayListOf<String>("Incorrect!", "Incorrect!") );
-            worldState.getTextBox().open(); 
-        })
+        doorBlock_5.getOptions().add("1")
+        doorBlock_5.getOptions().add("9")
+        doorBlock_5.getOptions().add("7")
+        doorBlock_5.setCompletion {
+            TextBox.finishedFunction = null
+            if(it == "9") {
+                worldState.getTextBox().set(arrayListOf<String>("Correct!")) 
+                worldState.getTextBox().toggle();
+                actionObjects.remove(doorBlock_5)
+            } else {
+                worldState.getTextBox().set(arrayListOf<String>("Incorrect!")) 
+                worldState.getTextBox().toggle();
+            }
+        }
         doorBlock_6.cloneOptions(doorBlock_5)
+        doorBlock_6.setCompletion {
+            TextBox.finishedFunction = null
+            if(it == "9") {
+                worldState.getTextBox().set(arrayListOf<String>("Correct!")) 
+                worldState.getTextBox().toggle();
+                actionObjects.remove(doorBlock_6)
+            } else {
+                worldState.getTextBox().set(arrayListOf<String>("Incorrect!")) 
+                worldState.getTextBox().toggle();
+            }
+        }
 
-        doorBlock_7.getOptions().put("Dreams",{
-            worldState.getTextBox().set( arrayListOf<String>("Correct!", "Correct!") );
-            worldState.getTextBox().open();
-            actionObjects.remove(doorBlock_7)
-            actionObjects.remove(doorBlock_8)
-        })
-        doorBlock_7.getOptions().put("Meals",{
-            worldState.getTextBox().set( arrayListOf<String>("Incorrect!", "Incorrect!") );
-            worldState.getTextBox().open(); 
-        })
-        doorBlock_7.getOptions().put("Bug Bites",{
-            worldState.getTextBox().set( arrayListOf<String>("Incorrect!", "Incorrect!") );
-            worldState.getTextBox().open(); 
-        })
+        doorBlock_7.getOptions().add("Dreams")
+        doorBlock_7.getOptions().add("Meals")
+        doorBlock_7.getOptions().add("Bug Bites")
+        doorBlock_7.setCompletion {
+            TextBox.finishedFunction = null
+            if(it == "Dreams") {
+                worldState.getTextBox().set(arrayListOf<String>("Correct!")) 
+                worldState.getTextBox().toggle();
+                actionObjects.remove(doorBlock_7)
+            } else {
+                worldState.getTextBox().set(arrayListOf<String>("Incorrect!")) 
+                worldState.getTextBox().toggle();
+            }
+        }
         doorBlock_8.cloneOptions(doorBlock_7)
+        doorBlock_8.setCompletion {
+            TextBox.finishedFunction = null
+            if(it == "Dreams") {
+                worldState.getTextBox().set(arrayListOf<String>("Correct!")) 
+                worldState.getTextBox().toggle();
+                actionObjects.remove(doorBlock_8)
+            } else {
+                worldState.getTextBox().set(arrayListOf<String>("Incorrect!")) 
+                worldState.getTextBox().toggle();
+            }
+        }
 
-        doorBlock_9.getOptions().put("United States",{
-            worldState.getTextBox().set( arrayListOf<String>("Incorrect!", "Incorrect!") );
-            worldState.getTextBox().open(); 
-        })
-        doorBlock_9.getOptions().put("China",{
-            worldState.getTextBox().set( arrayListOf<String>("Incorrect!", "Incorrect!") );
-            worldState.getTextBox().open(); 
-        })
-        doorBlock_9.getOptions().put("France",{
-            worldState.getTextBox().set( arrayListOf<String>("Correct!", "Correct!") );
-            worldState.getTextBox().open();
-            actionObjects.remove(doorBlock_9)
-            actionObjects.remove(doorBlock_10)
-        })
+        doorBlock_9.getOptions().add("United States")
+        doorBlock_9.getOptions().add("China")
+        doorBlock_9.getOptions().add("France")
+        doorBlock_9.setCompletion {
+            TextBox.finishedFunction = null
+            if(it == "France") {
+                worldState.getTextBox().set(arrayListOf<String>("Correct!")) 
+                worldState.getTextBox().toggle();
+                actionObjects.remove(doorBlock_9)
+            } else {
+                worldState.getTextBox().set(arrayListOf<String>("Incorrect!")) 
+                worldState.getTextBox().toggle();
+            }
+        }
         doorBlock_10.cloneOptions(doorBlock_9)
+        doorBlock_10.setCompletion {
+            if(it == "France") {
+                worldState.getTextBox().set(arrayListOf<String>("Correct!")) 
+                worldState.getTextBox().toggle();
+                actionObjects.remove(doorBlock_10)
+            } else {
+                worldState.getTextBox().set(arrayListOf<String>("Incorrect!")) 
+                worldState.getTextBox().toggle();
+            }
+        }
 
         // Define the collision area for each door.
         for(field in ActionableManager::class.java.getDeclaredFields()) {
@@ -153,32 +220,59 @@ class ActionableManager(val worldState: WorldState) {
         for(field in ActionableManager::class.java.getDeclaredFields()) {
             if(field.getName().contains("tree")) {
                 val gotten: ActionObject = field.get(this) as ActionObject
-                gotten.getOptions().put("Yes", { 
-                    if(InventoryState.contains("HATCHET")) actionObjects.remove(gotten)
-                    else { 
-                        worldState.getTextBox().set(arrayListOf<String>("You need a hatchet to cut down a tree.","You need a hatchet to cut down a tree.")) 
-                        worldState.getTextBox().open();
+                
+                gotten.getOptions().add("Yes")
+                gotten.getOptions().add("No")
+                gotten.setCompletion {
+                    TextBox.finishedFunction = null
+                    if(InventoryState.contains("HATCHET")) { actionObjects.remove(gotten) }
+                    else {
+                        worldState.getTextBox().set(arrayListOf<String>("You need a hatchet to cut down a tree.")) 
+                        worldState.getTextBox().toggle();
                     }
-                })
-                gotten.getOptions().put("No", {})
+                }
+            }
+        }
+
+        // Rocks: Yes to break the rock, no to not.
+        for(field in ActionableManager::class.java.getDeclaredFields()) {
+            if(field.getName().contains("rock")) {
+                val gotten: ActionObject = field.get(this) as ActionObject
+                
+                gotten.getOptions().add("Yes")
+                gotten.getOptions().add("No")
+                gotten.setCompletion {
+                    TextBox.finishedFunction = null
+                    if(InventoryState.contains("PICKAXE")) { actionObjects.remove(gotten) }
+                    else {
+                        worldState.getTextBox().set(arrayListOf<String>("You need a pickaxe to break a rock.")) 
+                        worldState.getTextBox().toggle();
+                    }
+                }
             }
         }
 
         // Generator task.
-        generator.getOptions().put("Yes", {
-            worldState.getTextBox().set(
-                arrayListOf<String>("...", "...", "... ...", "... ... ...", "You mess around with the machine a bit and finally get it to work!")
-            )
-            Player.generatorStarted = true
-            worldState.getTextBox().open();
-        })
-        generator.getOptions().put("No", {
-            worldState.getTextBox().set(
-                arrayListOf<String>("* You decide not to touch the machine. It seemed pretty complicated, anyway.*",
-                                    "* You decide not to touch the machine. It seemed pretty complicated, anyway.*")
-            )
-            worldState.getTextBox().open();
-        })
+        generator.getOptions().add("Yes")
+        generator.getOptions().add("No")
+        generator.setCompletion {
+            TextBox.finishedFunction = null
+            if(it == "Yes") {
+                worldState.getTextBox().set(
+                    arrayListOf<String>("...", "... ...", "... ... ...", "You mess around with the machine a bit and finally get it to work!")
+                )
+                worldState.getTextBox().toggle()
+                Player.generatorStarted = true
+
+                if(TaskSystem.getTask("POWER_PLANT")!!.isStarted())
+                    NPCManager.electricityMan.setSpeech(NPCManager.npcSpeech.get("electricityMan_2")!!)
+            } else {
+                worldState.getTextBox().set(
+                    arrayListOf<String>("* You decide not to touch the machine. It seemed pretty complicated, anyway.*")
+                )
+                worldState.getTextBox().toggle();
+            }
+        }
     }
 
     

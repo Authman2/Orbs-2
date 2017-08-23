@@ -15,8 +15,6 @@ import states.GameState
 import je.visual.Vector2D
 import javafx.scene.input.KeyCode
 
-//-KrhvqCIGS_2i3CbmWT7
-
 /*
 *	The circles that get displayed at the bottom of the page to signal which trials
 * have been completed.

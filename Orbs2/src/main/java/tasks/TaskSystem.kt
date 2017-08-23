@@ -23,7 +23,7 @@ public class TaskSystem() {
             Task(id = "MUSEUM_KEY", description = "Find the key required to enter the back room of the museum."),
             Task(id = "COOKIES", description = "Bring party snacks to the desperate mother for her daughter's birthday party."),
             Task(id = "POWER_PLANT", description = "Restart the generator in the power plant to help the worker fix the town's electrical problem."),
-            Task(id = "WOOD_TRANSPORTER", description = "Figure out what happened to the man who was supposed to transport the chopped wood in his pickup truck."),
+            Task(id = "WOOD_TRANSPORTER", description = "Figure out what happened to the man who was supposed to pickup the chopped wood in his truck."),
             Task(id = "BROKEN_DOWN_TRUCK", description = "Bring some tools to the man with the broken down truck."),
             Task(id = "OIL_ISSUE", description = "Distract the townspeople while the owner of the repair shop cleans up an oil issue."),
             Task(id = "LUMBERJACK_MESSAGE", description = "Deliver the message back to the lumberjack."),
