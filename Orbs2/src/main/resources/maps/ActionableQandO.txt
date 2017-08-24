@@ -32,6 +32,35 @@ tree_21 - Would you like to cut down this tree?
 tree_22 - Would you like to cut down this tree?
 tree_23 - Would you like to cut down this tree?
 tree_24 - Would you like to cut down this tree?
+tree_25 - Would you like to cut down this tree?
+tree_26 - Would you like to cut down this tree?
+tree_27 - Would you like to cut down this tree?
+tree_28 - Would you like to cut down this tree?
+tree_29 - Would you like to cut down this tree?
+tree_30 - Would you like to cut down this tree?
+tree_31 - Would you like to cut down this tree?
+tree_32 - Would you like to cut down this tree?
+tree_33 - Would you like to cut down this tree?
+tree_34 - Would you like to cut down this tree?
+tree_35 - Would you like to cut down this tree?
+tree_36 - Would you like to cut down this tree?
+tree_37 - Would you like to cut down this tree?
+tree_38 - Would you like to cut down this tree?
+tree_39 - Would you like to cut down this tree?
+tree_40 - Would you like to cut down this tree?
+tree_41 - Would you like to cut down this tree?
+tree_42 - Would you like to cut down this tree?
+tree_43 - Would you like to cut down this tree?
+tree_44 - Would you like to cut down this tree?
+tree_45 - Would you like to cut down this tree?
+tree_46 - Would you like to cut down this tree?
+tree_47 - Would you like to cut down this tree?
+tree_48 - Would you like to cut down this tree?
+tree_49 - Would you like to cut down this tree?
+tree_51 - Would you like to cut down this tree?
+tree_52 - Would you like to cut down this tree?
+tree_53 - Would you like to cut down this tree?
+tree_54 - Would you like to cut down this tree?
 generator - This must be the malfunctioning generator. Would you like to try to restart it?
 rock_1 - Would you like to break this rock?
 rock_2 - Would you like to break this rock?

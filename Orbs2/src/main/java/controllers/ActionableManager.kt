@@ -41,6 +41,22 @@ class ActionableManager(val worldState: WorldState) {
     lateinit var tree_19: ActionObject; lateinit var tree_20: ActionObject; 
     lateinit var tree_21: ActionObject; lateinit var tree_22: ActionObject; 
     lateinit var tree_23: ActionObject; lateinit var tree_24: ActionObject;
+    lateinit var tree_25: ActionObject; lateinit var tree_26: ActionObject;
+    lateinit var tree_27: ActionObject; lateinit var tree_28: ActionObject;
+    lateinit var tree_29: ActionObject; lateinit var tree_30: ActionObject;
+    lateinit var tree_31: ActionObject; lateinit var tree_32: ActionObject;
+    lateinit var tree_33: ActionObject; lateinit var tree_34: ActionObject;
+    lateinit var tree_35: ActionObject; lateinit var tree_36: ActionObject;
+    lateinit var tree_37: ActionObject; lateinit var tree_38: ActionObject;
+    lateinit var tree_39: ActionObject; lateinit var tree_40: ActionObject;
+    lateinit var tree_41: ActionObject; lateinit var tree_42: ActionObject;
+    lateinit var tree_43: ActionObject; lateinit var tree_44: ActionObject;
+    lateinit var tree_45: ActionObject; lateinit var tree_46: ActionObject;
+    lateinit var tree_47: ActionObject; lateinit var tree_48: ActionObject;
+    lateinit var tree_49: ActionObject; lateinit var tree_50: ActionObject;
+    lateinit var tree_51: ActionObject; lateinit var tree_52: ActionObject;
+    lateinit var tree_53: ActionObject; lateinit var tree_54: ActionObject;
+
     lateinit var generator: ActionObject
     lateinit var rock_1: ActionObject; lateinit var rock_2: ActionObject; 
     lateinit var rock_3: ActionObject; lateinit var rock_4: ActionObject; 
@@ -225,10 +241,12 @@ class ActionableManager(val worldState: WorldState) {
                 gotten.getOptions().add("No")
                 gotten.setCompletion {
                     TextBox.finishedFunction = null
-                    if(InventoryState.contains("HATCHET")) { actionObjects.remove(gotten) }
-                    else {
-                        worldState.getTextBox().set(arrayListOf<String>("You need a hatchet to cut down a tree.")) 
-                        worldState.getTextBox().toggle();
+                    if(it == "Yes") {
+                        if(InventoryState.contains("HATCHET")) { actionObjects.remove(gotten) }
+                        else {
+                            worldState.getTextBox().set(arrayListOf<String>("You need a hatchet to cut down a tree.")) 
+                            worldState.getTextBox().toggle();
+                        }
                     }
                 }
             }
@@ -243,10 +261,12 @@ class ActionableManager(val worldState: WorldState) {
                 gotten.getOptions().add("No")
                 gotten.setCompletion {
                     TextBox.finishedFunction = null
-                    if(InventoryState.contains("PICKAXE")) { actionObjects.remove(gotten) }
-                    else {
-                        worldState.getTextBox().set(arrayListOf<String>("You need a pickaxe to break a rock.")) 
-                        worldState.getTextBox().toggle();
+                    if(it == "Yes") {
+                        if(InventoryState.contains("PICKAXE")) { actionObjects.remove(gotten) }
+                        else {
+                            worldState.getTextBox().set(arrayListOf<String>("You need a pickaxe to break a rock.")) 
+                            worldState.getTextBox().toggle();
+                        }
                     }
                 }
             }

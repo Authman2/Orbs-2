@@ -204,6 +204,16 @@ public class CompletionHandlers {
             if(!TaskSystem.getTask("WOOD_TRANSPORTER").isStarted()) {
                 TaskSystem.getTask("WOOD_TRANSPORTER").start();
             }
+            else {
+                if(TaskSystem.getTask("BROKEN_DOWN_TRUCK").isCompleted()) {
+                    if(!InventoryState.contains("HATCHET"))
+                        InventoryState.addToInventory(new Hatchet(), CompletionHandlers.worldState);
+                    
+                    NPCManager.forestMan.setSpeech(NPCManager.npcSpeech.get("forestMan_3"));
+                    TaskSystem.getTask("WOOD_TRANSPORTER").complete();
+                    TaskSystem.getTask("LUMBERJACK_MESSAGE").complete();
+                }
+            }
             return null;
         }
     };
@@ -213,7 +223,12 @@ public class CompletionHandlers {
                 TaskSystem.getTask("BROKEN_DOWN_TRUCK").start();
             }
             else if(InventoryState.contains("CAR_PARTS")) {
+                InventoryState.removeItem("CAR_PARTS");
+                NPCManager.forestMan.setSpeech(NPCManager.npcSpeech.get("forestMan_2"));
+                NPCManager.forestPickupDriver.setSpeech(NPCManager.npcSpeech.get("forestPickupDriver_3"));
 
+                TaskSystem.getTask("LUMBERJACK_MESSAGE").start();
+                TaskSystem.getTask("BROKEN_DOWN_TRUCK").complete();
             }
             return null;
         }
@@ -223,7 +238,16 @@ public class CompletionHandlers {
             if(!TaskSystem.getTask("OIL_ISSUE").isStarted()) {
                 TaskSystem.getTask("OIL_ISSUE").start();
             }
-            
+            else {
+                if(Player.distractedTownspeople == true) {
+                    if(!TaskSystem.getTask("OIL_ISSUE").isCompleted())
+                        InventoryState.addToInventory(new CarParts(), CompletionHandlers.worldState);
+                    
+                    NPCManager.oilSpillMan.setSpeech(NPCManager.npcSpeech.get("oilSpillMan_3"));
+                    NPCManager.forestPickupDriver.setSpeech(NPCManager.npcSpeech.get("forestPickupDriver_2"));
+                    TaskSystem.getTask("OIL_ISSUE").complete();
+                }
+            }
             return null;
         }
     };
@@ -384,22 +408,34 @@ public class CompletionHandlers {
     };
     public static Function0 forestManHandler_Loaded = new Function0() {
         public Unit invoke() {
+            if(TaskSystem.getTask("WOOD_TRANSPORTER").isCompleted()) {
+                NPCManager.forestMan.setSpeech(NPCManager.npcSpeech.get("forestMan_3"));
+            } else {
+                if(TaskSystem.getTask("BROKEN_DOWN_TRUCK").isCompleted()) {
+                    NPCManager.forestMan.setSpeech(NPCManager.npcSpeech.get("forestMan_2"));
+                }
+            }
             return null;
         }
     };
     public static Function0 forestPickupDriverHandler_Loaded = new Function0() {
         public Unit invoke() {
+            if(TaskSystem.getTask("BROKEN_DOWN_TRUCK").isCompleted()) {
+                NPCManager.forestPickupDriver.setSpeech(NPCManager.npcSpeech.get("forestPickupDriver_3"));
+            }
+            else if(TaskSystem.getTask("BROKEN_DOWN_TRUCK").isStarted()) {
+                if(InventoryState.contains("CAR_PARTS")) {
+                    NPCManager.forestPickupDriver.setSpeech(NPCManager.npcSpeech.get("forestPickupDriver_2"));
+                }
+            }
             return null;
         }
     };
     public Function0 oilSpillManHandler_Loaded = new Function0() {
         public Unit invoke() {
-            
-            return null;
-        }
-    };
-    public Function0 distractionPerson_Loaded = new Function0() {
-        public Unit invoke() {
+            if(TaskSystem.getTask("OIL_ISSUE").isCompleted()) {
+                NPCManager.oilSpillMan.setSpeech(NPCManager.npcSpeech.get("oilSpillMan_3"));
+            }
             return null;
         }
     };
